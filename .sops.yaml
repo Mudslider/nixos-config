@@ -1,0 +1,14 @@
+# ── .sops.yaml ───────────────────────────────────────────────────
+#
+# Ersetze den Public-Key durch deinen eigenen:
+#   age-keygen -o ~/.config/sops/age/keys.txt
+#   cat ~/.config/sops/age/keys.txt | grep "public key"
+# ─────────────────────────────────────────────────────────────────
+keys:
+  - &admin age1ttaq3u59zmyerzvj3aeye6mhgkxq48d4nu3n8y84njdwqces2unqp48je7
+
+creation_rules:
+  - path_regex: secrets/secrets\.yaml$
+    key_groups:
+      - age:
+          - *admin
