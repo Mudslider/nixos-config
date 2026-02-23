@@ -7,6 +7,7 @@
 
     # ── Büro / Office ────────────────────────────────────────────
     libreoffice-qt                 # Qt integration for Plasma
+    obsidian                       # Notizen (Markdown)
 
     # ── Fotografie & Grafik / Photography & Graphics ─────────────
     darktable
@@ -19,8 +20,7 @@
     # ── Secrets ──────────────────────────────────────────────────
     sops
     age                            # age encryption backend for sops
-
-    # ── Werkzeuge / Utilities ────────────────────────────────────
+    bitwarden-desktop              # Bitwarden-Client   # ── Werkzeuge / Utilities ────────────────────────────────────
     git
     wget
     curl
