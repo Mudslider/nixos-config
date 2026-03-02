@@ -1,0 +1,21 @@
+# .sops.yaml — Schlüsselverwaltung für BEIDE Maschinen
+#
+# SETUP:
+# 1. Server-Key: ssh-keyscan 192.168.1.10 | ssh-to-age
+# 2. Laptop-Key:  age-keygen -y ~/.config/sops/age/keys.txt
+# 3. Beide Public Keys unten eintragen (IMMER lowercase!)
+# 4. Verschlüsseln: sops --encrypt --in-place secrets/secrets.yaml
+# 5. Nach Key-Änderung: sops updatekeys secrets/secrets.yaml
+
+keys:
+  # Homeserver (SSH-Host-Key → Age)
+  - &homeserver age1XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  # Laptop (age-keygen)
+  - &laptop age1XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+creation_rules:
+  - path_regex: secrets/secrets\.yaml$
+    key_groups:
+      - age:
+          - *homeserver
+          - *laptop

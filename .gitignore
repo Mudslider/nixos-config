@@ -1,0 +1,10 @@
+result
+.direnv/
+*.swp
+*~
+.DS_Store
+
+# Secrets: Verschlüsselte Datei WIRD committed, Klartext NICHT
+# secrets/secrets.yaml  ← WIRD committed (ist verschlüsselt)
+# Nur das Template ist Klartext:
+# secrets/secrets.yaml.template
