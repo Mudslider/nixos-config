@@ -11,7 +11,7 @@
 
   # ZFS benötigt eine eindeutige hostId
   # Generiere mit: head -c4 /dev/urandom | od -A none -t x4 | tr -d ' '
-  networking.hostId = "XXXXXXXX"; # TODO: Ersetze mit deiner generierten hostId
+  networking.hostId = "687e79ce"; # TODO: Ersetze mit deiner generierten hostId
 
   # ── Bootloader ────────────────────────────────────────────
   boot.loader.systemd-boot.enable = true;
@@ -36,7 +36,8 @@
     # SSH-Keys: Deklarativ — überlebt jeden Rebuild!
     # Ersetze mit deinem echten Key: cat ~/.ssh/id_ed25519.pub
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAA... philip@laptop"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJaOYhzMMUu87VTvyw0ORH5J4LUaRPj3uAQYgAwF7mAs philip@laptop
+"
     ];
 
     shell = pkgs.bash;
@@ -46,7 +47,8 @@
 
   # Root: Nur per SSH-Key
   users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAA... philip@laptop"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJaOYhzMMUu87VTvyw0ORH5J4LUaRPj3uAQYgAwF7mAs philip@laptop
+"
   ];
 
   # Sudo ohne Passwort (praktisch für Wartung)
