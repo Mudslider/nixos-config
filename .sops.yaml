@@ -9,9 +9,9 @@
 
 keys:
   # Homeserver (SSH-Host-Key → Age)
-  - &homeserver age1XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  - &homeserver age10dpncr0huc22jk68fw6a8wl0r8kgkgn7fa89tp2wznn2m3jsg5mszn3ajt
   # Laptop (age-keygen)
-  - &laptop age1XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  - &laptop age1ttaq3u59zmyerzvj3aeye6mhgkxq48d4nu3n8y84njdwqces2unqp48je7
 
 creation_rules:
   - path_regex: secrets/secrets\.yaml$
