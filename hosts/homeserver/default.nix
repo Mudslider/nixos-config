@@ -13,6 +13,12 @@
   # Generiere mit: head -c4 /dev/urandom | od -A none -t x4 | tr -d ' '
   networking.hostId = "687e79ce"; # TODO: Ersetze mit deiner generierten hostId
 
+  # Sleep verhindern
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+
   # ── Bootloader ────────────────────────────────────────────
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
