@@ -24,6 +24,6 @@
     #   "authentik-secret-key" = {};
     #   "restic-repo-password" = {};
     #   "offsite-backup-password" = {};
-    # };
+     };
   };
 }
