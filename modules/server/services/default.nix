@@ -9,7 +9,7 @@
     # ./jellyfin.nix
     # ./audiobookshelf.nix
     # ./navidrome.nix
-    # ./vaultwarden.nix
+      ./vaultwarden.nix
     # ./forgejo.nix
     # ./home-assistant.nix
     # ./syncthing.nix
