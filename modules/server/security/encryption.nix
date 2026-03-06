@@ -16,9 +16,9 @@
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
     # TEMPORÄR DEAKTIVIERT — erst nach Anleitung 02 einkommentieren
-    # secrets = {
+      secrets = {
     #   "nextcloud-admin-pass" = {};  # owner/group erst setzen wenn Dienst aktiv!
-    #   "vaultwarden-env" = {};
+        "vaultwarden-env" = {};
     #   "forgejo-secret" = {};        # owner/group erst setzen wenn Dienst aktiv!
     #   "paperless-secret-key" = {};
     #   "authentik-secret-key" = {};
