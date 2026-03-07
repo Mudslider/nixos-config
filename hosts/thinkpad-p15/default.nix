@@ -75,5 +75,10 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
 
+  # Caddy root CA
+  security.pki.certificateFiles = [
+    ./caddy-root-ca.crt
+  ];
+
   system.stateVersion = "25.11";
 }
