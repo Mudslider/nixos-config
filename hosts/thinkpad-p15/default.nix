@@ -1,38 +1,79 @@
 # ── ThinkPad P15 ────────────────────────────────────────────
-#
-# TODO: Migriere die bestehende Config von ~/nixos-config (altes Repo)
-#       hierher. Benötigte Dateien:
-#       - hardware-configuration.nix (von nixos-generate-config)
-#       - NVIDIA-Config (PRIME Offload)
-#       - KDE Plasma 6
-#       - Desktop-Pakete (Firefox, Thunderbird, etc.)
-#
-# Rebuild: sudo nixos-rebuild switch --flake ~/nixos-config#thinkpad-p15
 { config, lib, pkgs, inputs, ... }:
-
 {
   imports = [
-    # ./hardware-configuration.nix  # TODO: Kopiere von altem Repo
+    ./hardware-configuration.nix
   ];
 
-  networking.hostName = "playground";
-
-  # ── Bootloader ────────────────────────────────────────────
+  # ── Boot ──────────────────────────────────────────────────
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # ── Netzwerk ──────────────────────────────────────────────
+  networking.hostName = "playground";
+  networking.networkmanager.enable = true;
+  networking.extraHosts = ''
+    192.168.1.10  vaultwarden.home.lan
+  '';
+
+  # ── Locale & Zeit ────────────────────────────────────────
+  time.timeZone = "Europe/Berlin";
+  i18n.defaultLocale = "de_DE.UTF-8";
+
+  # ── Desktop: KDE Plasma 6 ────────────────────────────────
+  services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
+
+  # ── NVIDIA (PRIME Offload) ───────────────────────────────
+  hardware.graphics.enable = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false;
+    nvidiaSettings = true;
+    prime = {
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+    };
+  };
+
+  # ── Audio ─────────────────────────────────────────────────
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
+  };
+
+  # ── Dienste ───────────────────────────────────────────────
+  services.openssh.enable = true;
+  services.printing.enable = true;
+  hardware.bluetooth.enable = true;
 
   # ── Benutzer ──────────────────────────────────────────────
   users.users.polly = {
     isNormalUser = true;
-    description = "Polly";
     extraGroups = [ "wheel" "networkmanager" "video" ];
     initialPassword = "REDACTED";
-    shell = pkgs.bash;
   };
 
-  # ── Desktop (TODO: in modules/desktop/ auslagern) ─────────
-  # services.desktopManager.plasma6.enable = true;
-  # services.displayManager.sddm.enable = true;
+  # ── Pakete ────────────────────────────────────────────────
+  environment.systemPackages = with pkgs; [
+    firefox
+    thunderbird
+    obsidian
+    git
+    nano
+    wget
+    curl
+  ];
 
-  system.stateVersion = "24.11";
+  # ── Nix-Einstellungen ────────────────────────────────────
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config.allowUnfree = true;
+
+  system.stateVersion = "25.11";
 }
