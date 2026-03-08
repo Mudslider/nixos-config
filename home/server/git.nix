@@ -21,7 +21,4 @@
     ];
   };
 
-  programs.bash.shellAliases = {
-    nrs = "cd ~/nixos-config && git fetch origin && git reset --hard origin/main && sudo nixos-rebuild switch --flake ~/nixos-config#homeserver";
-  };
 }
