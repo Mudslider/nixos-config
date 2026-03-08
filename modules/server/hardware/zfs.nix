@@ -3,13 +3,12 @@
 {
   # ── ZFS Kernel-Support ────────────────────────────────────
   boot.supportedFilesystems = [ "zfs" ];
-  boot.zfs.forceImportRoot = false;
 
   # ── ZFS Services ──────────────────────────────────────────
 
   # Automatischer Import des Pools beim Boot
   # TEMPORÄR DEAKTIVIERT — erst nach Anleitung 01 einkommentieren
-# boot.zfs.extraPools = [ "tank" ];
+  boot.zfs.extraPools = [ "tank" ];
 
   # Wöchentlicher Scrub: prüft alle Blöcke auf Bitrot
   services.zfs.autoScrub = {
