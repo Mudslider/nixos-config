@@ -19,14 +19,6 @@
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
-  # Verzeichnisse für Dienste automatisch anlegen nach Reboot
-  systemd.tmpfiles.rules = [
-    "d /srv/ssd-buffer 0755 root root -"
-    "d /srv/ssd-buffer/services 0755 root root -"
-    "d /srv/ssd-buffer/services/vaultwarden 0755 vaultwarden vaultwarden -"
-    "d /srv/ssd-buffer/services/vaultwarden/backup 0750 vaultwarden vaultwarden -"
-    "d /srv/ssd-buffer/backup 0755 restic restic -"
-    "z /srv/ssd-buffer/backup/.htpasswd 0644 restic restic -"
   ];
 
   # ── Bootloader ────────────────────────────────────────────
