@@ -19,6 +19,9 @@
   # ── Locale & Zeit ────────────────────────────────────────
   time.timeZone = "Europe/Berlin";
   i18n.defaultLocale = "de_DE.UTF-8";
+  console.keyMap = "de";
+  services.xserver.xkb.layout = "de";
+  services.xserver.xkb.variant = "";
 
   # ── Desktop: KDE Plasma 6 ────────────────────────────────
   services.displayManager.sddm.enable = true;
