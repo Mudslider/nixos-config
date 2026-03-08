@@ -23,8 +23,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.zfs.forceImportAll = true;
-  boot.zfs.forceImportRoot = true;
-
+  boot.zfs.forceImportRoot = lib.mkForce true;
   # ── Benutzer ──────────────────────────────────────────────
   users.users.philip = {
     isNormalUser = true;
