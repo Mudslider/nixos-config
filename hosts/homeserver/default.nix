@@ -42,8 +42,14 @@
     # SSH-Keys: Deklarativ — überlebt jeden Rebuild!
     # Ersetze mit deinem echten Key: cat ~/.ssh/id_ed25519.pub
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJaOYhzMMUu87VTvyw0ORH5J4LUaRPj3uAQYgAwF7mAs philip@laptop
-"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJaOYhzMMUu87VTvyw0ORH5J4LUaRPj3uAQYgAwF7mAs philip@laptop"
+    ];
+
+    # Post Quantum sichere verschlüsselung
+    services.openssh.settings.KexAlgorithms = [
+      "sntrup761x25519-sha512@openssh.com"
+      "curve25519-sha256"
+      "curve25519-sha256@libssh.org"
     ];
 
     shell = pkgs.bash;
@@ -53,8 +59,7 @@
 
   # Root: Nur per SSH-Key
   users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJaOYhzMMUu87VTvyw0ORH5J4LUaRPj3uAQYgAwF7mAs philip@laptop
-"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJaOYhzMMUu87VTvyw0ORH5J4LUaRPj3uAQYgAwF7mAs philip@laptop"
   ];
 
   # Sudo ohne Passwort (praktisch für Wartung)
