@@ -45,12 +45,6 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJaOYhzMMUu87VTvyw0ORH5J4LUaRPj3uAQYgAwF7mAs philip@laptop"
     ];
 
-    # Post Quantum sichere verschlüsselung
-    services.openssh.settings.KexAlgorithms = [
-      "sntrup761x25519-sha512@openssh.com"
-      "curve25519-sha256"
-      "curve25519-sha256@libssh.org"
-    ];
 
     shell = pkgs.bash;
   };
