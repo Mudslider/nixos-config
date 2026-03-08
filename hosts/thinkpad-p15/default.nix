@@ -72,6 +72,10 @@
     nano
     wget
     curl
+    sops
+    age
+    netbird
+    signal-desktop
   ];
 
   # ── Nix-Einstellungen ────────────────────────────────────
