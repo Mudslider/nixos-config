@@ -2,18 +2,13 @@
 
 {
   # ── NetBird Mesh-VPN ──────────────────────────────────────
-  # Ersetzt WireGuard + Tailscale als einheitliche VPN-Lösung.
-  # Der Koordinationsserver wird vom Freund gehostet.
+  # Gehostete Instanz: app.netbird.io (keine eigene managementURL nötig)
 
   services.netbird.clients.wt0 = {
     # Automatischer Login mit Setup-Key (ideal für Headless-Server)
     login = {
       enable = true;
       setupKeyFile = config.sops.secrets.netbird-setup-key.path;
-
-      # ── Management-URL des Freundes (einkommentieren + anpassen) ──
-      # Falls die NetBird-Instanz deines Freundes eine eigene URL hat:
-      # managementURL = "https://netbird.freund-domain.de";
     };
 
     # WireGuard-Port

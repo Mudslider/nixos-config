@@ -6,14 +6,12 @@
 
     allowedTCPPorts = [
       443        # Caddy HTTPS (nur LAN-erreichbar)
+      8100       # Restic REST-Server (Backup vom Arbeitsrechner)
     ];
 
     allowedUDPPorts = [
-      # 51820    # NetBird/WireGuard — erst nach VPN-Setup aktivieren
+      # 51820    # NetBird/WireGuard — wird über openFirewall in netbird.nix geöffnet
     ];
-
-    # NetBird-Interface erst aktivieren, wenn VPN eingerichtet ist:
-    # trustedInterfaces = [ "wt0" ];
 
     # SSH nur aus dem Heimnetz
     extraCommands = ''
