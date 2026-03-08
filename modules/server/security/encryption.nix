@@ -19,6 +19,7 @@
       secrets = {
     #   "nextcloud-admin-pass" = {};  # owner/group erst setzen wenn Dienst aktiv!
         "vaultwarden-env" = {};
+        "netbird-setup-key" = {};
     #   "forgejo-secret" = {};        # owner/group erst setzen wenn Dienst aktiv!
     #   "paperless-secret-key" = {};
     #   "authentik-secret-key" = {};
