@@ -24,6 +24,7 @@
   # ── Bootloader ────────────────────────────────────────────
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.zfs.forceImportAll = true;
 
   # ── Benutzer ──────────────────────────────────────────────
   users.users.philip = {
