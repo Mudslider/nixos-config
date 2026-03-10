@@ -19,9 +19,7 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  # Bootloader
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Bootloader wird in hosts/homeserver/default.nix konfiguriert
 
   # Intel N100 Firmware
   hardware.enableRedistributableFirmware = true;

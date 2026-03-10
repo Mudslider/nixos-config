@@ -41,6 +41,17 @@
     };
   };
 
+  systemd.services.podman-network-authentik = {
+    description = "Create Podman network for Authentik";
+    after = [ "podman.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.podman}/bin/podman network create authentik-net --ignore";
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     podman-compose
   ];

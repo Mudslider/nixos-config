@@ -16,10 +16,8 @@
     192.168.1.10  vaultwarden.home.lan
   '';
 
-  # ── Locale & Zeit ────────────────────────────────────────
-  time.timeZone = "Europe/Berlin";
-  i18n.defaultLocale = "de_DE.UTF-8";
-  console.keyMap = "de";
+  # ── Tastatur (Desktop-spezifisch) ─────────────────────────
+  # Locale & Zeitzone kommen aus modules/common/locale.nix
   services.xserver.xkb.layout = "de";
   services.xserver.xkb.variant = "";
 
@@ -78,9 +76,8 @@
     signal-desktop
   ];
 
-  # ── Nix-Einstellungen ────────────────────────────────────
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nixpkgs.config.allowUnfree = true;
+  # Nix-Einstellungen kommen aus modules/common/nix-settings.nix
+  # (inkl. auto-optimise-store, trusted-users, wöchentliche GC)
 
   # Caddy root CA
   security.pki.certificateFiles = [

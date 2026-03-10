@@ -1,0 +1,109 @@
+[1mdiff --git a/hosts/homeserver/default.nix b/hosts/homeserver/default.nix[m
+[1mindex f35330f..8041d63 100644[m
+[1m--- a/hosts/homeserver/default.nix[m
+[1m+++ b/hosts/homeserver/default.nix[m
+[36m@@ -84,7 +84,8 @@[m
+       ];[m
+     };[m
+   };[m
+[31m-  networking.firewall.allowedTCPPorts = [ 22 ];[m
+[32m+[m[32m  # SSH-Firewall: Zugriff nur aus dem LAN (192.168.1.0/24)[m
+[32m+[m[32m  # → Geregelt in modules/server/security/firewall.nix via iptables[m
+ [m
+   system.stateVersion = "24.11";[m
+ }[m
+[1mdiff --git a/hosts/homeserver/hardware-configuration.nix b/hosts/homeserver/hardware-configuration.nix[m
+[1mindex 01a220c..bbf878b 100644[m
+[1m--- a/hosts/homeserver/hardware-configuration.nix[m
+[1m+++ b/hosts/homeserver/hardware-configuration.nix[m
+[36m@@ -19,9 +19,7 @@[m
+   boot.kernelModules = [ "kvm-intel" ];[m
+   boot.extraModulePackages = [ ];[m
+ [m
+[31m-  # Bootloader[m
+[31m-  boot.loader.systemd-boot.enable = true;[m
+[31m-  boot.loader.efi.canTouchEfiVariables = true;[m
+[32m+[m[32m  # Bootloader wird in hosts/homeserver/default.nix konfiguriert[m
+ [m
+   # Intel N100 Firmware[m
+   hardware.enableRedistributableFirmware = true;[m
+[1mdiff --git a/hosts/thinkpad-p15/default.nix b/hosts/thinkpad-p15/default.nix[m
+[1mindex 472dfa3..7b74007 100644[m
+[1m--- a/hosts/thinkpad-p15/default.nix[m
+[1m+++ b/hosts/thinkpad-p15/default.nix[m
+[36m@@ -16,10 +16,8 @@[m
+     192.168.1.10  vaultwarden.home.lan[m
+   '';[m
+ [m
+[31m-  # ── Locale & Zeit ────────────────────────────────────────[m
+[31m-  time.timeZone = "Europe/Berlin";[m
+[31m-  i18n.defaultLocale = "de_DE.UTF-8";[m
+[31m-  console.keyMap = "de";[m
+[32m+[m[32m  # ── Tastatur (Desktop-spezifisch) ─────────────────────────[m
+[32m+[m[32m  # Locale & Zeitzone kommen aus modules/common/locale.nix[m
+   services.xserver.xkb.layout = "de";[m
+   services.xserver.xkb.variant = "";[m
+ [m
+[36m@@ -78,9 +76,8 @@[m
+     signal-desktop[m
+   ];[m
+ [m
+[31m-  # ── Nix-Einstellungen ────────────────────────────────────[m
+[31m-  nix.settings.experimental-features = [ "nix-command" "flakes" ];[m
+[31m-  nixpkgs.config.allowUnfree = true;[m
+[32m+[m[32m  # Nix-Einstellungen kommen aus modules/common/nix-settings.nix[m
+[32m+[m[32m  # (inkl. auto-optimise-store, trusted-users, wöchentliche GC)[m
+ [m
+   # Caddy root CA[m
+   security.pki.certificateFiles = [[m
+[1mdiff --git a/modules/server/services/authentik.nix b/modules/server/services/authentik.nix[m
+[1mindex 032236c..17fbc98 100644[m
+[1m--- a/modules/server/services/authentik.nix[m
+[1m+++ b/modules/server/services/authentik.nix[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-{ config, pkgs, ... }:[m
+[32m+[m[32m{ ... }:[m
+ [m
+ {[m
+   # ── Authentik (SSO / Identity Provider) ───────────────────[m
+[36m@@ -81,17 +81,7 @@[m
+     };[m
+   };[m
+ [m
+[31m-  # ── Podman-Netzwerk für Authentik ─────────────────────────[m
+[31m-  systemd.services.podman-network-authentik = {[m
+[31m-    description = "Create Podman network for Authentik";[m
+[31m-    after = [ "podman.service" ];[m
+[31m-    wantedBy = [ "multi-user.target" ];[m
+[31m-    serviceConfig = {[m
+[31m-      Type = "oneshot";[m
+[31m-      RemainAfterExit = true;[m
+[31m-      ExecStart = "${pkgs.podman}/bin/podman network create authentik-net --ignore";[m
+[31m-    };[m
+[31m-  };[m
+[32m+[m[32m  # Podman-Netzwerk für Authentik: definiert in podman.nix (zentral)[m
+ [m
+   # Systemd-Abhängigkeiten[m
+   systemd.services.podman-authentik-postgres.after = [ "podman-network-authentik.service" ];[m
+[1mdiff --git a/modules/server/services/podman.nix b/modules/server/services/podman.nix[m
+[1mindex a9d389d..7b93229 100644[m
+[1m--- a/modules/server/services/podman.nix[m
+[1m+++ b/modules/server/services/podman.nix[m
+[36m@@ -41,6 +41,17 @@[m
+     };[m
+   };[m
+ [m
+[32m+[m[32m  systemd.services.podman-network-authentik = {[m
+[32m+[m[32m    description = "Create Podman network for Authentik";[m
+[32m+[m[32m    after = [ "podman.service" ];[m
+[32m+[m[32m    wantedBy = [ "multi-user.target" ];[m
+[32m+[m[32m    serviceConfig = {[m
+[32m+[m[32m      Type = "oneshot";[m
+[32m+[m[32m      RemainAfterExit = true;[m
+[32m+[m[32m      ExecStart = "${pkgs.podman}/bin/podman network create authentik-net --ignore";[m
+[32m+[m[32m    };[m
+[32m+[m[32m  };[m
+[32m+[m
+   environment.systemPackages = with pkgs; [[m
+     podman-compose[m
+   ];[m
