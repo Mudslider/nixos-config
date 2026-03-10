@@ -1,5 +1,6 @@
-# ── ThinkPad P15 ────────────────────────────────────────────
-{ config, lib, pkgs, inputs, ... }:
+# ── ThinkPad P15 (maschinenspezifisch) ──────────────────────
+# Desktop-Umgebung, Audio, Pakete etc. kommen aus modules/desktop/
+{ pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -16,16 +17,7 @@
     192.168.1.10  vaultwarden.home.lan
   '';
 
-  # ── Tastatur (Desktop-spezifisch) ─────────────────────────
-  # Locale & Zeitzone kommen aus modules/common/locale.nix
-  services.xserver.xkb.layout = "de";
-  services.xserver.xkb.variant = "";
-
-  # ── Desktop: KDE Plasma 6 ────────────────────────────────
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
-
-  # ── NVIDIA (PRIME Offload) ───────────────────────────────
+  # ── NVIDIA (PRIME Offload — PCI-Adressen maschinenspezifisch) ──
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
@@ -42,17 +34,8 @@
     };
   };
 
-  # ── Audio ─────────────────────────────────────────────────
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    pulse.enable = true;
-  };
-
   # ── Dienste ───────────────────────────────────────────────
   services.openssh.enable = true;
-  services.printing.enable = true;
-  hardware.bluetooth.enable = true;
 
   # ── Benutzer ──────────────────────────────────────────────
   users.users.polly = {
@@ -61,25 +44,8 @@
     initialPassword = "REDACTED";
   };
 
-  # ── Pakete ────────────────────────────────────────────────
-  environment.systemPackages = with pkgs; [
-    firefox
-    thunderbird
-    obsidian
-    git
-    nano
-    wget
-    curl
-    sops
-    age
-    netbird
-    signal-desktop
-  ];
-
-  # Nix-Einstellungen kommen aus modules/common/nix-settings.nix
-  # (inkl. auto-optimise-store, trusted-users, wöchentliche GC)
-
-  # Caddy root CA
+  # ── Homeserver-Vertrauen ──────────────────────────────────
+  # Caddy Root CA für lokale TLS-Zertifikate (vaultwarden.home.lan etc.)
   security.pki.certificateFiles = [
     ./caddy-root-ca.crt
   ];
