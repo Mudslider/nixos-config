@@ -62,15 +62,14 @@
 
         sops-nix.nixosModules.sops
 
-        # TODO: Desktop-Module, Home-Manager etc. hierher migrieren
-        # home-manager.nixosModules.home-manager
-        # {
-        #   home-manager = {
-        #     useGlobalPkgs = true;
-        #     useUserPackages = true;
-        #     users.polly = import ./home/laptop;
-        #   };
-        # }
+        home-manager.nixosModules.home-manager
+        {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.polly = import ./home/laptop;
+          };
+        }
       ];
     };
   };
