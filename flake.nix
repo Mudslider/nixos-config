@@ -58,6 +58,7 @@
       modules = [
         ./hosts/thinkpad-p15
         ./modules/common
+        ./modules/desktop
 
         sops-nix.nixosModules.sops
 
