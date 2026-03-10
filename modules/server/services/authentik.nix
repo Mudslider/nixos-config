@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   # ── Authentik (SSO / Identity Provider) ───────────────────
@@ -81,17 +81,7 @@
     };
   };
 
-  # ── Podman-Netzwerk für Authentik ─────────────────────────
-  systemd.services.podman-network-authentik = {
-    description = "Create Podman network for Authentik";
-    after = [ "podman.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = "${pkgs.podman}/bin/podman network create authentik-net --ignore";
-    };
-  };
+  # Podman-Netzwerk für Authentik: definiert in podman.nix (zentral)
 
   # Systemd-Abhängigkeiten
   systemd.services.podman-authentik-postgres.after = [ "podman-network-authentik.service" ];

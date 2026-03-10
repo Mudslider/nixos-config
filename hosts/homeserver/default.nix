@@ -84,7 +84,8 @@
       ];
     };
   };
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  # SSH-Firewall: Zugriff nur aus dem LAN (192.168.1.0/24)
+  # → Geregelt in modules/server/security/firewall.nix via iptables
 
   system.stateVersion = "24.11";
 }
