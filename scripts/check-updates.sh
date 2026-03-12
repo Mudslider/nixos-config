@@ -25,7 +25,7 @@ echo -e "${BOLD}[2] Container-Images${NC}"
 
 check_github() {
   local repo="$1" current="$2" name="$3"
-  latest=$(curl -sf "https://api.github.com/repos/${repo}/releases/latest" | grep '"tag_name"' | cut -d'"' -f4)
+  latest=$(curl -sf "https://api.github.com/repos/${repo}/releases/latest" | jq -r '.tag_name // empty')
   if [ -z "$latest" ]; then
     echo -e "    ${YELLOW}?${NC} ${name}: Konnte nicht prüfen"
   elif [ "$current" = "$latest" ]; then
@@ -36,7 +36,7 @@ check_github() {
 }
 
 # Versionen aus den Nix-Dateien lesen
-IMMICH_CURRENT=$(grep 'immich-server:' "$(dirname "$0")/../modules/server/services/immich.nix" | grep -o 'v[0-9.]*' | head -1)
+IMMICH_CURRENT=$(grep 'immich-server:v' "$(dirname "$0")/../modules/server/services/immich.nix" | grep -o 'v[0-9][0-9.]*' | head -1)
 UPTIME_CURRENT=$(grep 'uptime-kuma:' "$(dirname "$0")/../modules/server/services/uptime-kuma.nix" | grep -o '[0-9][0-9.]*' | head -1)
 
 check_github "immich-app/immich"          "${IMMICH_CURRENT}"   "Immich"
