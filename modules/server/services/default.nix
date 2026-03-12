@@ -16,7 +16,7 @@
     # ./syncthing.nix
     # ./authentik.nix
     ./uptime-kuma.nix
-    ./netdata.nix
+    ./monitoring.nix
     # ./rustdesk.nix
   ];
 }
