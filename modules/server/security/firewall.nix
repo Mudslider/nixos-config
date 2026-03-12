@@ -5,7 +5,8 @@
     enable = true;
 
     allowedTCPPorts = [
-      443        # Caddy HTTPS (nur LAN-erreichbar)
+      80         # Caddy HTTP — für NetBird-Clients (WireGuard-Tunnel)
+      443        # Caddy HTTPS — für LAN-Clients
       8100       # Restic REST-Server (Backup vom Arbeitsrechner)
     ];
 

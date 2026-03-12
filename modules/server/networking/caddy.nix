@@ -10,8 +10,8 @@
     enable = true;
 
     globalConfig = ''
-      # Kein HTTP-Port (kein public IPv4)
-      http_port 0
+      # HTTP nur für NetBird-Clients (WireGuard-Tunnel = verschlüsselt)
+      http_port 80
     '';
 
     virtualHosts = {
@@ -37,9 +37,20 @@
       #   '';
       # };
 
+      # HTTPS für LAN-Clients
       "immich.home.lan" = {
         extraConfig = ''
           tls internal
+          reverse_proxy localhost:2283
+          request_body {
+            max_size 50GB
+          }
+        '';
+      };
+
+      # HTTP für NetBird-Clients (Phones) — WireGuard-Tunnel übernimmt Verschlüsselung
+      "http://immich.home.lan" = {
+        extraConfig = ''
           reverse_proxy localhost:2283
           request_body {
             max_size 50GB
@@ -103,6 +114,7 @@
         '';
       };
 
+      # HTTPS für LAN-Clients
       "ntfy.home.lan" = {
         extraConfig = ''
           tls internal
@@ -110,10 +122,10 @@
         '';
       };
 
-      "netdata.home.lan" = {
+      # HTTP für NetBird-Clients (Phones)
+      "http://ntfy.home.lan" = {
         extraConfig = ''
-          tls internal
-          reverse_proxy localhost:19999
+          reverse_proxy localhost:8084
         '';
       };
 
