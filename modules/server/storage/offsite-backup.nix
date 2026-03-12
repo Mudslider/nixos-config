@@ -99,7 +99,7 @@
           /srv/ssd-buffer/services/uptime-kuma/ \
           /srv/ssd-buffer/services/navidrome/ \
           /srv/ssd-buffer/services/authentik/ \
-          /home/philip/nixos-homeserver/ \
+          /home/philip/nixos-config/ \
           \
           --exclude "/srv/ssd-buffer/services/forgejo/data/tmp" \
           --exclude "/srv/ssd-buffer/services/paperless/data/index" \

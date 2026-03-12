@@ -7,7 +7,6 @@
   # ── ZFS Services ──────────────────────────────────────────
 
   # Automatischer Import des Pools beim Boot
-  # TEMPORÄR DEAKTIVIERT — erst nach Anleitung 01 einkommentieren
   boot.zfs.extraPools = [ "tank" ];
 
   # Wöchentlicher Scrub: prüft alle Blöcke auf Bitrot

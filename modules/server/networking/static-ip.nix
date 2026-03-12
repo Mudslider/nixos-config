@@ -4,7 +4,6 @@
   networking = {
     useDHCP = false;
     interfaces.enp1s0 = {
-      # TODO: Überprüfe den Interface-Namen mit `ip link` nach der Installation
       ipv4.addresses = [{
         address = "192.168.1.10";
         prefixLength = 24;

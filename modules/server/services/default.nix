@@ -2,14 +2,15 @@
 {
   imports = [
     ./podman.nix
-    # TEMPORÄR DEAKTIVIERT — einzeln aktivieren nach Anleitungen 04-15
+    ./vaultwarden.nix
+
+    # Inaktiv — einzeln aktivieren nach den jeweiligen Anleitungen (docs/)
     # ./nextcloud.nix
     # ./paperless-ngx.nix
     # ./immich.nix
     # ./jellyfin.nix
     # ./audiobookshelf.nix
     # ./navidrome.nix
-      ./vaultwarden.nix
     # ./forgejo.nix
     # ./home-assistant.nix
     # ./syncthing.nix

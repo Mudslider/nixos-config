@@ -1,14 +1,21 @@
 # 99 — Neuen Dienst zum Homeserver hinzufügen
 
-Allgemeine Anleitung + Checkliste + Port-Liste. Alle Schritte auf dem **Server**, außer wo anders angegeben.
+Allgemeine Anleitung + Checkliste + Port-Liste.
+
+---
+
+## Workflow-Übersicht
+
+Alle Änderungen werden auf dem **Laptop** editiert, committet und gepusht.
+Der Server zieht die Änderungen per `nrs`-Alias (git fetch + reset + rebuild).
 
 ---
 
 ## NixOS-Modul oder Podman-Container?
 
-Prüfe zuerst auf https://search.nixos.org/options ob ein Modul existiert (`services.DIENSTNAME`). Falls ja, nutze das Modul. Falls nein, Container.
+Prüfe auf https://search.nixos.org/options ob ein Modul existiert (`services.DIENSTNAME`). Falls ja, nutze das Modul. Falls nein, Container.
 
-Beispiele in deiner Config:
+Beispiele in der Config:
 - **NixOS-Module:** Jellyfin, Navidrome, Vaultwarden, Forgejo, Home Assistant, Netdata, Syncthing
 - **Podman-Container:** Immich, PaperlessNGX, Authentik, Audiobookshelf, Uptime Kuma, RustDesk
 
@@ -17,8 +24,6 @@ Beispiele in deiner Config:
 ## Variante A: NixOS-Modul
 
 ### 1. Modul-Datei erstellen
-
-**Server:**
 
 ```bash
 nano ~/nixos-config/modules/server/services/mein-dienst.nix
@@ -40,16 +45,12 @@ nano ~/nixos-config/modules/server/services/mein-dienst.nix
 
 ### 2. In default.nix importieren
 
-**Server:**
-
 ```bash
 nano ~/nixos-config/modules/server/services/default.nix
 # Füge hinzu: ./mein-dienst.nix
 ```
 
-### 3. Caddy-VirtualHost
-
-**Server:**
+### 3. Caddy-VirtualHost einkommentieren/hinzufügen
 
 ```bash
 nano ~/nixos-config/modules/server/networking/caddy.nix
@@ -66,14 +67,24 @@ nano ~/nixos-config/modules/server/networking/caddy.nix
 
 ### 4. DNS-Eintrag
 
-Bei Wildcard-DNS (empfohlen) automatisch. Sonst: pfSense → `mein-dienst.home.lan → 192.168.1.10`
+Bei Wildcard-DNS automatisch. Sonst: pfSense → `mein-dienst.home.lan → 192.168.1.10`
 
-### 5. Rebuild
-
-**Server:**
+### 5. Datenverzeichnis in ssd-buffer.nix
 
 ```bash
-sudo nixos-rebuild switch --flake ~/nixos-config#homeserver
+nano ~/nixos-config/modules/server/storage/ssd-buffer.nix
+# Hinzufügen (zuerst mit root:root, nach Aktivierung korrigieren):
+# "d /srv/ssd-buffer/services/mein-dienst 0750 root root -"
+```
+
+### 6. Deployen
+
+```bash
+# Laptop: committen + pushen
+cd ~/nixos-config && git add -A && git commit -m "feat: mein-dienst hinzufügen" && git push
+
+# Server: nrs-Alias (fetch + reset + rebuild)
+nrs
 ```
 
 ---
@@ -81,8 +92,6 @@ sudo nixos-rebuild switch --flake ~/nixos-config#homeserver
 ## Variante B: Podman-Container
 
 ### Einfacher Container
-
-**Server:**
 
 ```nix
 # modules/server/services/mein-dienst.nix
@@ -100,24 +109,22 @@ sudo nixos-rebuild switch --flake ~/nixos-config#homeserver
     };
     autoStart = true;
   };
-
-  systemd.tmpfiles.rules = [
-    "d /srv/ssd-buffer/services/mein-dienst 0750 root root -"
-  ];
 }
 ```
 
-> **⚠ Aus Doc 02 gelernt:** Bei `tmpfiles.rules` keinen Service-User verwenden (z.B. `forgejo forgejo`), solange der Dienst nicht aktiv ist! Immer erst `root root`, nach dem ersten Rebuild den richtigen User eintragen.
+> **Aus Doc 02 gelernt:** Bei `tmpfiles.rules` keinen Service-User verwenden, solange der Dienst nicht aktiv ist! Immer erst `root root`, nach dem ersten Rebuild den richtigen User eintragen.
 
 ### Container mit Datenbank (eigenes Netzwerk)
 
-Wenn der Dienst PostgreSQL/Redis braucht, nach dem Muster von Immich/PaperlessNGX:
-eigenes Podman-Netzwerk erstellen, Container mit `extraOptions = ["--network=NAME"]`,
-systemd-Service für das Netzwerk, Abhängigkeiten mit `.after`.
+Wenn der Dienst PostgreSQL/Redis braucht:
+
+1. Podman-Netzwerk in `podman.nix` einkommentieren/hinzufügen
+2. Container mit `extraOptions = ["--network=NAME"]`
+3. systemd-Abhängigkeiten mit `.after`
 
 Siehe `modules/server/services/immich.nix` als Referenz.
 
-Dann: Import in `default.nix`, Caddy-VirtualHost, DNS, Rebuild — wie bei Variante A.
+Dann: Import in `default.nix`, Caddy-VirtualHost, DNS, Deployen — wie bei Variante A.
 
 ---
 
@@ -142,21 +149,29 @@ Dann: Import in `default.nix`, Caddy-VirtualHost, DNS, Rebuild — wie bei Varia
 
 ## Secrets für neuen Dienst
 
-> **⚠ Die folgenden Schritte betreffen BEIDE Maschinen!**
+Da beide Maschinen dasselbe Repo nutzen, werden Secrets auf dem **Laptop** bearbeitet.
+Der Server entschlüsselt sie automatisch über seinen SSH-Host-Key.
 
 ### 1. Secret in secrets.yaml eintragen
 
 **Laptop:**
 
 ```bash
-sops ~/nixos-config/secrets/secrets.yaml
+cd ~/nixos-config
+sops secrets/secrets.yaml
 # Neuen Key hinzufügen, z.B.: mein-dienst-secret: "generiertes-passwort"
-# Speichern mit :wq
+# Speichern
 ```
 
-### 2. Secret in encryption.nix deklarieren
+### 2. Keys aktualisieren (falls nötig)
 
-**Server:**
+Falls ein neuer Rechner dazukommt oder ein Key geändert wurde:
+
+```bash
+sops updatekeys secrets/secrets.yaml
+```
+
+### 3. Secret in encryption.nix deklarieren
 
 ```bash
 nano modules/server/security/encryption.nix
@@ -164,37 +179,27 @@ nano modules/server/security/encryption.nix
 # "mein-dienst-secret" = {};
 ```
 
-> **⚠ Kein `owner`/`group` beim ersten Rebuild**, falls der Dienst den User erst erstellt! (Doc 02, Fehler 6)
-
-### 3. secrets.yaml auf den Server kopieren
-
-**Laptop:** `cat ~/nixos-config/secrets/secrets.yaml`
-
-**Server:** `nano ~/nixos-config/secrets/secrets.yaml` → Inhalt ersetzen.
-
-> **⚠ Da Laptop und Server verschiedene Repos nutzen**, muss die secrets.yaml immer manuell kopiert werden (Doc 02, Fehler 4).
+> **Kein `owner`/`group` beim ersten Rebuild**, falls der Dienst den User erst erstellt!
 
 ### 4. Im Modul referenzieren
-
-**Server:**
 
 ```nix
 # In der Dienst-Config:
 passwordFile = config.sops.secrets."mein-dienst-secret".path;
-# Zur Laufzeit wird das zu: /run/secrets/mein-dienst-secret
+# Zur Laufzeit: /run/secrets/mein-dienst-secret
 ```
 
-### 5. Rebuild
-
-**Server:**
+### 5. Deployen
 
 ```bash
-sudo nixos-rebuild switch --flake ~/nixos-config#homeserver
+# Laptop:
+git add -A && git commit -m "feat: secrets für mein-dienst" && git push
+
+# Server:
+nrs
 ```
 
 ### 6. Prüfen
-
-**Server:**
 
 ```bash
 sudo ls /run/secrets/
@@ -206,43 +211,17 @@ sudo cat /run/secrets/mein-dienst-secret
 ## Checkliste
 
 - [ ] Port gewählt (nicht belegt, siehe Liste oben)
-- [ ] Modul-Datei erstellt (**Server**)
-- [ ] In `modules/server/services/default.nix` importiert (**Server**)
-- [ ] Caddy-VirtualHost in `modules/server/networking/caddy.nix` (**Server**)
-- [ ] DNS-Eintrag (oder Wildcard) (**pfSense**)
-- [ ] Datenverzeichnis in `ssd-buffer.nix` mit `root root` (**Server**)
-- [ ] Secrets: sops-Key auf **Laptop** → encryption.nix auf **Server** → secrets.yaml kopieren
-- [ ] `sudo nixos-rebuild switch --flake ~/nixos-config#homeserver` (**Server**)
-- [ ] ssd-buffer.nix: Owner auf Service-User korrigieren, erneut rebuild (**Server**)
-- [ ] encryption.nix: owner/group für Secret setzen, erneut rebuild (**Server**)
-- [ ] Erster Login + Passwort in Vaultwarden (**Laptop/Browser**)
-- [ ] Uptime-Kuma-Monitor hinzufügen (**Laptop/Browser**)
-- [ ] Git commit (**Server**)
-
----
-
-## Updates
-
-### Container-Versionen
-
-**Server:** Image-Tag in der .nix-Datei ändern → rebuild. **Immer erst Changelog lesen!**
-
-```bash
-sudo podman image prune -a   # Alte Images aufräumen
-```
-
-### NixOS-Module
-
-**Server:**
-
-```bash
-cd ~/nixos-config
-nix flake update
-sudo nixos-rebuild switch --flake .#homeserver
-
-# Rollback falls nötig:
-sudo nixos-rebuild switch --rollback
-```
+- [ ] Modul-Datei erstellt (`modules/server/services/`)
+- [ ] In `modules/server/services/default.nix` importiert
+- [ ] Caddy-VirtualHost in `modules/server/networking/caddy.nix`
+- [ ] DNS-Eintrag (oder Wildcard) in pfSense
+- [ ] Datenverzeichnis in `ssd-buffer.nix` mit `root root`
+- [ ] Secrets: sops-Key auf Laptop → `encryption.nix` → commit + push
+- [ ] Server: `nrs` (fetch + rebuild)
+- [ ] ssd-buffer.nix: Owner auf Service-User korrigieren, nochmal deployen
+- [ ] encryption.nix: owner/group für Secret setzen, nochmal deployen
+- [ ] Erster Login + Passwort in Vaultwarden speichern
+- [ ] Git commit + push
 
 ---
 
@@ -251,8 +230,7 @@ sudo nixos-rebuild switch --rollback
 | Fehler | Ursache | Lösung |
 |--------|---------|--------|
 | `unknown user` | owner/group für inaktiven Dienst | owner/group entfernen, erst nach Aktivierung setzen |
-| `the key '...' cannot be found` | Key fehlt in secrets.yaml | **Laptop:** Key in sops eintragen, Datei auf Server kopieren |
-| `Error getting data key: 0 successful groups` | Server-Key fehlt | **Laptop:** `sops updatekeys secrets/secrets.yaml` |
-| `path does not exist` | Datei nicht im Git | **Server:** `git add`, `git commit` |
-| `mixed case` | Age-Key hat Großbuchstaben | Alle age-Keys müssen lowercase sein |
+| `the key '...' cannot be found` | Key fehlt in secrets.yaml | Key in sops eintragen, `git add`, rebuild |
+| `Error getting data key: 0 successful groups` | Server-Key fehlt | `sops updatekeys secrets/secrets.yaml` |
+| `path does not exist` | Datei nicht im Git | `git add`, `git commit` |
 | Nix-Syntaxfehler | Klammern falsch | `nix-instantiate --parse datei.nix` zum Prüfen |

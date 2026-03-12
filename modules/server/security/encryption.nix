@@ -15,12 +15,12 @@
     # Entschlüsselung über den SSH-Host-Key des jeweiligen Rechners
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
-    # TEMPORÄR DEAKTIVIERT — erst nach Anleitung 02 einkommentieren
+    # Aktive Secrets (owner/group erst setzen wenn Dienst aktiviert wird!)
       secrets = {
-    #   "nextcloud-admin-pass" = {};  # owner/group erst setzen wenn Dienst aktiv!
+    #   "nextcloud-admin-pass" = {};
         "vaultwarden-env" = {};
         "netbird-setup-key" = {};
-    #   "forgejo-secret" = {};        # owner/group erst setzen wenn Dienst aktiv!
+    #   "forgejo-secret" = {};
     #   "paperless-secret-key" = {};
     #   "authentik-secret-key" = {};
     #   "restic-repo-password" = {};
