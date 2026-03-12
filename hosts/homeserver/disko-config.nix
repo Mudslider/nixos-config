@@ -12,8 +12,7 @@
     disk = {
       nvme = {
         type = "disk";
-        # TODO: Ersetze mit deinem tatsächlichen NVMe-Pfad
-        # Finde ihn mit: ls -la /dev/disk/by-id/ | grep nvme
+        # Ermittelt mit: ls -la /dev/disk/by-id/ | grep nvme
         device = "/dev/disk/by-id/nvme-Samsung_SSD_980_1TB_S649NU0W402228A";
         content = {
           type = "gpt";

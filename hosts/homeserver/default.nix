@@ -10,10 +10,10 @@
   networking.hostName = "homeserver";
 
   # ZFS benötigt eine eindeutige hostId
-  # Generiere mit: head -c4 /dev/urandom | od -A none -t x4 | tr -d ' '
-  networking.hostId = "687e79ce"; # TODO: Ersetze mit deiner generierten hostId
+  # KRITISCH: Darf NIEMALS geändert werden (sonst schlägt zfs-import-tank fehl!)
+  networking.hostId = "687e79ce";
 
-  # Sleep verhindern
+  # Sleep verhindern (Headless-Server)
   systemd.targets.sleep.enable = false;
   systemd.targets.suspend.enable = false;
   systemd.targets.hibernate.enable = false;
@@ -24,6 +24,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.zfs.forceImportAll = true;
   boot.zfs.forceImportRoot = lib.mkForce true;
+
   # ── Benutzer ──────────────────────────────────────────────
   users.users.philip = {
     isNormalUser = true;
@@ -36,16 +37,12 @@
       "render"      # GPU-Zugriff
     ];
 
-    # INSTALLATIONSPHASE: Einfaches Passwort für Konsolen-Login.
-    # → In der Härtungsphase (doc 18) durch SOPS-Secret ersetzen.
+    # Härtungsphase (doc 18): durch SOPS-Secret ersetzen
     initialPassword = "server";
 
-    # SSH-Keys: Deklarativ — überlebt jeden Rebuild!
-    # Ersetze mit deinem echten Key: cat ~/.ssh/id_ed25519.pub
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJaOYhzMMUu87VTvyw0ORH5J4LUaRPj3uAQYgAwF7mAs philip@laptop"
     ];
-
 
     shell = pkgs.bash;
   };
@@ -63,7 +60,6 @@
     commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }];
   }];
 
-
   # ── SSH ───────────────────────────────────────────────────
   services.openssh = {
     enable = true;
@@ -72,8 +68,7 @@
       PermitRootLogin = "prohibit-password";
       X11Forwarding = false;
 
-      # INSTALLATIONSPHASE: Passwort-Auth als Rettungsanker aktiviert
-      # → In der Härtungsphase (doc 18) auf false setzen
+      # Härtungsphase (doc 18): auf false setzen
       PasswordAuthentication = true;
       KbdInteractiveAuthentication = true;
 
@@ -84,8 +79,7 @@
       ];
     };
   };
-  # SSH-Firewall: Zugriff nur aus dem LAN (192.168.1.0/24)
-  # → Geregelt in modules/server/security/firewall.nix via iptables
+  # SSH-Firewall: modules/server/security/firewall.nix (LAN + NetBird)
 
   system.stateVersion = "24.11";
 }

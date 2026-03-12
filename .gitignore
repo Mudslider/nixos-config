@@ -4,6 +4,9 @@ result
 *~
 .DS_Store
 
+# Obsidian (workspace ändert sich bei jedem Öffnen)
+docs/.obsidian/workspace.json
+
 # Secrets: Verschlüsselte Datei WIRD committed, Klartext NICHT
 # secrets/secrets.yaml  ← WIRD committed (ist verschlüsselt)
 # Nur das Template ist Klartext:
