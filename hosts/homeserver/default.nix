@@ -37,8 +37,7 @@
       "render"      # GPU-Zugriff
     ];
 
-    # Härtungsphase (doc 18): durch SOPS-Secret ersetzen
-    initialPassword = "server";
+    hashedPassword = "$2b$05$bHiPVnliRrgU0nwStOVzjumr2fkRQ0.fPkwKx0ESueXnoG6RBQsIu";
 
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJaOYhzMMUu87VTvyw0ORH5J4LUaRPj3uAQYgAwF7mAs philip@laptop"
