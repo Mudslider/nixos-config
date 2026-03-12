@@ -1,7 +1,5 @@
 # ── Homeserver Wiring (ASRock N100DC-ITX) ───────────────────
-# Dieses flake-parts Modul erstellt nixosConfigurations.homeserver
-# aus den bestehenden NixOS- und Home-Manager-Modulen.
-{ inputs, ... }:
+{ config, inputs, ... }:
 let
   inherit (inputs) nixpkgs home-manager sops-nix disko autoaspm;
 in
@@ -10,8 +8,8 @@ in
     system = "x86_64-linux";
     specialArgs = { inherit inputs; };  # TODO: In Phase C-5 entfernen
     modules = [
+      config.nixosModules.common
       ../hosts/homeserver
-      ../modules/common
       ../modules/server
 
       disko.nixosModules.disko
