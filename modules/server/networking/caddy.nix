@@ -65,12 +65,18 @@
       #   '';
       # };
 
-      # "paperless.home.lan" = {
-      #   extraConfig = ''
-      #     tls internal
-      #     reverse_proxy localhost:8000
-      #   '';
-      # };
+      "paperless.home.lan" = {
+        extraConfig = ''
+          tls internal
+          reverse_proxy localhost:8000
+        '';
+      };
+
+      "http://paperless.home.lan" = {
+        extraConfig = ''
+          reverse_proxy localhost:8000
+        '';
+      };
 
       # "forgejo.home.lan" = {
       #   extraConfig = ''

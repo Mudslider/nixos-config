@@ -30,16 +30,16 @@
     };
   };
 
-  # systemd.services.podman-network-paperless = {
-  #   description = "Create Podman network for PaperlessNGX";
-  #   after = [ "podman.service" ];
-  #   wantedBy = [ "multi-user.target" ];
-  #   serviceConfig = {
-  #     Type = "oneshot";
-  #     RemainAfterExit = true;
-  #     ExecStart = "${pkgs.podman}/bin/podman network create paperless-net --ignore";
-  #   };
-  # };
+  systemd.services.podman-network-paperless = {
+    description = "Create Podman network for PaperlessNGX";
+    after = [ "podman.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.podman}/bin/podman network create paperless-net --ignore";
+    };
+  };
 
   # systemd.services.podman-network-authentik = {
   #   description = "Create Podman network for Authentik";
