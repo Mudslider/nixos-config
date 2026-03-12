@@ -49,3 +49,14 @@ echo "  2. Container-Versionen in .nix-Dateien anpassen (falls Updates)"
 echo "  3. nrt && nrs                          # Laptop testen + switchen"
 echo "  4. git add -A && git commit && git push"
 echo "  5. Server: nrs"
+echo ""
+
+# ── Heartbeat an Uptime Kuma senden ──────────────────────────
+# Bestätigt dass der monatliche Update-Check durchgeführt wurde.
+# Kommt 30 Tage kein Heartbeat → Benachrichtigung von Uptime Kuma.
+PUSH_URL="https://status.home.lan/api/push/jNiAW2BYdm?status=up&msg=OK&ping="
+if curl -sf --cacert /etc/ssl/certs/ca-bundle.crt "${PUSH_URL}" > /dev/null 2>&1; then
+  echo -e "${GREEN}✓${NC} Heartbeat an Uptime Kuma gesendet"
+else
+  echo -e "${YELLOW}!${NC} Heartbeat konnte nicht gesendet werden (Server erreichbar?)"
+fi
