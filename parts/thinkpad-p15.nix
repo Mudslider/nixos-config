@@ -1,7 +1,5 @@
 # ── ThinkPad P15 Wiring ─────────────────────────────────────
-# Dieses flake-parts Modul erstellt nixosConfigurations.thinkpad-p15
-# aus den bestehenden NixOS- und Home-Manager-Modulen.
-{ inputs, ... }:
+{ config, inputs, ... }:
 let
   inherit (inputs) nixpkgs home-manager sops-nix;
 in
@@ -10,8 +8,8 @@ in
     system = "x86_64-linux";
     specialArgs = { inherit inputs; };  # TODO: In Phase C-5 entfernen
     modules = [
+      config.nixosModules.common
       ../hosts/thinkpad-p15
-      ../modules/common
       ../modules/desktop
 
       sops-nix.nixosModules.sops
