@@ -13,9 +13,6 @@
   # ── Netzwerk ──────────────────────────────────────────────
   networking.hostName = "playground";
   networking.networkmanager.enable = true;
-  networking.extraHosts = ''
-    192.168.1.10  vaultwarden.home.lan
-  '';
 
   # ── NVIDIA (PRIME Offload — PCI-Adressen maschinenspezifisch) ──
   hardware.graphics.enable = true;

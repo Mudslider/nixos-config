@@ -37,15 +37,15 @@
       #   '';
       # };
 
-      # "immich.home.lan" = {
-      #   extraConfig = ''
-      #     tls internal
-      #     reverse_proxy localhost:2283
-      #     request_body {
-      #       max_size 50GB
-      #     }
-      #   '';
-      # };
+      "immich.home.lan" = {
+        extraConfig = ''
+          tls internal
+          reverse_proxy localhost:2283
+          request_body {
+            max_size 50GB
+          }
+        '';
+      };
 
       # "jellyfin.home.lan" = {
       #   extraConfig = ''
