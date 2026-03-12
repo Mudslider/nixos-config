@@ -96,6 +96,13 @@
         '';
       };
 
+      "grafana.home.lan" = {
+        extraConfig = ''
+          tls internal
+          reverse_proxy localhost:3100
+        '';
+      };
+
       "netdata.home.lan" = {
         extraConfig = ''
           tls internal

@@ -37,6 +37,7 @@
     "d /srv/ssd-buffer/services/forgejo      0750 root root -"
     "d /srv/ssd-buffer/services/hass         0750 root root -"
     "d /srv/ssd-buffer/services/uptime-kuma  0750 root      root      -"
+    "d /srv/ssd-buffer/services/grafana      0750 grafana   grafana   -"
     "d /srv/ssd-buffer/services/audiobookshelf        0750 root root  -"
     "d /srv/ssd-buffer/services/audiobookshelf/config  0750 root root -"
     "d /srv/ssd-buffer/services/audiobookshelf/metadata 0750 root root -"
