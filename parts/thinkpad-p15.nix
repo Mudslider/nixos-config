@@ -6,11 +6,11 @@ in
 {
   flake.nixosConfigurations.thinkpad-p15 = nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
-    specialArgs = { inherit inputs; };  # TODO: In Phase C-5 entfernen
+    specialArgs = { inherit inputs; };
     modules = [
       config.nixosModules.common
+      config.nixosModules.desktop
       ../hosts/thinkpad-p15
-      ../modules/desktop
 
       sops-nix.nixosModules.sops
 
