@@ -20,6 +20,9 @@
     };
 
     initExtra = ''
+      # Claude Code (npm global prefix)
+      export PATH="$HOME/.npm-global/bin:$PATH"
+
       # Prompt mit Hostname und Pfad
       PS1='\[\e[1;35m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\$ '
     '';

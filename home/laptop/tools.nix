@@ -17,6 +17,7 @@
     lsof
     pciutils
     usbutils
+    nodejs
 
     # Dateien
     rsync

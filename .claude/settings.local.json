@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Read(//home/polly/nixos-config/**)",
+      "Bash(done)",
+      "Bash(find /nix/store -maxdepth 3 -name \"web\" -path \"*/netdata/*\" -type d 2>/dev/null | head -5)",
+      "Bash(ssh philip@192.168.178.10 \"find /nix/store -maxdepth 3 -name 'web' -path '*netdata*' -type d 2>/dev/null | head -5\")",
+      "Bash(ssh philip@192.168.178.10 \"ls /nix/store/ | grep netdata | head -5\")",
+      "Bash(ssh philip@192.168.178.10 \"ls /nix/store/7xfh60r7dharvaaj7zqhaw39fcnb62h9-netdata-2.8.5/share/netdata/ 2>/dev/null || echo 'kein share/netdata'\")",
+      "Bash(ssh philip@192.168.178.10 \"ls /nix/store/7xfh60r7dharvaaj7zqhaw39fcnb62h9-netdata-2.8.5/share/netdata/web/ | head -10\")",
+      "Bash(ssh philip@192.168.178.10 \"nix eval nixpkgs#netdata-full.name 2>/dev/null || echo 'kein netdata-full'\")",
+      "Bash(ssh philip@192.168.178.10 \"cat /etc/netdata/netdata.conf | grep -A5 '\\\\[web\\\\]'\")",
+      "Bash(ssh philip@192.168.178.10 \"cat /etc/netdata/netdata.conf | grep 'web files dir'\")",
+      "Bash(git add:*)",
+      "Bash(ssh philip@192.168.178.10 \"nrs\")",
+      "Bash(ssh philip@192.168.178.10 \"git -C ~/nixos-config fetch origin && git -C ~/nixos-config reset --hard origin/main && sudo nixos-rebuild switch --flake ~/nixos-config#homeserver\")",
+      "Bash(ssh philip@192.168.178.10 \"sudo mkdir -p /srv/ssd-buffer/services/grafana && sudo sh -c 'openssl rand -hex 32 > /srv/ssd-buffer/services/grafana/secret_key' && sudo chown -R grafana:grafana /srv/ssd-buffer/services/grafana 2>/dev/null || sudo chown root:root /srv/ssd-buffer/services/grafana/secret_key && sudo chmod 600 /srv/ssd-buffer/services/grafana/secret_key && echo 'Key erstellt'\")",
+      "Bash(ssh philip@192.168.178.10 \"sudo sh -c 'tr -dc a-f0-9 < /dev/urandom | head -c 64 > /srv/ssd-buffer/services/grafana/secret_key' && sudo chmod 640 /srv/ssd-buffer/services/grafana/secret_key && echo 'Key erstellt:' && sudo cat /srv/ssd-buffer/services/grafana/secret_key | wc -c\")",
+      "Bash(ssh philip@192.168.178.10 \"git -C ~/nixos-config fetch origin && git -C ~/nixos-config reset --hard origin/main && sudo nixos-rebuild switch --flake ~/nixos-config#homeserver 2>&1\")",
+      "Bash(ssh philip@192.168.178.10 \"systemctl status grafana.service --no-pager -l | tail -20\")",
+      "Bash(ssh philip@192.168.178.10 \"journalctl -u grafana --no-pager -n 30 | grep -v '^--'\")",
+      "Bash(ssh philip@192.168.178.10 \"sudo chown grafana:grafana /srv/ssd-buffer/services/grafana/secret_key && sudo chmod 640 /srv/ssd-buffer/services/grafana/secret_key && sudo systemctl start grafana && sleep 3 && systemctl is-active grafana\")",
+      "Bash(ssh philip@192.168.178.10 \"zfs list | grep tank\" 2>/dev/null)",
+      "Bash(ssh philip@192.168.178.10 \"sleep 5 && sudo podman ps --format 'table {{.Names}}\\\\t{{.Status}}'\")",
+      "Bash(ssh philip@192.168.178.10 \"sudo podman inspect immich-server --format '{{.ImageName}}' && sudo podman inspect immich-server --format '{{.Image}}' | cut -c1-12\")",
+      "Bash(ssh philip@192.168.178.10 \"sudo podman inspect immich-server --format '{{index .Config.Labels \\\\\"org.opencontainers.image.version\\\\\"}}'\")",
+      "Bash(curl -s https://api.github.com/repos/immich-app/immich/releases/latest | grep '\"tag_name\"' | cut -d'\"' -f4)",
+      "Bash(curl -s \"https://api.github.com/repos/immich-app/immich/releases/latest\" | python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d['tag_name'], d['published_at'][:10]\\)\")",
+      "Bash(curl -s \"https://api.github.com/repos/immich-app/immich/releases/latest\" | jq -r '.tag_name + \" \\(\" + .published_at[:10] + \"\\)\"')",
+      "Bash(ssh philip@192.168.178.10 \"sudo podman inspect uptime-kuma --format '{{index .Config.Labels \\\\\"org.opencontainers.image.version\\\\\"}}' 2>/dev/null || sudo podman inspect uptime-kuma --format '{{.ImageName}}'\")",
+      "Bash(ssh philip@192.168.178.10 \"sudo podman inspect uptime-kuma --format '{{.Config.Image}}'\")",
+      "Bash(curl -s \"https://api.github.com/repos/louislam/uptime-kuma/releases/latest\" | jq -r '.tag_name')",
+      "Bash(chmod +x /home/polly/nixos-config/scripts/check-updates.sh && git add modules/server/services/immich.nix modules/server/services/uptime-kuma.nix scripts/check-updates.sh && git commit -m \"feat: Container-Versionen pinnen + Update-Checker Skript\" && git push)",
+      "Bash(./scripts/check-updates.sh)",
+      "Bash(ssh philip@192.168.178.10 \"git -C ~/nixos-config fetch origin && git -C ~/nixos-config reset --hard origin/main && sudo nixos-rebuild switch --flake ~/nixos-config#homeserver 2>&1 | tail -15\")",
+      "Bash(ping -c 2 ntfy.home.lan && curl -sk https://ntfy.home.lan/v1/health)"
+    ]
+  }
+}
