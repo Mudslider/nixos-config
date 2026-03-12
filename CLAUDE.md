@@ -1,4 +1,8 @@
-# CLAUDE.md — Projektkontext für Claude Code
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Projektkontext
 
 ## Arbeitsweise
 
@@ -19,6 +23,8 @@ Einheitliches NixOS-Flake-Repo für zwei Maschinen. Dendritisches Pattern mit fl
 - Kein `specialArgs`, keine `default.nix`-Hubs in `parts/`
 - `modules/server/` und `modules/desktop/` nutzen intern noch klassische `default.nix`-Hubs
 
+**Flake-Inputs:** `nixpkgs` (unstable), `flake-parts`, `import-tree`, `home-manager`, `sops-nix`, `disko`, `autoaspm` (HDD ASPM power management)
+
 **Referenzen:** [mightyiam/dendritic](https://github.com/mightyiam/dendritic), [flake.parts](https://flake.parts), [YouTube Talk](https://www.youtube.com/watch?v=-TRbzkw6Hjs)
 
 ## Maschinen
@@ -26,6 +32,7 @@ Einheitliches NixOS-Flake-Repo für zwei Maschinen. Dendritisches Pattern mit fl
 | | Homeserver | ThinkPad P15 |
 |---|---|---|
 | Hostname | `homeserver` | `playground` |
+| Flake-Config | `nixosConfigurations.homeserver` | `nixosConfigurations.thinkpad-p15` |
 | User | `philip` | `polly` |
 | Hardware | ASRock N100DC-ITX, 32GB RAM | Intel i9, 32GB RAM, RTX A4000 |
 | IP | 192.168.1.10 (LAN), 100.95.103.67 (NetBird) | DHCP |
@@ -70,7 +77,9 @@ secrets/secrets.yaml            ← SOPS + age (beide Maschinen)
 | Samba | 445 | NixOS-Modul, nur LAN |
 | ZFS Pool `tank` | — | 2× 12TB HDD Mirror, verschlüsselt |
 
-Inaktive Dienste sind vorbereitet in `modules/server/services/` (auskommentiert in `default.nix`).
+Vorbereitete (inaktive) Dienste in `modules/server/services/` (auskommentiert in `default.nix`):
+`audiobookshelf`, `authentik`, `forgejo`, `home-assistant`, `immich`, `jellyfin`, `navidrome`,
+`netdata`, `nextcloud`, `paperless-ngx`, `rustdesk`, `syncthing`, `uptime-kuma`
 Zugehörige Caddy-VirtualHosts und Podman-Netzwerke sind ebenfalls auskommentiert.
 
 ## Workflow
@@ -81,6 +90,7 @@ cd ~/nixos-config
 # Dateien ändern...
 nrt                    # IMMER erst testen!
 nrs                    # Bei Erfolg switchen
+nfu                    # Flake-Inputs updaten (nur vom Laptop, nie vom Server)
 git add -A && git commit -m "..." && git push
 
 # Server: pullen + rebuilden (per SSH oder am Server)

@@ -15,8 +15,8 @@
     # ./home-assistant.nix
     # ./syncthing.nix
     # ./authentik.nix
-    # ./uptime-kuma.nix
-    # ./netdata.nix
+    ./uptime-kuma.nix
+    ./netdata.nix
     # ./rustdesk.nix
   ];
 }
