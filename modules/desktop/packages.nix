@@ -7,5 +7,10 @@
     thunderbird
     signal-desktop
     obsidian
+    libreoffice-qt-fresh
+    hunspell
+    hunspellDicts.de_DE
+    hyphenDicts.de-de
+    darktable
   ];
 }
