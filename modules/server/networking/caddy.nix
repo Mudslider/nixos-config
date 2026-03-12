@@ -89,19 +89,19 @@
       #   '';
       # };
 
-      # "status.home.lan" = {
-      #   extraConfig = ''
-      #     tls internal
-      #     reverse_proxy localhost:3001
-      #   '';
-      # };
+      "status.home.lan" = {
+        extraConfig = ''
+          tls internal
+          reverse_proxy localhost:3001
+        '';
+      };
 
-      # "netdata.home.lan" = {
-      #   extraConfig = ''
-      #     tls internal
-      #     reverse_proxy localhost:19999
-      #   '';
-      # };
+      "netdata.home.lan" = {
+        extraConfig = ''
+          tls internal
+          reverse_proxy localhost:19999
+        '';
+      };
 
       # "auth.home.lan" = {
       #   extraConfig = ''
