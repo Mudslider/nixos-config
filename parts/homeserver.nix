@@ -6,11 +6,11 @@ in
 {
   flake.nixosConfigurations.homeserver = nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
-    specialArgs = { inherit inputs; };  # TODO: In Phase C-5 entfernen
+    specialArgs = { inherit inputs; };
     modules = [
       config.nixosModules.common
+      config.nixosModules.server
       ../hosts/homeserver
-      ../modules/server
 
       disko.nixosModules.disko
       sops-nix.nixosModules.sops
