@@ -19,16 +19,16 @@
   # Container die miteinander sprechen müssen, kommen ins gleiche Netzwerk.
   # Netzwerke erst einkommentieren wenn der zugehörige Dienst aktiviert wird!
 
-  # systemd.services.podman-network-immich = {
-  #   description = "Create Podman network for Immich";
-  #   after = [ "podman.service" ];
-  #   wantedBy = [ "multi-user.target" ];
-  #   serviceConfig = {
-  #     Type = "oneshot";
-  #     RemainAfterExit = true;
-  #     ExecStart = "${pkgs.podman}/bin/podman network create immich-net --ignore";
-  #   };
-  # };
+  systemd.services.podman-network-immich = {
+    description = "Create Podman network for Immich";
+    after = [ "podman.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.podman}/bin/podman network create immich-net --ignore";
+    };
+  };
 
   # systemd.services.podman-network-paperless = {
   #   description = "Create Podman network for PaperlessNGX";
