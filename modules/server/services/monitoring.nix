@@ -35,6 +35,7 @@
         domain = "grafana.home.lan";
         root_url = "https://grafana.home.lan";
       };
+      security.secret_key = "$__file{/srv/ssd-buffer/services/grafana/secret_key}";
       analytics.reporting_enabled = false;
     };
 
