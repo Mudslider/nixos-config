@@ -6,7 +6,6 @@ in
 {
   flake.nixosConfigurations.homeserver = nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
-    specialArgs = { inherit inputs; };
     modules = [
       config.nixosModules.common
       config.nixosModules.server
