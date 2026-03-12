@@ -103,6 +103,13 @@
         '';
       };
 
+      "ntfy.home.lan" = {
+        extraConfig = ''
+          tls internal
+          reverse_proxy localhost:8084
+        '';
+      };
+
       "netdata.home.lan" = {
         extraConfig = ''
           tls internal

@@ -17,6 +17,7 @@
     # ./authentik.nix
     ./uptime-kuma.nix
     ./monitoring.nix
+    ./ntfy.nix
     # ./rustdesk.nix
   ];
 }
