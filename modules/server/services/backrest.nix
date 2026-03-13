@@ -5,14 +5,6 @@
   # Zeigt Snapshots, Größen, Backup-Historie des Restic REST-Servers.
   # Erreichbar unter https://backrest.home.lan
 
-  users.users.backrest = {
-    isSystemUser = true;
-    group = "backrest";
-    # Zugriff auf Backup-Daten (Restic REST-Server Verzeichnis)
-    extraGroups = [ "restic" ];
-  };
-  users.groups.backrest = {};
-
   systemd.services.backrest = {
     description = "Backrest Web UI for Restic";
     wantedBy = [ "multi-user.target" ];
@@ -25,8 +17,8 @@
     };
     serviceConfig = {
       ExecStart = "${pkgs.backrest}/bin/backrest";
-      User = "backrest";
-      Group = "backrest";
+      User = "restic";
+      Group = "restic";
       Restart = "on-failure";
       RestartSec = "5s";
     };
