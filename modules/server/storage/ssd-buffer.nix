@@ -10,7 +10,7 @@
     "d /srv/ssd-buffer          0755 root  root -"
 
     # Backup: Restic-Repository vom Arbeitsrechner
-    "d /srv/ssd-buffer/backup   0755 restic restic -"
+    "d /srv/ssd-buffer/backup   0750 restic restic -"
     # Fotos: Eingang von Handys (Immich/Syncthing)
     "d /srv/ssd-buffer/photos   0750 philip philip -"
 
