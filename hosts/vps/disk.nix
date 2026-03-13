@@ -3,9 +3,9 @@
 {
   # ── Disk-Konfiguration (Hetzner CX23, BIOS-Boot) ──────────
   disko.devices = {
-    disk.sda = {
+    disk.vda = {
       type = "disk";
-      device = "/dev/sda";
+      device = "/dev/vda";
       content = {
         type = "gpt";
         partitions = {
