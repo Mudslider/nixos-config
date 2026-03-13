@@ -7,6 +7,7 @@
     ./caddy.nix
     ./netbird.nix
     ./firewall.nix
+    ./fail2ban.nix
   ];
 
   # ── Boot ──────────────────────────────────────────────────
