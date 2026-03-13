@@ -12,6 +12,8 @@ keys:
   - &homeserver age10dpncr0huc22jk68fw6a8wl0r8kgkgn7fa89tp2wznn2m3jsg5mszn3ajt
   # Laptop (age-keygen)
   - &laptop age1ttaq3u59zmyerzvj3aeye6mhgkxq48d4nu3n8y84njdwqces2unqp48je7
+  # VPS (SSH-Host-Key → Age)
+  - &vps age10e665saq8mpj2g9qxpaf8g0kh373g2jaq0eymvjxrg5rcs72wepsd0355y
 
 creation_rules:
   - path_regex: secrets/secrets\.yaml$
@@ -19,3 +21,4 @@ creation_rules:
       - age:
           - *homeserver
           - *laptop
+          - *vps
