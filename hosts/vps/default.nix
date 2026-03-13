@@ -10,8 +10,11 @@
   ];
 
   # ── Boot ──────────────────────────────────────────────────
-  # disko konfiguriert GRUB via EF02-Partition automatisch
-  boot.loader.grub.enable = true;
+  # MBR-Layout: GRUB direkt auf /dev/sda, kein EFI
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda";
+  };
 
   # Kernel-Module für Hetzner KVM
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "virtio_blk" "sr_mod" "sd_mod" ];

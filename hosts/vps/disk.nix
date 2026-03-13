@@ -7,12 +7,8 @@
       type = "disk";
       device = "/dev/sda";
       content = {
-        type = "gpt";
+        type = "mbr";
         partitions = {
-          boot = {
-            size = "1M";
-            type = "EF02";  # BIOS boot partition (kein EFI auf Hetzner KVM)
-          };
           root = {
             size = "100%";
             content = {
