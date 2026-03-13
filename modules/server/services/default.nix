@@ -5,7 +5,7 @@
     ./vaultwarden.nix
 
     # Inaktiv — einzeln aktivieren nach den jeweiligen Anleitungen (docs/)
-    # ./nextcloud.nix
+    ./nextcloud.nix
     ./paperless-ngx.nix
     ./immich.nix
     # ./jellyfin.nix
@@ -16,6 +16,7 @@
     # ./syncthing.nix
     # ./authentik.nix
     ./uptime-kuma.nix
+    ./backrest.nix
     ./monitoring.nix
     ./ntfy.nix
     # ./rustdesk.nix

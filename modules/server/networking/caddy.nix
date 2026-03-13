@@ -27,15 +27,15 @@
       # Inaktive Dienste — einkommentieren bei Aktivierung
       # ────────────────────────────────────────────────────
 
-      # "nextcloud.home.lan" = {
-      #   extraConfig = ''
-      #     tls internal
-      #     reverse_proxy localhost:8080
-      #     header {
-      #       Strict-Transport-Security "max-age=31536000; includeSubDomains"
-      #     }
-      #   '';
-      # };
+      "nextcloud.home.lan" = {
+        extraConfig = ''
+          tls internal
+          reverse_proxy localhost:8080
+          header {
+            Strict-Transport-Security "max-age=31536000; includeSubDomains"
+          }
+        '';
+      };
 
       # HTTPS für LAN-Clients
       "immich.home.lan" = {
@@ -113,6 +113,13 @@
         '';
       };
 
+      "backrest.home.lan" = {
+        extraConfig = ''
+          tls internal
+          reverse_proxy localhost:9898
+        '';
+      };
+
       "grafana.home.lan" = {
         extraConfig = ''
           tls internal
@@ -167,11 +174,11 @@
         '';
       };
 
-      # "http://nextcloud.philipjonasch.de" = {
-      #   extraConfig = ''
-      #     reverse_proxy localhost:8080
-      #   '';
-      # };
+      "http://nextcloud.philipjonasch.de" = {
+        extraConfig = ''
+          reverse_proxy localhost:8080
+        '';
+      };
     };
   };
 }

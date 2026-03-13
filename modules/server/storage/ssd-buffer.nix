@@ -44,5 +44,7 @@
     "d /srv/ssd-buffer/services/navidrome    0750 root      root      -"
     "d /srv/ssd-buffer/services/syncthing    0750 philip    philip    -"
     "d /srv/ssd-buffer/services/rustdesk     0750 root      root      -"
+    "d /srv/ssd-buffer/services/backrest     0750 backrest  backrest  -"
+    "d /srv/ssd-buffer/services/backrest/cache 0750 backrest backrest -"
   ];
 }
