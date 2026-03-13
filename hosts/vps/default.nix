@@ -10,10 +10,8 @@
   ];
 
   # ── Boot ──────────────────────────────────────────────────
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
-  };
+  # disko konfiguriert GRUB via EF02-Partition automatisch
+  boot.loader.grub.enable = true;
 
   # ── Netzwerk ──────────────────────────────────────────────
   networking.hostName = "vps";
