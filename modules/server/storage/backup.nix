@@ -5,7 +5,7 @@
   # Performanter als SFTP, unterstützt Append-Only-Modus
   services.restic.server = {
     enable = true;
-    listenAddress = "0.0.0.0:8100"; # NICHT 8000 — PaperlessNGX belegt Port 8000
+    listenAddress = "100.95.103.67:8100"; # NetBird-Interface — nur über VPN erreichbar
     dataDir = "/srv/ssd-buffer/backup";
     appendOnly = true; # Ransomware-Schutz: nur Anhängen, kein Löschen
   };

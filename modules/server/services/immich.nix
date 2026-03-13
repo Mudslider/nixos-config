@@ -29,7 +29,7 @@
 
     immich-server = {
       image = "ghcr.io/immich-app/immich-server:v2.5.6";
-      ports = [ "2283:2283" ];
+      ports = [ "127.0.0.1:2283:2283" ];
       extraOptions = [ "--network=immich-net" ];
       dependsOn = [ "immich-redis" "immich-postgres" ];
       volumes = [

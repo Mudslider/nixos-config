@@ -34,6 +34,10 @@
 
       "vaultwarden.philipjonasch.de" = {
         extraConfig = ''
+          # Admin-Panel nur über vaultwarden.home.lan erreichbar, nicht öffentlich
+          @admin path /admin*
+          respond @admin 403
+
           reverse_proxy 100.95.103.67:80
         '';
       };
