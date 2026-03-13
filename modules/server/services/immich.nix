@@ -34,6 +34,7 @@
       dependsOn = [ "immich-redis" "immich-postgres" ];
       volumes = [
         "/tank/photos:/usr/src/app/upload"
+        "/tank/photos/extern:/mnt/extern:ro"
       ];
       environment = {
         DB_HOSTNAME = "immich-postgres";
