@@ -29,9 +29,9 @@
     # Dienste-Daten (bleiben auf der SSD, werden nicht verschoben)
     "d /srv/ssd-buffer/services 0755 root  root -"
     "d /srv/ssd-buffer/services/nextcloud    0750 root root -"    
-    "d /srv/ssd-buffer/services/paperless    0750 root      root      -"
-    "d /srv/ssd-buffer/services/paperless/data   0750 root  root      -"
-    "d /srv/ssd-buffer/services/paperless/media  0750 root  root      -"
+    "d /srv/ssd-buffer/services/paperless    0750 1000 1000 -"
+    "d /srv/ssd-buffer/services/paperless/data   0750 1000 1000 -"
+    "d /srv/ssd-buffer/services/paperless/media  0750 1000 1000 -"
     "d /srv/ssd-buffer/services/vaultwarden  0750 vaultwarden vaultwarden -"
     "d /srv/ssd-buffer/services/vaultwarden/backup 0750 vaultwarden vaultwarden -"    
     "d /srv/ssd-buffer/services/forgejo      0750 root root -"
