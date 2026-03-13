@@ -20,6 +20,7 @@
     environment = {
       BACKREST_PORT = "9898";
       BACKREST_DATA = "/srv/ssd-buffer/services/backrest";
+      XDG_CONFIG_HOME = "/srv/ssd-buffer/services/backrest";
       XDG_CACHE_HOME = "/srv/ssd-buffer/services/backrest/cache";
     };
     serviceConfig = {
