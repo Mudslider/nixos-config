@@ -11,13 +11,11 @@
 
   # ── Boot ──────────────────────────────────────────────────
   # MBR-Layout: GRUB direkt auf /dev/sda, kein EFI
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
-  };
+  # disko konfiguriert GRUB automatisch via EF02-Partition
+  boot.loader.grub.enable = true;
 
   # Kernel-Module für Hetzner KVM
-  boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "virtio_blk" "sr_mod" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "ata_piix" "virtio_pci" "virtio_scsi" "sd_mod" "sr_mod" ];
 
   # ── Netzwerk ──────────────────────────────────────────────
   networking.hostName = "vps";
