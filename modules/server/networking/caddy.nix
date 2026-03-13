@@ -141,6 +141,37 @@
       #     reverse_proxy localhost:9000
       #   '';
       # };
+
+      # ── Öffentliche Domains (via VPS → NetBird) ───────────
+      # VPS-Caddy terminiert TLS, leitet HTTP hierher weiter.
+      # Routen nach Hostname — kein TLS nötig (WireGuard-Tunnel).
+
+      "http://immich.philipjonasch.de" = {
+        extraConfig = ''
+          reverse_proxy localhost:2283
+          request_body {
+            max_size 50GB
+          }
+        '';
+      };
+
+      "http://vaultwarden.philipjonasch.de" = {
+        extraConfig = ''
+          reverse_proxy localhost:8222
+        '';
+      };
+
+      "http://paperless.philipjonasch.de" = {
+        extraConfig = ''
+          reverse_proxy localhost:8000
+        '';
+      };
+
+      # "http://nextcloud.philipjonasch.de" = {
+      #   extraConfig = ''
+      #     reverse_proxy localhost:8080
+      #   '';
+      # };
     };
   };
 }
