@@ -13,6 +13,9 @@
   # disko konfiguriert GRUB via EF02-Partition automatisch
   boot.loader.grub.enable = true;
 
+  # Virtio-Treiber früh laden — Hetzner KVM-Disks sind /dev/vda
+  boot.initrd.availableKernelModules = [ "virtio_blk" "virtio_pci" "virtio_net" ];
+
   # ── Netzwerk ──────────────────────────────────────────────
   networking.hostName = "vps";
   networking.useDHCP = true;
