@@ -25,6 +25,12 @@ let
       hddPath    = "/tank/backup/nora";
       secretName = "restic-password-nora";
     }
+    {
+      name       = "berlin (Bruder)";
+      ssdPath    = "/srv/ssd-buffer/backup/berlin";
+      hddPath    = "/tank/backup/berlin";
+      secretName = "restic-password-berlin";
+    }
   ];
 
   # Generiert Tiering-Block pro Repo (wird in ExecStart eingebettet)
