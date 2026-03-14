@@ -37,7 +37,7 @@
       "render"      # GPU-Zugriff
     ];
 
-    hashedPassword = "$2b$05$bHiPVnliRrgU0nwStOVzjumr2fkRQ0.fPkwKx0ESueXnoG6RBQsIu";
+    hashedPassword = "$6$0vduhliwfYwlmLc3$psLTibMKQzdKY2aMW5Ky9snATL1WC/5ssDLl233noS9CqiAyPJONmlYG2z04axXqNcky4em51AyzWmEMwdNPV0";
 
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJaOYhzMMUu87VTvyw0ORH5J4LUaRPj3uAQYgAwF7mAs philip@laptop"
