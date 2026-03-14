@@ -39,7 +39,7 @@
   users.users.polly = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "video" ];
-    initialPassword = "changeme";
+    hashedPassword = "$6$3VeeiTjP3MqYWYcE$g4Oq60CkvcjMaqO77R7/o.w4YVAJfiiSYYxQCHYUz0ERbcdpPRzdziO7sOqu9.kj1dqe0GAOvuKonCYqPapmk.";
   };
 
   # ── Homeserver-Vertrauen ──────────────────────────────────
