@@ -70,9 +70,9 @@
         echo "=== Offsite-Backup Start: $(date) ==="
 
         # Repo initialisieren falls neu
-        if ! restic cat config >/dev/null 2>&1; then
+        if ! ${pkgs.restic}/bin/restic cat config >/dev/null 2>&1; then
           echo "Initialisiere Offsite-Repo..."
-          restic init
+          ${pkgs.restic}/bin/restic init
         fi
 
         # ── Backup ausführen ────────────────────────────
