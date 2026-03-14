@@ -46,10 +46,11 @@ let
         fi
 
         # Neue Snapshots SSD → HDD kopieren (idempotent, bereits kopierte werden übersprungen)
+        # Syntax: -r = Ziel (HDD), --from-repo = Quelle (SSD)
         echo "Kopiere Snapshots ${repo.name}: SSD→HDD..."
         RESTIC_PASSWORD_FILE="${pw}" \
-        RESTIC_PASSWORD2_FILE="${pw}" \
-          ${pkgs.restic}/bin/restic -r "${repo.ssdPath}" copy --repo2 "${repo.hddPath}"
+        RESTIC_FROM_PASSWORD_FILE="${pw}" \
+          ${pkgs.restic}/bin/restic -r "${repo.hddPath}" copy --from-repo "${repo.ssdPath}"
 
         # SSD bereinigen: nur letzten ~Tag behalten, Rest ist auf HDD
         echo "Bereinige SSD-Repo ${repo.name}..."
