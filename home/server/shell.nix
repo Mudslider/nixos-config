@@ -12,7 +12,7 @@
       # NixOS
       nrs = "cd ~/nixos-config && git fetch origin && git reset --hard origin/main && sudo nixos-rebuild switch --flake ~/nixos-config#homeserver";     
       nrt = "sudo nixos-rebuild test --flake ~/nixos-config#homeserver";
-      nfu = "nix flake update ~/nixos-config";
+      nfu = "nix flake update --flake ~/nixos-config";
 
       # Systemd
       sc = "sudo systemctl";
