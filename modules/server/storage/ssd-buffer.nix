@@ -20,6 +20,9 @@
     # ── ZFS-Tank Unterverzeichnisse ─────────────────────
     # (Datasets werden als ZFS-Datasets erstellt,
     #  Unterordner innerhalb der Datasets per tmpfiles)
+    # Immich External Library (externe Foto-Bibliothek, read-only eingebunden)
+    "d /tank/photos/extern       0755 philip philip -"
+
     "d /tank/media/filme         0755 philip philip -"
     "d /tank/media/serien        0755 philip philip -"
     "d /tank/media/musik         0755 philip philip -"
