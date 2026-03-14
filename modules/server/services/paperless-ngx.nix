@@ -30,7 +30,9 @@
         PAPERLESS_TIME_ZONE        = "Europe/Berlin";
         PAPERLESS_URL              = "https://paperless.home.lan";
         PAPERLESS_ADMIN_USER       = "philip";
-        PAPERLESS_ADMIN_PASSWORD   = "changeme";   # Sofort nach Erstlogin ändern!
+        # Initiales Admin-Passwort — nur beim ersten Container-Start relevant.
+        # Passwort wurde in der UI bereits geändert. TODO: in SOPS secrets verschieben.
+        PAPERLESS_ADMIN_PASSWORD   = "changeme";
 
         # ── OCR ───────────────────────────────────────────────
         PAPERLESS_OCR_LANGUAGE     = "deu+eng";    # Deutsch + Englisch

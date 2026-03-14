@@ -67,9 +67,8 @@
       PermitRootLogin = "prohibit-password";
       X11Forwarding = false;
 
-      # Härtungsphase (doc 18): auf false setzen
-      PasswordAuthentication = true;
-      KbdInteractiveAuthentication = true;
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
 
       KexAlgorithms = [
         "sntrup761x25519-sha512@openssh.com"
