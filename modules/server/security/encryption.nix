@@ -27,6 +27,7 @@
         "restic-password-windows" = {};
         "restic-password-polly"   = {};
         "restic-password-nora"    = {};
+        "restic-password-berlin"  = {};
 
     #   "forgejo-secret" = {};
     #   "paperless-secret-key" = {};
