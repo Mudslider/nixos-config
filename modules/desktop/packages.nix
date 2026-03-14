@@ -12,5 +12,6 @@
     hunspellDicts.de_DE
     hyphenDicts.de-de
     darktable
+    nextcloud-client
   ];
 }

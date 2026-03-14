@@ -50,7 +50,7 @@
 
     immich-ml = {
       image = "ghcr.io/immich-app/immich-machine-learning:v2.5.6";
-      extraOptions = [ "--network=immich-net" ];
+      extraOptions = [ "--network=immich-net" "--cpus=1.5" ];
       volumes = [
         "immich-ml-cache:/cache"
       ];
