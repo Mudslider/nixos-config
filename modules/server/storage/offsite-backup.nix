@@ -1,27 +1,27 @@
 { config, pkgs, ... }:
 
 {
-  # ── Offsite-Backup: Server → Freund (über NetBird) ────────
+  # ── Offsite-Backup: Homeserver → berlinas (Bruder, Berlin) ───
   #
-  # Sichert alle kritischen Server-Daten auf den Server deines Freundes.
-  # Transport: SFTP über NetBird-VPN (WireGuard-verschlüsselt).
+  # Transport: SFTP über NetBird-VPN (Ende-zu-Ende verschlüsselt).
   # Daten: Restic-verschlüsselt (AES-256, Passwort bleibt lokal).
   #
   # Was gesichert wird:
-  #   - Nextcloud-Datenbank (PostgreSQL Dump)
-  #   - Vaultwarden-DB + Backup
-  #   - Forgejo-Repositories + DB
+  #   - Vaultwarden-Daten
   #   - PaperlessNGX-Daten + Medien
-  #   - Authentik-Datenbank (PostgreSQL Dump aus Container)
-  #   - Home Assistant Config
-  #   - Uptime Kuma Daten
+  #   - Immich-Datenbank (PostgreSQL Dump — Fotos bleiben lokal)
   #   - NixOS-Konfiguration
-  #   - sops-Secrets (verschlüsselt)
+  #   - sops-Secrets (bereits verschlüsselt)
   #
-  # Voraussetzungen auf dem Server des Freundes:
-  #   - SSH-Zugang (z.B. User "backup-philip") per Key-Auth
-  #   - Verzeichnis für Backups (z.B. /backup/philip/)
-  #   - Erreichbar über NetBird-IP (z.B. 100.64.0.2)
+  # Voraussetzungen auf berlinas (einmalig):
+  #   1. User anlegen:   adduser backup-philip
+  #   2. Verzeichnis:    mkdir -p /backup/philip && chown backup-philip /backup/philip
+  #   3. SSH-Key:        Public Key von /root/.ssh/offsite-backup.pub eintragen
+  #      → ~backup-philip/.ssh/authorized_keys
+  #
+  # SSH-Key generieren (einmalig auf dem Homeserver):
+  #   sudo ssh-keygen -t ed25519 -f /root/.ssh/offsite-backup -N "" -C "homeserver-offsite"
+  #   sudo cat /root/.ssh/offsite-backup.pub  → an Bruder schicken
 
   # ── Pre-Backup: Datenbank-Dumps ───────────────────────────
   systemd.services.offsite-backup-pre = {
@@ -35,22 +35,11 @@
 
         echo "=== Datenbank-Dumps: $(date) ==="
 
-        # Nextcloud (PostgreSQL, läuft nativ)
-        echo "Dumping Nextcloud DB..."
-        ${pkgs.sudo}/bin/sudo -u postgres ${pkgs.postgresql}/bin/pg_dump nextcloud \
-          > "$DUMP_DIR/nextcloud.sql" 2>/dev/null || echo "WARN: Nextcloud-Dump fehlgeschlagen"
-
-        # Authentik (PostgreSQL im Container)
-        echo "Dumping Authentik DB..."
-        ${pkgs.podman}/bin/podman exec authentik-postgres \
-          pg_dump -U authentik authentik \
-          > "$DUMP_DIR/authentik.sql" 2>/dev/null || echo "WARN: Authentik-Dump fehlgeschlagen"
-
         # Immich (PostgreSQL im Container)
         echo "Dumping Immich DB..."
         ${pkgs.podman}/bin/podman exec immich-postgres \
           pg_dump -U immich immich \
-          > "$DUMP_DIR/immich.sql" 2>/dev/null || echo "WARN: Immich-Dump fehlgeschlagen"
+          > "$DUMP_DIR/immich.sql" 2>/dev/null || echo "WARN: Immich-Dump fehlgeschlagen (läuft der Container?)"
 
         echo "=== Dumps abgeschlossen ==="
         ls -lh "$DUMP_DIR/"
@@ -60,7 +49,7 @@
 
   # ── Restic Offsite-Backup ─────────────────────────────────
   systemd.services.offsite-backup = {
-    description = "Offsite-Backup zum Freund (über NetBird)";
+    description = "Offsite-Backup zu berlinas (Bruder, Berlin)";
     wants = [ "network-online.target" ];
     after = [
       "network-online.target"
@@ -70,19 +59,22 @@
     requires = [ "offsite-backup-pre.service" ];
 
     environment = {
-      # TODO: Ersetze mit der NetBird-IP und dem SSH-User beim Freund
-      RESTIC_REPOSITORY = "sftp:backup-philip@100.64.0.2:/backup/philip";
+      RESTIC_REPOSITORY = "sftp:backup-philip@100.95.39.77:/backup/philip";
     };
 
     serviceConfig = {
       Type = "oneshot";
-      # Restic-Passwort aus sops-nix
-      EnvironmentFile = ""; # Placeholder
       ExecStart = pkgs.writeShellScript "offsite-backup" ''
         set -euo pipefail
-        export RESTIC_PASSWORD_FILE="/run/secrets/offsite-backup-password"
+        export RESTIC_PASSWORD_FILE="${config.sops.secrets."offsite-backup-password".path}"
 
         echo "=== Offsite-Backup Start: $(date) ==="
+
+        # Repo initialisieren falls neu
+        if ! restic cat config >/dev/null 2>&1; then
+          echo "Initialisiere Offsite-Repo..."
+          restic init
+        fi
 
         # ── Backup ausführen ────────────────────────────
         ${pkgs.restic}/bin/restic backup \
@@ -93,15 +85,10 @@
           \
           /srv/ssd-buffer/services/db-dumps/ \
           /srv/ssd-buffer/services/vaultwarden/ \
-          /srv/ssd-buffer/services/forgejo/ \
           /srv/ssd-buffer/services/paperless/ \
-          /srv/ssd-buffer/services/hass/ \
-          /srv/ssd-buffer/services/uptime-kuma/ \
-          /srv/ssd-buffer/services/navidrome/ \
-          /srv/ssd-buffer/services/authentik/ \
           /home/philip/nixos-config/ \
+          /etc/sops/ \
           \
-          --exclude "/srv/ssd-buffer/services/forgejo/data/tmp" \
           --exclude "/srv/ssd-buffer/services/paperless/data/index" \
           --exclude "*.log" \
           --exclude "*.cache"
@@ -124,20 +111,17 @@
         echo "=== Offsite-Backup Ende: $(date) ==="
       '';
 
-      # Timeout: Großes erstes Backup kann lange dauern
       TimeoutStartSec = "6h";
-
-      # Bei Fehler nicht sofort neu versuchen
       Restart = "no";
     };
   };
 
   systemd.timers.offsite-backup = {
-    description = "Tägliches Offsite-Backup zum Freund";
+    description = "Tägliches Offsite-Backup zu berlinas";
     wantedBy = [ "timers.target" ];
     timerConfig = {
       OnCalendar = "*-*-* 04:00:00"; # 4 Uhr nachts (nach nightly-sync um 3 Uhr)
-      Persistent = true;              # Nachholen bei verpasstem Timer
+      Persistent = true;
       RandomizedDelaySec = "10m";
     };
   };
@@ -147,15 +131,9 @@
     "d /srv/ssd-buffer/services/db-dumps 0750 root root -"
   ];
 
-  # ── SSH-Key für den Backup-Zugang beim Freund ─────────────
-  # Erstelle einen dedizierten Key:
-  #   sudo ssh-keygen -t ed25519 -f /root/.ssh/offsite-backup -N "" -C "homeserver-backup"
-  #   → Public Key an den Freund schicken
-  #   → Er trägt ihn in ~backup-philip/.ssh/authorized_keys ein
-  #
-  # Restic braucht den Key in der SSH-Config:
+  # ── SSH-Config für berlinas ───────────────────────────────
   programs.ssh.extraConfig = ''
-    Host 100.64.0.2
+    Host 100.95.39.77
       IdentityFile /root/.ssh/offsite-backup
       User backup-philip
       StrictHostKeyChecking accept-new

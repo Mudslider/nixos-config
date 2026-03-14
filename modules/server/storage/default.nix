@@ -6,7 +6,6 @@
 
     ./nightly-sync.nix
 
-    # Inaktiv — braucht konfigurierten Freund-Server
-    # ./offsite-backup.nix
+    ./offsite-backup.nix
   ];
 }
