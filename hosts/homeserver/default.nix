@@ -24,6 +24,9 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.zfs.forceImportAll = true;
   boot.zfs.forceImportRoot = lib.mkForce true;
+  # Keyfile liegt auf der NVMe unter /etc/zfs/keys/tank.key
+  # Backup des Keyfiles in Vaultwarden ("ZFS tank Keyfile Backup")
+  boot.zfs.requestEncryptionCredentials = false;
 
   # ── Benutzer ──────────────────────────────────────────────
   users.users.philip = {
