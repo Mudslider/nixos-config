@@ -77,6 +77,8 @@ in
       ExecStartPre = pkgs.writeShellScript "wake-hdds" ''
         echo "Wecke HDDs gestaffelt auf..."
         for disk in /dev/disk/by-id/ata-WDC_WD*; do
+          # Partitionen überspringen (nur Basis-Geräte aufwecken)
+          [[ "$disk" == *-part* ]] && continue
           if [ -b "$disk" ]; then
             ${pkgs.hdparm}/bin/hdparm -C "$disk" || true
             echo "Warte 8 Sekunden vor nächster HDD..."
