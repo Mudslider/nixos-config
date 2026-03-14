@@ -61,9 +61,20 @@
     };
   };
 
-  # Systemd-Abhängigkeit: Netzwerk muss vor Containern existieren
-  systemd.services.podman-immich-redis.after = [ "podman-network-immich.service" ];
-  systemd.services.podman-immich-postgres.after = [ "podman-network-immich.service" ];
-  systemd.services.podman-immich-server.after = [ "podman-network-immich.service" ];
-  systemd.services.podman-immich-ml.after = [ "podman-network-immich.service" ];
+  # Systemd-Abhängigkeiten: Netzwerk + ZFS-Mount müssen vor Containern existieren
+  # zfs-mount.service stellt sicher dass /tank/photos verfügbar ist bevor Immich startet
+  systemd.services.podman-immich-redis.after = [ "podman-network-immich.service" "zfs-mount.service" ];
+  systemd.services.podman-immich-postgres.after = [ "podman-network-immich.service" "zfs-mount.service" ];
+  systemd.services.podman-immich-server.after = [ "podman-network-immich.service" "zfs-mount.service" ];
+  systemd.services.podman-immich-ml.after = [ "podman-network-immich.service" "zfs-mount.service" ];
+
+  # Immich-Verzeichnisse auf ZFS anlegen (werden beim ersten Start benötigt)
+  systemd.tmpfiles.rules = [
+    "d /tank/photos/thumbs        0755 root root -"
+    "d /tank/photos/upload        0755 root root -"
+    "d /tank/photos/library       0755 root root -"
+    "d /tank/photos/profile       0755 root root -"
+    "d /tank/photos/backups       0755 root root -"
+    "d /tank/photos/encoded-video 0755 root root -"
+  ];
 }
