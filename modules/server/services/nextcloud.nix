@@ -1,9 +1,9 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   services.nextcloud = {
     enable = true;
-    package = pkgs.nextcloud30; # TODO: Prüfe aktuelle Version bei nixpkgs
+    package = pkgs.nextcloud33;
     hostName = "nextcloud.home.lan";
     https = true;
     configureRedis = true;
@@ -22,6 +22,7 @@
       trusted_domains = [
         "nextcloud.home.lan"
         "192.168.1.10"
+        "nextcloud.philipjonasch.de"
       ];
       trusted_proxies = [
         "127.0.0.1"
@@ -35,10 +36,10 @@
 
     # PHP-Limits für große Uploads
     phpOptions = {
-      "upload_max_filesize" = "16G";
-      "post_max_size" = "16G";
-      "memory_limit" = "512M";
-      "max_execution_time" = "3600";
+      "upload_max_filesize" = lib.mkForce "16G";
+      "post_max_size" = lib.mkForce "16G";
+      "memory_limit" = lib.mkForce "512M";
+      "max_execution_time" = lib.mkForce "3600";
     };
 
     # Automatische App-Updates
