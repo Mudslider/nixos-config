@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architektur
 
-Einheitliches NixOS-Flake-Repo für zwei Maschinen. Dendritisches Pattern mit flake-parts + import-tree.
+Einheitliches NixOS-Flake-Repo für drei Maschinen. Dendritisches Pattern mit flake-parts + import-tree.
 
 **Kernprinzipien:**
 - Jede Datei in `parts/` ist ein flake-parts Modul (auto-importiert via import-tree)
@@ -29,15 +29,15 @@ Einheitliches NixOS-Flake-Repo für zwei Maschinen. Dendritisches Pattern mit fl
 
 ## Maschinen
 
-| | Homeserver | ThinkPad P15 |
-|---|---|---|
-| Hostname | `homeserver` | `playground` |
-| Flake-Config | `nixosConfigurations.homeserver` | `nixosConfigurations.thinkpad-p15` |
-| User | `philip` | `polly` |
-| Hardware | ASRock N100DC-ITX, 32GB RAM | Intel i9, 32GB RAM, RTX A4000 |
-| IP | 192.168.1.10 (LAN), 100.95.103.67 (NetBird) | DHCP |
-| Wiring | `parts/homeserver.nix` | `parts/thinkpad-p15.nix` |
-| Rebuild | `nrs` = git fetch + reset --hard + nixos-rebuild switch | `nrs` = sudo nixos-rebuild switch |
+| | Homeserver | ThinkPad P15 | VPS |
+|---|---|---|---|
+| Hostname | `homeserver` | `playground` | `vps` |
+| Flake-Config | `nixosConfigurations.homeserver` | `nixosConfigurations.thinkpad-p15` | `nixosConfigurations.vps` |
+| User | `philip` | `polly` | `root` |
+| Hardware | ASRock N100DC-ITX, 32GB RAM | Intel i9, 32GB RAM, RTX A4000 | Hetzner CX23, Nürnberg |
+| IP | 192.168.178.10 (LAN), 100.95.103.67 (NetBird) | DHCP | 157.90.239.236 |
+| Wiring | `parts/homeserver.nix` | `parts/thinkpad-p15.nix` | `parts/vps.nix` |
+| Rebuild | `nrs` = git fetch + reset --hard + nixos-rebuild switch | `nrs` = sudo nixos-rebuild switch | `nixos-rebuild switch --flake .#vps --target-host root@157.90.239.236 --build-host localhost` |
 
 ## Repo-Struktur
 
@@ -51,36 +51,50 @@ parts/                          ← flake-parts Module (auto-importiert)
   desktop.nix                   ← wraps modules/desktop/ → nixosModules.desktop
   homeserver.nix                ← Wiring: nixosConfigurations.homeserver
   thinkpad-p15.nix              ← Wiring: nixosConfigurations.thinkpad-p15
+  vps.nix                       ← Wiring: nixosConfigurations.vps
 hosts/homeserver/               ← User, SSH, hostId, Disko, ZFS-Boot
 hosts/thinkpad-p15/             ← User, NVIDIA, Caddy-CA
+hosts/vps/                      ← Caddy (Let's Encrypt), Firewall, Fail2ban, NetBird
 modules/desktop/                ← KDE, Audio, Peripherie, Pakete
 modules/server/
   hardware/                     ← ZFS, Power-Management, HDD-Standby
   networking/                   ← Statische IP, Caddy, NetBird
   security/                     ← SOPS, Firewall, Fail2ban
-  services/                     ← Vaultwarden aktiv, Rest auskommentiert in default.nix
+  services/                     ← Aktive Dienste (Podman + NixOS-Module)
   storage/                      ← SSD-Buffer, Restic-Backup, Samba
 home/shared/                    ← Geteilte Home-Manager-Config (Git)
 home/server/                    ← philip@homeserver
 home/laptop/                    ← polly@thinkpad-p15
-secrets/secrets.yaml            ← SOPS + age (beide Maschinen)
+secrets/secrets.yaml            ← SOPS + age (alle drei Maschinen)
 ```
 
-## Aktive Dienste (Server)
+## Aktive Dienste (Homeserver)
 
-| Dienst | Port | Typ |
-|--------|------|-----|
-| Vaultwarden | 8222 | NixOS-Modul |
-| Caddy (Reverse Proxy) | 443 | NixOS-Modul, `tls internal` |
-| NetBird (Mesh-VPN) | 51820 | NixOS-Modul, app.netbird.io |
-| Restic REST-Server | 8100 | NixOS-Modul, `appendOnly = true` |
-| Samba | 445 | NixOS-Modul, nur LAN |
-| ZFS Pool `tank` | — | 2× 12TB HDD Mirror, verschlüsselt |
+| Dienst | Port | Typ | Öffentlich |
+|--------|------|-----|------------|
+| Vaultwarden | 8222 | NixOS-Modul | `vaultwarden.philipjonasch.de` |
+| Caddy | 443 | NixOS-Modul, `tls internal` | intern |
+| NetBird | 51820 | NixOS-Modul | P2P-VPN |
+| Restic REST-Server | 8100 (NetBird only) | NixOS-Modul, `appendOnly = true` | — |
+| Samba | 445 | NixOS-Modul | nur LAN |
+| ZFS Pool `tank` | — | 2× 12TB HDD Mirror, verschlüsselt | — |
+| Paperless-NGX | 8000 | Podman | `paperless.philipjonasch.de` |
+| Nextcloud | 8080 | NixOS-Modul | `nextcloud.philipjonasch.de` |
+| Immich | 2283 | Podman | `immich.philipjonasch.de` |
+| Backrest | 9898 | systemd | `backrest.home.lan` |
+| Uptime Kuma | 3001 | Podman (host network) | `uptime-kuma.home.lan` |
+| Grafana | 3000 | NixOS-Modul | `grafana.home.lan` |
 
-Vorbereitete (inaktive) Dienste in `modules/server/services/` (auskommentiert in `default.nix`):
-`audiobookshelf`, `authentik`, `forgejo`, `home-assistant`, `immich`, `jellyfin`, `navidrome`,
-`netdata`, `nextcloud`, `paperless-ngx`, `rustdesk`, `syncthing`, `uptime-kuma`
-Zugehörige Caddy-VirtualHosts und Podman-Netzwerke sind ebenfalls auskommentiert.
+Inaktive Dienste (vorbereitet, auskommentiert): `audiobookshelf`, `authentik`, `forgejo`,
+`home-assistant`, `jellyfin`, `navidrome`, `netdata`, `rustdesk`, `syncthing`
+
+## Aktive Dienste (VPS)
+
+| Dienst | Typ | Funktion |
+|--------|-----|----------|
+| Caddy | NixOS-Modul | TLS-Terminierung (Let's Encrypt), Reverse Proxy via NetBird-Tunnel |
+| NetBird | NixOS-Modul | WireGuard-Mesh zu Homeserver |
+| Fail2ban | NixOS-Modul | SSH-Schutz |
 
 ## Workflow
 
@@ -140,6 +154,7 @@ Falls Passwort-Reset nötig (getestet auf ThinkPad mit LUKS):
 
 ## Geplante nächste Schritte
 
-- Nächsten Server-Dienst initialisieren (z.B. Nextcloud)
 - Weitere inaktive Dienste bei Bedarf aktivieren
-- Systemhärtung (doc 18) am Ende wenn alles läuft
+- Grafana-Alerts (Disk, RAM, ZFS) mit ntfy-Benachrichtigung einrichten
+- Windows Backup-Client: REST-URL und Repo-Passwort nach Passwort-Härtung aktualisieren
+- NetBird auf Phones (GrapheneOS + Samsung) einrichten → löst DNS-Problem

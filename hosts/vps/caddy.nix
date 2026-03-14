@@ -7,7 +7,6 @@
   # Homeserver-Caddy routet intern auf den jeweiligen Dienst.
   #
   # Homeserver NetBird-IP: 100.95.103.67
-  # E-Mail für Let's Encrypt: TODO — echte E-Mail eintragen
 
   services.caddy = {
     enable = true;
