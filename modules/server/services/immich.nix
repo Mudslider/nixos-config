@@ -76,5 +76,12 @@
     "d /tank/photos/profile       0755 root root -"
     "d /tank/photos/backups       0755 root root -"
     "d /tank/photos/encoded-video 0755 root root -"
+    # Immich erwartet diese Marker-Dateien in jedem Upload-Unterverzeichnis
+    "f /tank/photos/thumbs/.immich        0644 root root -"
+    "f /tank/photos/upload/.immich        0644 root root -"
+    "f /tank/photos/library/.immich       0644 root root -"
+    "f /tank/photos/profile/.immich       0644 root root -"
+    "f /tank/photos/backups/.immich       0644 root root -"
+    "f /tank/photos/encoded-video/.immich 0644 root root -"
   ];
 }
