@@ -4,8 +4,9 @@
     ./ssd-buffer.nix
     ./backup.nix
 
-    # Inaktiv — braucht laufenden ZFS-Pool bzw. Freund-Server
-    # ./nightly-sync.nix
+    ./nightly-sync.nix
+
+    # Inaktiv — braucht konfigurierten Freund-Server
     # ./offsite-backup.nix
   ];
 }
