@@ -14,10 +14,9 @@
   #   - sops-Secrets (bereits verschlüsselt)
   #
   # Voraussetzungen auf berlinas (einmalig):
-  #   1. User anlegen:   adduser backup-philip
-  #   2. Verzeichnis:    mkdir -p /backup/philip && chown backup-philip /backup/philip
-  #   3. SSH-Key:        Public Key von /root/.ssh/offsite-backup.pub eintragen
-  #      → ~backup-philip/.ssh/authorized_keys
+  #   User: brackup (via TrueNAS UI angelegt)
+  #   Backup-Pfad: /mnt/Storomir/netbird/bremenbackup/home/brackup/restic
+  #   SSH-Key: bereits in TrueNAS UI hinterlegt ✓
   #
   # SSH-Key generieren (einmalig auf dem Homeserver):
   #   sudo ssh-keygen -t ed25519 -f /root/.ssh/offsite-backup -N "" -C "homeserver-offsite"
@@ -59,7 +58,7 @@
     requires = [ "offsite-backup-pre.service" ];
 
     environment = {
-      RESTIC_REPOSITORY = "sftp:backup-philip@100.95.39.77:/backup/philip";
+      RESTIC_REPOSITORY = "sftp:brackup@100.95.39.77:/mnt/Storomir/netbird/bremenbackup/home/brackup/restic";
     };
 
     serviceConfig = {
@@ -135,7 +134,7 @@
   programs.ssh.extraConfig = ''
     Host 100.95.39.77
       IdentityFile /root/.ssh/offsite-backup
-      User backup-philip
+      User brackup
       StrictHostKeyChecking accept-new
   '';
 }
