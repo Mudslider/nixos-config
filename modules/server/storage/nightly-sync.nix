@@ -1,17 +1,80 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  # ── Backup-Repo-Liste ──────────────────────────────────────
+  # Neue Maschine hinzufügen:
+  #   1. Eintrag hier mit ssdPath, hddPath, secretName
+  #   2. SOPS-Secret anlegen: sops secrets/secrets.yaml
+  #   3. Secret in modules/server/security/encryption.nix aktivieren
+  backupRepos = [
+    {
+      name       = "windows (Praxis_NUC)";
+      ssdPath    = "/srv/ssd-buffer/backup";
+      hddPath    = "/tank/backup";
+      secretName = "restic-password-windows";
+    }
+    {
+      name       = "polly";
+      ssdPath    = "/srv/ssd-buffer/backup/polly";
+      hddPath    = "/tank/backup/polly";
+      secretName = "restic-password-polly";
+    }
+    {
+      name       = "nora";
+      ssdPath    = "/srv/ssd-buffer/backup/nora";
+      hddPath    = "/tank/backup/nora";
+      secretName = "restic-password-nora";
+    }
+  ];
+
+  # Generiert Tiering-Block pro Repo (wird in ExecStart eingebettet)
+  mkTierBlock = repo:
+    let pw = config.sops.secrets.${repo.secretName}.path;
+    in ''
+      echo "--- Tiering: ${repo.name} ---"
+      if [ ! -d "${repo.ssdPath}" ]; then
+        echo "Überspringe ${repo.name}: Verzeichnis fehlt"
+      else
+        mkdir -p "${repo.hddPath}"
+
+        # HDD-Repo initialisieren falls noch nicht vorhanden
+        if ! RESTIC_PASSWORD_FILE="${pw}" \
+            ${pkgs.restic}/bin/restic -r "${repo.hddPath}" cat config >/dev/null 2>&1; then
+          echo "Initialisiere HDD-Repo ${repo.name}..."
+          RESTIC_PASSWORD_FILE="${pw}" \
+            ${pkgs.restic}/bin/restic -r "${repo.hddPath}" init
+        fi
+
+        # Neue Snapshots SSD → HDD kopieren (idempotent, bereits kopierte werden übersprungen)
+        echo "Kopiere Snapshots ${repo.name}: SSD→HDD..."
+        RESTIC_PASSWORD_FILE="${pw}" \
+        RESTIC_PASSWORD2_FILE="${pw}" \
+          ${pkgs.restic}/bin/restic -r "${repo.ssdPath}" copy --repo2 "${repo.hddPath}"
+
+        # SSD bereinigen: nur letzten ~Tag behalten, Rest ist auf HDD
+        echo "Bereinige SSD-Repo ${repo.name}..."
+        RESTIC_PASSWORD_FILE="${pw}" \
+          ${pkgs.restic}/bin/restic -r "${repo.ssdPath}" forget --keep-within 26h --prune
+
+        echo "Fertig: ${repo.name}"
+      fi
+    '';
+
+in
 {
   # ── Nächtlicher Sync: SSD → ZFS-Pool (HDD) ───────────────
+  # Design-Prinzip: HDDs fahren nur einmal pro Nacht hoch.
+  # Daten akkumulieren tagsüber auf SSD, werden um 3 Uhr übergeben.
+  # HDDs schlafen danach bis zur nächsten Nacht.
 
   systemd.services.nightly-sync = {
     description = "SSD-Buffer auf ZFS-HDD synchronisieren";
     serviceConfig = {
       Type = "oneshot";
 
-      # HDDs gestaffelt aufwecken
+      # HDDs gestaffelt aufwecken (verhindert Stromspitzen beim gleichzeitigen Spinup)
       ExecStartPre = pkgs.writeShellScript "wake-hdds" ''
         echo "Wecke HDDs gestaffelt auf..."
-        # Erste HDD aufwecken (Lesezugriff reicht)
         for disk in /dev/disk/by-id/ata-WDC_WD*; do
           if [ -b "$disk" ]; then
             ${pkgs.hdparm}/bin/hdparm -C "$disk" || true
@@ -19,7 +82,6 @@
             sleep 8
           fi
         done
-        # Warte bis HDDs bereit sind
         sleep 5
       '';
 
@@ -45,14 +107,11 @@
           ${pkgs.coreutils}/bin/find /srv/ssd-buffer/documents/ -type d -empty -delete 2>/dev/null || true
         fi
 
-        # ── Backup: Nur spiegeln ────────────────────────
-        # Restic verwaltet sein Repository selbst.
-        # Kein --delete, kein --remove-source-files!
-        if [ -d "/srv/ssd-buffer/backup/" ] && [ "$(ls -A /srv/ssd-buffer/backup/ 2>/dev/null)" ]; then
-          echo "Spiegle Backup-Repository auf HDD..."
-          ${pkgs.rsync}/bin/rsync -avh \
-            /srv/ssd-buffer/backup/ /tank/backup/
-        fi
+        # ── Backup-Tiering: SSD→HDD kopieren + SSD bereinigen ──
+        # Restic copy ist idempotent: bereits kopierte Snapshots werden übersprungen.
+        # Nach dem Kopieren bleiben nur die letzten ~26h auf der SSD.
+        echo "=== Backup-Tiering ==="
+        ${lib.concatMapStrings mkTierBlock backupRepos}
 
         echo "=== Sync abgeschlossen: $(date) ==="
       '';

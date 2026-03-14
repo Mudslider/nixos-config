@@ -20,10 +20,18 @@
         "nextcloud-admin-pass" = {};
         "vaultwarden-env" = {};
         "netbird-setup-key" = {};
+
+        # Restic Backup-Repo-Passwörter (eines pro Client-Maschine)
+        # VORAUSSETZUNG: Passwörter müssen in secrets/secrets.yaml eingetragen sein
+        #   → sops secrets/secrets.yaml  (auf dem Laptop ausführen)
+        "restic-password-windows" = {};
+        "restic-password-polly"   = {};
+        "restic-password-nora"    = {};
+
     #   "forgejo-secret" = {};
     #   "paperless-secret-key" = {};
     #   "authentik-secret-key" = {};
-    #   "restic-repo-password" = {};
+    #   "restic-repo-password" = {};   # ersetzt durch repo-spezifische Secrets oben
     #   "offsite-backup-password" = {};
      };
   };
