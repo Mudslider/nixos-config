@@ -11,7 +11,7 @@
       # NixOS (Laptop: lokal editieren → direkt rebuilden)
       nrs = "sudo nixos-rebuild switch --flake ~/nixos-config#thinkpad-p15";
       nrt = "sudo nixos-rebuild test --flake ~/nixos-config#thinkpad-p15";
-      nfu = "nix flake update ~/nixos-config";
+      nfu = "nix flake update --flake ~/nixos-config";
 
       # Systemd
       sc = "sudo systemctl";
