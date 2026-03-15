@@ -25,7 +25,7 @@
     };
 
     # Ordner und Geräte werden über die Web-UI konfiguriert.
-    # Zugriff: ssh -L 8384:localhost:8384 philip@192.168.1.10
+    # Zugriff: ssh -L 8384:localhost:8384 philip@192.168.178.10
     # Dann: http://localhost:8384
   };
 }

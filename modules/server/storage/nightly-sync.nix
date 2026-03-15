@@ -76,6 +76,8 @@ in
 
   systemd.services.nightly-sync = {
     description = "SSD-Buffer auf ZFS-HDD synchronisieren";
+    after = [ "zfs-mount.service" ];
+    requires = [ "zfs-mount.service" ];
     serviceConfig = {
       Type = "oneshot";
 

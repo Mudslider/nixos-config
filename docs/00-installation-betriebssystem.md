@@ -397,15 +397,15 @@ Auf dem **Laptop**:
 
 ```bash
 # Alten Host-Key entfernen (der war vom USB-Stick):
-ssh-keygen -R 192.168.1.10
+ssh-keygen -R 192.168.178.10
 
-ssh philip@192.168.1.10
+ssh philip@192.168.178.10
 ```
 
 > Beim ersten Verbinden: `yes` bestätigen.
 
 > **Falls "Permission denied":** Passwort-Auth ist als Rettungsanker aktiviert.
-> Versuche `ssh philip@192.168.1.10` und gib `server` als Passwort ein.
+> Versuche `ssh philip@192.168.178.10` und gib `server` als Passwort ein.
 > Dann den SSH-Key in der Config korrigieren und neu rebuilden.
 
 ### 5.2 System prüfen
@@ -486,7 +486,7 @@ nano /mnt/home/nixos-config/hosts/homeserver/default.nix
 **Option A:** Passwort als Fallback (Installationsphase):
 
 ```bash
-ssh philip@192.168.1.10
+ssh philip@192.168.178.10
 # Passwort: server
 ```
 

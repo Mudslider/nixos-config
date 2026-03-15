@@ -22,7 +22,7 @@ Erst ausführen, wenn **alle Dienste laufen und getestet sind**.
 
 ```bash
 # Vom Laptop:
-ssh philip@192.168.1.10
+ssh philip@192.168.178.10
 # Muss OHNE Passwort-Eingabe funktionieren (nur ggf. Key-Passphrase)
 ```
 
@@ -152,7 +152,7 @@ sudo iptables -L -n --line-numbers
 ```
 
 Erwartet:
-- TCP 22: Nur 192.168.1.0/24
+- TCP 22: Nur 192.168.178.0/24
 - TCP 443: Offen (Caddy)
 - Alles andere: DROP
 

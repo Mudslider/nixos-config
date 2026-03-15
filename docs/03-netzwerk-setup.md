@@ -11,9 +11,9 @@ Voraussetzung: Secrets eingerichtet (Anleitung 02), ZFS-Pool erstellt (Anleitung
 ## Netzwerk-Architektur (aktuell)
 
 ```
-Internet ← Fritzbox (NAT) ← pfSense (Firewall) ← Switch ← Homeserver (192.168.1.10)
+Internet ← FritzBox (NAT/Firewall) ← Switch ← Homeserver (192.168.178.10)
 
-Zugriff: Nur aus dem Heimnetz (192.168.1.0/24)
+Zugriff: Nur aus dem Heimnetz (192.168.178.0/24)
   Laptop → LAN → https://nextcloud.home.lan → Caddy → Dienst
 ```
 
@@ -27,7 +27,7 @@ In pfSense unter **Services → DNS Resolver → Custom Options**:
 
 ```
 local-zone: "home.lan." redirect
-local-data: "home.lan. A 192.168.1.10"
+local-data: "home.lan. A 192.168.178.10"
 ```
 
 Das leitet **alle** `*.home.lan`-Anfragen auf den Server um — du brauchst
@@ -39,13 +39,13 @@ Auf dem **Laptop**:
 
 ```bash
 nslookup nextcloud.home.lan
-# Muss 192.168.1.10 zurückgeben
+# Muss 192.168.178.10 zurückgeben
 
 nslookup jellyfin.home.lan
-# Muss ebenfalls 192.168.1.10 zurückgeben
+# Muss ebenfalls 192.168.178.10 zurückgeben
 ```
 
-Falls nicht: DNS-Server im Laptop muss auf pfSense (192.168.1.1) zeigen.
+Falls nicht: DNS-Server im Laptop muss auf FritzBox (192.168.178.1) zeigen.
 
 ## Schritt 2: Caddy prüfen
 
@@ -73,7 +73,7 @@ curl -k https://localhost:443 || true
 **Laptop:** CA-Datei herunterladen:
 
 ```bash
-scp philip@192.168.1.10:/var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt ~/caddy-root-ca.crt
+scp philip@192.168.178.10:/var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt ~/caddy-root-ca.crt
 ```
 
 **CA installieren:**
@@ -102,11 +102,11 @@ curl https://nextcloud.home.lan
 ```bash
 # Laptop:
 nslookup nextcloud.home.lan
-# Falls Timeout: DNS-Server auf pfSense (192.168.1.1) prüfen
+# Falls Timeout: DNS-Server auf FritzBox (192.168.178.1) prüfen
 
 # Server:
 cat /etc/resolv.conf
-# Muss 192.168.1.1 oder 1.1.1.1 enthalten
+# Muss 192.168.178.1 oder 1.1.1.1 enthalten
 ```
 
 ### Caddy startet nicht

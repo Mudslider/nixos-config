@@ -21,7 +21,7 @@
       overwriteprotocol = "https";
       trusted_domains = [
         "nextcloud.home.lan"
-        "192.168.1.10"
+        "192.168.178.10"  # TODO: zurück auf 192.168.1.10 wenn pfSense wieder aktiv
         "nextcloud.philipjonasch.de"
       ];
       trusted_proxies = [

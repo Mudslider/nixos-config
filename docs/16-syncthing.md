@@ -25,7 +25,7 @@ Syncthing lauscht nur auf localhost. Zugriff per SSH-Tunnel:
 **Laptop:**
 
 ```bash
-ssh -L 8384:localhost:8384 philip@192.168.1.10
+ssh -L 8384:localhost:8384 philip@192.168.178.10
 ```
 
 Dann im **Laptop/Browser:** `http://localhost:8384`

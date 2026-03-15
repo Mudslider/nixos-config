@@ -67,7 +67,7 @@ nano ~/nixos-config/modules/server/networking/caddy.nix
 
 ### 4. DNS-Eintrag
 
-Bei Wildcard-DNS automatisch. Sonst: pfSense → `mein-dienst.home.lan → 192.168.1.10`
+Bei Wildcard-DNS automatisch. Sonst: pfSense → `mein-dienst.home.lan → 192.168.178.10`
 
 ### 5. Datenverzeichnis in ssd-buffer.nix
 

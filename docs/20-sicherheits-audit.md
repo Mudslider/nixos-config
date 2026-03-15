@@ -65,7 +65,7 @@ ssh homeserver "ss -tlnp"
 
 # Firewall-Regeln prüfen:
 ssh homeserver "sudo iptables -L INPUT -n --line-numbers"
-# Port 22 darf NUR von 192.168.1.0/24, 192.168.178.0/24 und 100.95.0.0/16 erreichbar sein
+# Port 22 darf NUR von 192.168.178.0/24, 192.168.178.0/24 und 100.95.0.0/16 erreichbar sein
 ```
 
 **Checkliste Homeserver:**

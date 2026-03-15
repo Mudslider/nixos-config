@@ -123,6 +123,7 @@
       "grafana.home.lan" = {
         extraConfig = ''
           tls internal
+          # Explizit IPv4 — "localhost" löst als ::1 auf, aber Grafana bindet nur an 127.0.0.1
           reverse_proxy 127.0.0.1:3100
         '';
       };

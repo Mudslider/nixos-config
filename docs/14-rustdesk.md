@@ -35,6 +35,6 @@ Installiere RustDesk (https://rustdesk.com/) auf allen Geräten und trage unter 
 
 | Feld | Wert |
 |------|------|
-| ID Server | `192.168.1.10` (LAN) oder NetBird-IP (Remote) |
-| Relay Server | `192.168.1.10` (LAN) oder NetBird-IP (Remote) |
+| ID Server | `192.168.178.10` (LAN) oder NetBird-IP (Remote) |
+| Relay Server | `192.168.178.10` (LAN) oder NetBird-IP (Remote) |
 | Key | Public Key von oben |

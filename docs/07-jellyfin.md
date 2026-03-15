@@ -85,9 +85,9 @@ sudo intel_gpu_top
 
 ```bash
 # Per rsync (empfohlen für große Mengen):
-rsync -avhP /lokaler/pfad/filme/ philip@192.168.1.10:/tank/media/filme/
+rsync -avhP /lokaler/pfad/filme/ philip@192.168.178.10:/tank/media/filme/
 
-# Per Samba (Windows Explorer): \\192.168.1.10\media
+# Per Samba (Windows Explorer): \\192.168.178.10\media
 ```
 
 **Server:** Samba-Passwort einmalig setzen:

@@ -52,7 +52,7 @@ Hochladen-Button → Datei auswählen → Upload.
 **Laptop:** Dateien per SCP hochladen:
 
 ```bash
-scp rechnung.pdf philip@192.168.1.10:/srv/ssd-buffer/documents/
+scp rechnung.pdf philip@192.168.178.10:/srv/ssd-buffer/documents/
 # Verarbeitung innerhalb von 1-2 Minuten
 ```
 

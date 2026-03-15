@@ -82,7 +82,7 @@ Error getting data key: 0 successful groups required, got 0
 **Lösung (Laptop):**
 ```bash
 # Server-Key aus SSH-Host-Key ableiten:
-nix-shell -p ssh-to-age --run "ssh-keyscan 192.168.1.10 2>/dev/null | ssh-to-age"
+nix-shell -p ssh-to-age --run "ssh-keyscan 192.168.178.10 2>/dev/null | ssh-to-age"
 
 # Key in .sops.yaml eintragen, dann:
 sops updatekeys secrets/secrets.yaml
@@ -148,7 +148,7 @@ bash: ssh-to-age: Kommando nicht gefunden
 
 **Lösung (Laptop):**
 ```bash
-nix-shell -p ssh-to-age --run "ssh-keyscan 192.168.1.10 2>/dev/null | ssh-to-age"
+nix-shell -p ssh-to-age --run "ssh-keyscan 192.168.178.10 2>/dev/null | ssh-to-age"
 ```
 
 **Lesson Learned:** `ssh-to-age` ist nicht standardmäßig installiert. Immer über `nix-shell -p` aufrufen.
@@ -192,7 +192,7 @@ settings = {
 
 **Symptom (Laptop):**
 ```
-ssh: connect to host 192.168.1.10 port 22: Connection refused
+ssh: connect to host 192.168.178.10 port 22: Connection refused
 ```
 
 **Ursache:** Der Server ging in den Schlafmodus. Nach dem Aufwachen (Tastendruck am Monitor) wurden die Firewall-Regeln nicht korrekt geladen, obwohl SSH lief.
@@ -327,7 +327,7 @@ Danach reicht immer `git push`.
 
 2. **Server-Key ableiten (Laptop):**
    ```bash
-   nix-shell -p ssh-to-age --run "ssh-keyscan 192.168.1.10 2>/dev/null | ssh-to-age"
+   nix-shell -p ssh-to-age --run "ssh-keyscan 192.168.178.10 2>/dev/null | ssh-to-age"
    ```
 
 3. **`.sops.yaml` anlegen (Laptop)** mit beiden Public Keys (lowercase!)
