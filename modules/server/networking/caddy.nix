@@ -123,7 +123,7 @@
       "grafana.home.lan" = {
         extraConfig = ''
           tls internal
-          reverse_proxy localhost:3100
+          reverse_proxy 127.0.0.1:3100
         '';
       };
 
