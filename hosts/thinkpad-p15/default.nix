@@ -34,6 +34,7 @@
 
   # ── Dienste ───────────────────────────────────────────────
   services.openssh.enable = true;
+  services.netbird.enable = true; # VPN-Daemon für Fernzugriff auf Homeserver
 
   # ── Benutzer ──────────────────────────────────────────────
   users.users.polly = {

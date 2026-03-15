@@ -4,6 +4,7 @@
     ./shell.nix
     ./git.nix
     ./tools.nix
+    ./ssh.nix
   ];
 
   home = {
