@@ -34,7 +34,8 @@
 
   # ── Dienste ───────────────────────────────────────────────
   services.openssh.enable = true;
-  services.netbird.enable = true; # VPN-Daemon für Fernzugriff auf Homeserver
+  # services.netbird.enable — kaputt in nixpkgs 26.05.20260312 (netbird 0.65.3 wrapper bug)
+  # netbird läuft manuell: sudo netbird up (merkt sich die Verbindung dauerhaft)
 
   # ── Benutzer ──────────────────────────────────────────────
   users.users.polly = {
