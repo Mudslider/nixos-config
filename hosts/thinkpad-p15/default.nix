@@ -35,7 +35,17 @@
   # ── Dienste ───────────────────────────────────────────────
   services.openssh.enable = true;
   # services.netbird.enable — kaputt in nixpkgs 26.05.20260312 (netbird 0.65.3 wrapper bug)
-  # netbird läuft manuell: sudo netbird up (merkt sich die Verbindung dauerhaft)
+  # Workaround: Daemon direkt als systemd-Service starten
+  systemd.services.netbird = {
+    description = "NetBird VPN Daemon";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.netbird}/bin/netbird service run";
+      Restart = "on-failure";
+      RuntimeDirectory = "netbird";
+    };
+  };
 
   # ── Benutzer ──────────────────────────────────────────────
   users.users.polly = {
