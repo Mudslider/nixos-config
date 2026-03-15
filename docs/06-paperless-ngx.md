@@ -38,9 +38,8 @@ sudo nixos-rebuild switch --flake ~/nixos-config#homeserver
 
 1. **Laptop/Browser:** `https://paperless.home.lan`
 2. Login: **philip** / (Passwort aus Passwort-Manager)
-3. **Sofort Passwort ändern** unter Profil (oben rechts)
 
-> **⚠ Das Passwort Das Admin-Passwort wird in der UI verwaltet.
+> **Hinweis:** `PAPERLESS_ADMIN_PASSWORD` wird in `paperless-ngx.nix` bewusst nicht gesetzt — die Env-Var wird nur beim allerersten Start gebraucht (leere DB). Falls ein Passwort-Reset nötig ist: `sudo podman exec paperless python manage.py changepassword philip`
 
 ## Dokumente importieren
 

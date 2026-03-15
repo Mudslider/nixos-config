@@ -6,7 +6,7 @@
   # ML lernt automatisch aus manuellen Tags/Korrespondenten → wird besser mit der Zeit.
   #
   # Consume-Ordner: /srv/ssd-buffer/documents/ → Dateien hier ablegen = automatischer Import
-  
+  # Admin-Passwort wird in der Paperless-UI verwaltet (nicht mehr via Env-Var).
 
   virtualisation.oci-containers.containers = {
     paperless-redis = {
@@ -30,9 +30,9 @@
         PAPERLESS_TIME_ZONE        = "Europe/Berlin";
         PAPERLESS_URL              = "https://paperless.home.lan";
         PAPERLESS_ADMIN_USER       = "philip";
-        # Initiales Admin-Passwort — nur beim ersten Container-Start relevant.
-        # Passwort wurde in der UI bereits geändert. TODO: in SOPS secrets verschieben.
-        PAPERLESS_ADMIN_PASSWORD   = "REDACTED";
+        # PAPERLESS_ADMIN_PASSWORD absichtlich weggelassen:
+        # Wird nur beim ersten Start gebraucht (DB leer). Admin existiert bereits.
+        # Passwort-Reset bei Bedarf: sudo podman exec paperless python manage.py changepassword philip
 
         # ── OCR ───────────────────────────────────────────────
         PAPERLESS_OCR_LANGUAGE     = "deu+eng";    # Deutsch + Englisch
