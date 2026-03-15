@@ -33,7 +33,7 @@
     #   "paperless-secret-key" = {};
     #   "authentik-secret-key" = {};
     #   "restic-repo-password" = {};   # ersetzt durch repo-spezifische Secrets oben
-        "offsite-backup-password" = {};
+    #   "offsite-backup-password" = {};  # deaktiviert bis Offsite-Backup neu eingerichtet wird
      };
   };
 }
