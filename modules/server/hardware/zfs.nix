@@ -90,15 +90,15 @@
   #
   # Siehe Anleitung 01-zfs-setup.md
   #
-  # systemd.services.zfs-load-key = {
-  #   description = "Load ZFS encryption key from keyfile";
-  #   after = [ "zfs-import.target" ];
-  #   before = [ "zfs-mount.service" ];
-  #   wantedBy = [ "zfs-mount.service" ];
-  #   serviceConfig = {
-  #     Type = "oneshot";
-  #     RemainAfterExit = true;
-  #     ExecStart = "${pkgs.zfs}/bin/zfs load-key tank";
-  #   };
-  # };
+  systemd.services.zfs-load-key = {
+    description = "Load ZFS encryption key from keyfile";
+    after = [ "zfs-import.target" ];
+    before = [ "zfs-mount.service" ];
+    wantedBy = [ "zfs-mount.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.zfs}/bin/zfs load-key tank";
+    };
+  };
 }
