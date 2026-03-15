@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   # ── Prometheus + node_exporter ────────────────────────────
@@ -47,6 +47,26 @@
         url = "http://127.0.0.1:9090";
         isDefault = true;
       }];
+    };
+  };
+
+  # Secret-Key automatisch generieren falls nicht vorhanden
+  systemd.services.grafana-secret-key = {
+    description = "Generate Grafana secret key if missing";
+    before = [ "grafana.service" ];
+    wantedBy = [ "grafana.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "grafana-secret-key" ''
+        KEY_FILE="/srv/ssd-buffer/services/grafana/secret_key"
+        if [ ! -f "$KEY_FILE" ]; then
+          ${pkgs.openssl}/bin/openssl rand -base64 32 > "$KEY_FILE"
+          chown grafana:grafana "$KEY_FILE"
+          chmod 600 "$KEY_FILE"
+          echo "Grafana secret_key generiert"
+        fi
+      '';
     };
   };
 }

@@ -17,6 +17,9 @@
     # Dokumente: PaperlessNGX consume-Ordner
     "d /srv/ssd-buffer/documents 0750 philip philip -"
 
+    # Immich Thumbnails auf SSD (schnelles Browsen ohne HDD-Spinup)
+    "d /srv/ssd-buffer/immich-thumbs 0755 root root -"
+
     # ── ZFS-Tank Unterverzeichnisse ─────────────────────
     # (Datasets werden als ZFS-Datasets erstellt,
     #  Unterordner innerhalb der Datasets per tmpfiles)

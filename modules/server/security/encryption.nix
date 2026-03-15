@@ -24,6 +24,9 @@
         # Restic Backup-Repo-Passwörter (eines pro Client-Maschine)
         # VORAUSSETZUNG: Passwörter müssen in secrets/secrets.yaml eingetragen sein
         #   → sops secrets/secrets.yaml  (auf dem Laptop ausführen)
+        # Immich DB-Passwort (intern im Container-Netz, aber nicht im Klartext in Git)
+        "immich-db-password" = {};
+
         "restic-password-windows" = {};
         "restic-password-polly"   = {};
         "restic-password-nora"    = {};

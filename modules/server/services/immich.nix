@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   # ── Immich ────────────────────────────────────────────────
@@ -18,8 +18,8 @@
       volumes = [
         "immich-pgdata:/var/lib/postgresql/data"
       ];
+      environmentFiles = [ config.sops.templates."immich-postgres-env".path ];
       environment = {
-        POSTGRES_PASSWORD = "immich";  # Interne DB, nur im Container-Netz
         POSTGRES_USER = "immich";
         POSTGRES_DB = "immich";
         POSTGRES_INITDB_ARGS = "--data-checksums";
@@ -34,12 +34,13 @@
       dependsOn = [ "immich-redis" "immich-postgres" ];
       volumes = [
         "/tank/photos:/usr/src/app/upload"
+        "/srv/ssd-buffer/immich-thumbs:/usr/src/app/upload/thumbs"
         "/tank/photos/extern:/mnt/extern:ro"
       ];
+      environmentFiles = [ config.sops.templates."immich-server-env".path ];
       environment = {
         DB_HOSTNAME = "immich-postgres";
         DB_USERNAME = "immich";
-        DB_PASSWORD = "immich";
         DB_DATABASE_NAME = "immich";
         REDIS_HOSTNAME = "immich-redis";
         IMMICH_MACHINE_LEARNING_URL = "http://immich-ml:3003";
@@ -67,6 +68,19 @@
   systemd.services.podman-immich-postgres.after = [ "podman-network-immich.service" "zfs-mount.service" ];
   systemd.services.podman-immich-server.after = [ "podman-network-immich.service" "zfs-mount.service" ];
   systemd.services.podman-immich-ml.after = [ "podman-network-immich.service" "zfs-mount.service" ];
+
+  # ── SOPS-Templates für DB-Passwort ───────────────────────
+  # Passwort wird aus secrets.yaml entschlüsselt und als Env-Datei bereitgestellt
+  sops.templates."immich-postgres-env" = {
+    content = ''
+      POSTGRES_PASSWORD=${config.sops.placeholder."immich-db-password"}
+    '';
+  };
+  sops.templates."immich-server-env" = {
+    content = ''
+      DB_PASSWORD=${config.sops.placeholder."immich-db-password"}
+    '';
+  };
 
   # Immich-Verzeichnisse auf ZFS anlegen (werden beim ersten Start benötigt)
   systemd.tmpfiles.rules = [

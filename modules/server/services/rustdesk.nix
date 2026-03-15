@@ -4,6 +4,9 @@
   # ── RustDesk ──────────────────────────────────────────────
   # Open-Source Remote-Desktop (Alternative zu AnyDesk)
   # Eigener Relay-Server für volle Kontrolle über den Traffic
+  #
+  # ACHTUNG: Diese Datei öffnet Firewall-Ports (21115-21118).
+  # Nur in default.nix importieren wenn der Dienst auch tatsächlich genutzt wird.
 
   virtualisation.oci-containers.containers = {
     rustdesk-hbbs = {

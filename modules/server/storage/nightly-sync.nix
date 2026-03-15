@@ -82,13 +82,15 @@ in
       Type = "oneshot";
 
       # HDDs gestaffelt aufwecken (verhindert Stromspitzen beim gleichzeitigen Spinup)
+      # Erkennt ZFS-Pool-Devices automatisch statt Hersteller-Glob
       ExecStartPre = pkgs.writeShellScript "wake-hdds" ''
         echo "Wecke HDDs gestaffelt auf..."
-        for disk in /dev/disk/by-id/ata-WDC_WD*; do
-          # Partitionen überspringen (nur Basis-Geräte aufwecken)
-          [[ "$disk" == *-part* ]] && continue
-          if [ -b "$disk" ]; then
-            ${pkgs.hdparm}/bin/hdparm -C "$disk" || true
+        for disk in $(${pkgs.zfs}/bin/zpool list -vHP tank 2>/dev/null | ${pkgs.gawk}/bin/awk '/\/dev\/disk/ {print $1}'); do
+          # Nur Basis-Geräte (Partitionen → Parent-Device auflösen)
+          base=$(echo "$disk" | ${pkgs.gnused}/bin/sed 's/-part[0-9]*$//')
+          if [ -b "$base" ]; then
+            echo "Wecke $base auf..."
+            ${pkgs.hdparm}/bin/hdparm -C "$base" || true
             echo "Warte 8 Sekunden vor nächster HDD..."
             sleep 8
           fi
@@ -101,21 +103,39 @@ in
 
         echo "=== Starte nächtlichen Sync: $(date) ==="
 
-        # ── Fotos: Move-Pattern ─────────────────────────
-        # SSD = Eingangs-Puffer, HDD = wachsendes Archiv
+        # ── Fotos: Copy + Age-Out ──────────────────────
+        # SSD = schneller Zugriff auf aktuelle Fotos (letzte 90 Tage)
+        # HDD = vollständiges Archiv
+        # 1. Alles auf HDD kopieren (rsync ist idempotent, keine Duplikate)
+        # 2. Dateien >90 Tage nur von der SSD löschen (HDD behält alles)
         if [ -d "/srv/ssd-buffer/photos/" ] && [ "$(ls -A /srv/ssd-buffer/photos/ 2>/dev/null)" ]; then
-          echo "Verschiebe Fotos auf HDD..."
-          ${pkgs.rsync}/bin/rsync -avh --remove-source-files \
+          echo "Kopiere Fotos auf HDD (ohne SSD-Löschung)..."
+          ${pkgs.rsync}/bin/rsync -avh \
             /srv/ssd-buffer/photos/ /tank/photos/
+
+          echo "Bereinige Fotos älter als 90 Tage von SSD..."
+          ${pkgs.coreutils}/bin/find /srv/ssd-buffer/photos/ -type f -mtime +90 -delete 2>/dev/null || true
           ${pkgs.coreutils}/bin/find /srv/ssd-buffer/photos/ -type d -empty -delete 2>/dev/null || true
         fi
 
-        # ── Dokumente: Move-Pattern ─────────────────────
-        if [ -d "/srv/ssd-buffer/documents/" ] && [ "$(ls -A /srv/ssd-buffer/documents/ 2>/dev/null)" ]; then
-          echo "Verschiebe Dokumente auf HDD..."
-          ${pkgs.rsync}/bin/rsync -avh --remove-source-files \
-            /srv/ssd-buffer/documents/ /tank/documents/
-          ${pkgs.coreutils}/bin/find /srv/ssd-buffer/documents/ -type d -empty -delete 2>/dev/null || true
+        # ── Paperless: Copy-Backup auf HDD ────────────
+        # Paperless-Daten bleiben auf SSD (schneller Zugriff).
+        # Nächtliches rsync-Backup auf HDD als Schutz bei SSD-Ausfall.
+        # KEIN --remove-source-files! Consume-Ordner darf nicht geleert werden.
+        echo "Sichere Paperless-Daten auf HDD..."
+        mkdir -p /tank/paperless-backup
+        ${pkgs.rsync}/bin/rsync -avh \
+          /srv/ssd-buffer/services/paperless/ /tank/paperless-backup/services/
+        ${pkgs.rsync}/bin/rsync -avh \
+          /srv/ssd-buffer/documents/ /tank/paperless-backup/consume/
+
+        # ── Immich Thumbnails: SSD→HDD Backup ──────
+        # Thumbnails leben auf SSD für schnelles Browsen.
+        # Backup auf HDD für den Fall eines SSD-Ausfalls.
+        if [ -d "/srv/ssd-buffer/immich-thumbs/" ]; then
+          echo "Sichere Immich-Thumbnails auf HDD..."
+          ${pkgs.rsync}/bin/rsync -avh \
+            /srv/ssd-buffer/immich-thumbs/ /tank/photos/thumbs-backup/
         fi
 
         # ── Backup-Tiering: SSD→HDD kopieren + SSD bereinigen ──
