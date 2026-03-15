@@ -37,7 +37,7 @@ Einheitliches NixOS-Flake-Repo für drei Maschinen. Dendritisches Pattern mit fl
 | Hardware | ASRock N100DC-ITX, 32GB RAM | Intel i9, 32GB RAM, RTX A4000 | Hetzner CX23, Nürnberg |
 | IP | 192.168.178.10 (LAN), 100.95.103.67 (NetBird) | DHCP | 157.90.239.236 |
 | Wiring | `parts/homeserver.nix` | `parts/thinkpad-p15.nix` | `parts/vps.nix` |
-| Rebuild | `nrs` = git fetch + reset --hard + nixos-rebuild switch | `nrs` = sudo nixos-rebuild switch | `nixos-rebuild switch --flake .#vps --target-host root@157.90.239.236 --build-host localhost` |
+| Rebuild | `nrs` = git fetch + reset --hard + nixos-rebuild switch | `nrs` = sudo nixos-rebuild switch | `NIX_SSHOPTS="-p 2222" nixos-rebuild switch --flake .#vps --target-host root@157.90.239.236 --build-host localhost` |
 
 ## Repo-Struktur
 
@@ -92,9 +92,10 @@ Inaktive Dienste (vorbereitet, auskommentiert): `audiobookshelf`, `authentik`, `
 
 | Dienst | Typ | Funktion |
 |--------|-----|----------|
-| Caddy | NixOS-Modul | TLS-Terminierung (Let's Encrypt), Reverse Proxy via NetBird-Tunnel |
+| Caddy | NixOS-Modul | TLS-Terminierung (Let's Encrypt), Reverse Proxy via NetBird-Tunnel, Security-Headers |
 | NetBird | NixOS-Modul | WireGuard-Mesh zu Homeserver |
-| Fail2ban | NixOS-Modul | SSH-Schutz |
+| Fail2ban | NixOS-Modul | SSH-Schutz (Port 2222) |
+| Auto-Upgrade | systemd | Tägliches Flake-Update von GitHub (04:30) |
 
 ## Workflow
 

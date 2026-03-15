@@ -15,15 +15,30 @@
       email p.jonasch@posteo.de
     '';
 
+    # Security-Headers als Snippet — wird in jedem Host importiert
+    extraConfig = ''
+      (security-headers) {
+        header {
+          Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+          X-Content-Type-Options "nosniff"
+          X-Frame-Options "DENY"
+          Referrer-Policy "strict-origin-when-cross-origin"
+          -Server
+        }
+      }
+    '';
+
     virtualHosts = {
       "nextcloud.philipjonasch.de" = {
         extraConfig = ''
+          import security-headers
           reverse_proxy 100.95.103.67:80
         '';
       };
 
       "immich.philipjonasch.de" = {
         extraConfig = ''
+          import security-headers
           reverse_proxy 100.95.103.67:80
           request_body {
             max_size 50GB
@@ -33,6 +48,8 @@
 
       "vaultwarden.philipjonasch.de" = {
         extraConfig = ''
+          import security-headers
+
           # Admin-Panel nur über vaultwarden.home.lan erreichbar, nicht öffentlich
           @admin path /admin*
           respond @admin 403
@@ -43,6 +60,7 @@
 
       "paperless.philipjonasch.de" = {
         extraConfig = ''
+          import security-headers
           reverse_proxy 100.95.103.67:80
         '';
       };

@@ -14,13 +14,14 @@
       "homeserver-via-vps" = {
         hostname = "100.95.103.67";
         user = "philip";
-        proxyJump = "root@157.90.239.236";
+        proxyJump = "root@157.90.239.236:2222";
       };
 
       # VPS direkt
       "vps" = {
         hostname = "157.90.239.236";
         user = "root";
+        port = 2222;
       };
     };
   };

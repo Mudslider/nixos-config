@@ -6,7 +6,7 @@
     enable = true;
 
     allowedTCPPorts = [
-      22    # SSH
+      2222  # SSH (nicht Standard-Port 22, reduziert Scan-Noise)
       80    # Caddy HTTP (Let's Encrypt ACME Challenge)
       443   # Caddy HTTPS
     ];

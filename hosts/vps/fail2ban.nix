@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   # ── Fail2ban (SSH-Brute-Force-Schutz) ──────────────────────
@@ -15,7 +15,7 @@
     jails.sshd = {
       settings = {
         enabled = true;
-        port = "ssh";
+        port = builtins.toString (builtins.head config.services.openssh.ports);
         filter = "sshd";
         maxretry = 3;
         bantime = "1h";

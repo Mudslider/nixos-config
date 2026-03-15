@@ -37,11 +37,15 @@
   ];
 
   # ── SSH ───────────────────────────────────────────────────
+  # Port 2222 statt 22: eliminiert 99% der automatisierten Scans
   services.openssh = {
     enable = true;
+    ports = [ 2222 ];
     settings = {
-      PasswordAuthentication = false;  # Nur Key-Auth
-      PermitRootLogin = "prohibit-password";
+      PasswordAuthentication = false;
+      PermitRootLogin = "prohibit-password";  # Nur Key-Auth, nötig für nixos-rebuild --target-host
+      MaxAuthTries = 3;
+      LoginGraceTime = 30;
     };
   };
 
@@ -51,6 +55,17 @@
   #   sops updatekeys secrets/secrets.yaml
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
+  # ── Automatische Updates ──────────────────────────────────
+  # VPS zieht täglich das Flake von GitHub und rebuildet sich selbst.
+  # So bekommt er Security-Patches ohne manuelles nrs.
+  system.autoUpgrade = {
+    enable = true;
+    flake = "github:Mudslider/nixos-config#vps";
+    dates = "04:30";            # Nachts, nach dem Homeserver-Sync
+    randomizedDelaySec = "15m";
+    allowReboot = false;        # Kein automatischer Reboot — nur config-switch
+  };
 
   environment.systemPackages = with pkgs; [ htop curl ];
 
