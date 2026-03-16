@@ -35,7 +35,16 @@
       "Bash(chmod +x /home/polly/nixos-config/scripts/check-updates.sh && git add modules/server/services/immich.nix modules/server/services/uptime-kuma.nix scripts/check-updates.sh && git commit -m \"feat: Container-Versionen pinnen + Update-Checker Skript\" && git push)",
       "Bash(./scripts/check-updates.sh)",
       "Bash(ssh philip@192.168.178.10 \"git -C ~/nixos-config fetch origin && git -C ~/nixos-config reset --hard origin/main && sudo nixos-rebuild switch --flake ~/nixos-config#homeserver 2>&1 | tail -15\")",
-      "Bash(ping -c 2 ntfy.home.lan && curl -sk https://ntfy.home.lan/v1/health)"
+      "Bash(ping -c 2 ntfy.home.lan && curl -sk https://ntfy.home.lan/v1/health)",
+      "Bash(ssh homeserver:*)",
+      "Bash(ssh -o StrictHostKeyChecking=no homeserver \"sudo podman exec immich-server ls /usr/src/app/upload/ 2>&1\")",
+      "Bash(ls -la /home/polly/nixos-config/modules/server/services/ | grep -E \"\\\\.nix$\")",
+      "Bash(git -C /home/polly/nixos-config log --oneline | head -15)",
+      "Bash(sops --decrypt secrets/secrets.yaml 2>/dev/null | grep -c \"immich\")",
+      "Bash(sops --encrypt /tmp/secrets-plain.yaml 2>&1 | head -20)",
+      "Bash(EDITOR=\"bash -c 'echo \\\\\"immich-db-password: immich\\\\\" >> \\\\\"\\\\$1\\\\\"' --\" sops secrets/secrets.yaml 2>&1)",
+      "Bash(sops --decrypt secrets/secrets.yaml 2>/dev/null | grep \"immich\")",
+      "Bash(nix flake:*)"
     ]
   }
 }

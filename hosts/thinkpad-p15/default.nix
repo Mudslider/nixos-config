@@ -13,7 +13,19 @@
 
   # ── Netzwerk ──────────────────────────────────────────────
   networking.hostName = "playground";
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    dns = "systemd-resolved";  # NetworkManager nutzt systemd-resolved
+  };
+
+  # Split-DNS: home.lan immer über Homeserver (NetBird), Rest über DHCP-DNS
+  services.resolved = {
+    enable = true;
+    settings.Resolve = {
+      DNS = "100.95.103.67";
+      Domains = "~home.lan";
+    };
+  };
 
   # ── NVIDIA (PRIME Offload — PCI-Adressen maschinenspezifisch) ──
   hardware.graphics.enable = true;

@@ -16,8 +16,8 @@
       # Alle *.home.lan Adressen auf den Homeserver
       address = "/home.lan/192.168.178.10";
 
-      # Nur auf LAN-Interface hören (nicht auf podman/netbird)
-      interface = "enp1s0";
+      # Auf LAN und NetBird-Interface hören (damit der Laptop von unterwegs home.lan auflösen kann)
+      interface = [ "enp1s0" "wt0" ];
       bind-interfaces = true;
 
       # Kein DNS-Rebind-Schutz für home.lan (private Domain)
