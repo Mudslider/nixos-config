@@ -17,8 +17,10 @@
       address = "/home.lan/192.168.178.10";
 
       # Auf LAN und NetBird-Interface hören (damit der Laptop von unterwegs home.lan auflösen kann)
-      interface = [ "enp1s0" "wt0" ];
-      bind-interfaces = true;
+      # NetBird-Client "wt0" erstellt Interface "nb-wt0"
+      # bind-dynamic statt bind-interfaces: toleriert fehlende Interfaces beim Start
+      interface = [ "enp1s0" "nb-wt0" ];
+      bind-dynamic = true;
 
       # Kein DNS-Rebind-Schutz für home.lan (private Domain)
       rebind-domain-ok = "home.lan";

@@ -43,7 +43,8 @@
         DB_USERNAME = "immich";
         DB_DATABASE_NAME = "immich";
         REDIS_HOSTNAME = "immich-redis";
-        IMMICH_MACHINE_LEARNING_URL = "http://immich-ml:3003";
+        # ML-URL wird über Immich Admin-UI gesteuert (flexibel umschaltbar)
+        # Standard: http://immich-ml:3003 (lokaler Container)
         TZ = "Europe/Berlin";
       };
       autoStart = true;

@@ -13,6 +13,7 @@
 
   # ── Netzwerk ──────────────────────────────────────────────
   networking.hostName = "playground";
+
   networking.networkmanager = {
     enable = true;
     dns = "systemd-resolved";  # NetworkManager nutzt systemd-resolved
@@ -43,6 +44,10 @@
       nvidiaBusId = "PCI:1:0:0";
     };
   };
+
+  # ── Container (Podman + NVIDIA GPU) ─────────────────────
+  virtualisation.podman.enable = true;
+  hardware.nvidia-container-toolkit.enable = true;
 
   # ── Dienste ───────────────────────────────────────────────
   services.openssh.enable = true;
