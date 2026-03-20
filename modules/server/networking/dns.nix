@@ -16,10 +16,9 @@
       # Alle *.home.lan Adressen auf den Homeserver
       address = "/home.lan/192.168.178.10";
 
-      # Auf allen Interfaces lauschen, Sicherheit über Firewall
-      # (bind-interfaces/bind-dynamic verweigern Antworten an NetBird-Clients
-      # weil deren Source-IP in einem anderen Subnetz liegt)
-      except-interface = [ "lo" ];
+      # Nur auf LAN + NetBird lauschen (vermeidet Konflikt mit Podman-DNS auf 10.89.x.x:53)
+      listen-address = [ "192.168.178.10" "100.95.103.67" ];
+      bind-dynamic = true;
 
       # Kein DNS-Rebind-Schutz für home.lan (private Domain)
       rebind-domain-ok = "home.lan";

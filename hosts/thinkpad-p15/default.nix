@@ -19,12 +19,35 @@
     dns = "systemd-resolved";  # NetworkManager nutzt systemd-resolved
   };
 
-  # Split-DNS: home.lan immer über Homeserver (NetBird), Rest über DHCP-DNS
-  services.resolved = {
-    enable = true;
-    settings.Resolve = {
-      DNS = "100.95.103.67";
-      Domains = "~home.lan";
+  # Split-DNS: home.lan über Homeserver (NetBird), Rest über DHCP-DNS
+  # DNS wird per-Interface auf nb-wt0 gesetzt, NICHT global in resolved.conf,
+  # damit bei NetBird-Ausfall normales DNS weiter funktioniert.
+  services.resolved.enable = true;
+
+  systemd.services.netbird-dns = {
+    description = "Split-DNS für home.lan via NetBird";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "netbird.service" ];
+    wants = [ "netbird.service" ];
+    path = [ pkgs.systemd pkgs.iproute2 ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      # Warten bis nb-wt0 existiert, dann DNS nur für dieses Interface setzen
+      # NetBird-Interface heißt wt0 auf dem Laptop (nb-wt0 auf dem Server)
+      ExecStart = pkgs.writeShellScript "netbird-dns" ''
+        for i in $(seq 1 30); do
+          if ip link show wt0 &>/dev/null; then
+            resolvectl dns wt0 100.95.103.67
+            resolvectl domain wt0 ~home.lan
+            echo "Split-DNS für home.lan auf wt0 konfiguriert"
+            exit 0
+          fi
+          sleep 1
+        done
+        echo "wt0 nicht gefunden nach 30s" >&2
+        exit 1
+      '';
     };
   };
 
