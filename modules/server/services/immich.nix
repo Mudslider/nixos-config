@@ -85,14 +85,14 @@
 
   # Immich-Verzeichnisse auf ZFS anlegen (werden beim ersten Start benötigt)
   systemd.tmpfiles.rules = [
-    "d /tank/photos/thumbs        0755 root root -"
     "d /tank/photos/upload        0755 root root -"
     "d /tank/photos/library       0755 root root -"
     "d /tank/photos/profile       0755 root root -"
     "d /tank/photos/backups       0755 root root -"
     "d /tank/photos/encoded-video 0755 root root -"
-    # Immich erwartet diese Marker-Dateien in jedem Upload-Unterverzeichnis
-    "f /tank/photos/thumbs/.immich        0644 root root -"
+    # Marker-Dateien: Immich prüft .immich in jedem Volume-Root
+    # thumbs → /srv/ssd-buffer/immich-thumbs (SSD-Buffer, eigenes Volume!)
+    "f /srv/ssd-buffer/immich-thumbs/.immich 0644 root root -"
     "f /tank/photos/upload/.immich        0644 root root -"
     "f /tank/photos/library/.immich       0644 root root -"
     "f /tank/photos/profile/.immich       0644 root root -"
