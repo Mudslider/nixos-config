@@ -16,10 +16,10 @@
       # Alle *.home.lan Adressen auf den Homeserver
       address = "/home.lan/192.168.178.10";
 
-      # Auf LAN und NetBird-Interface hören (damit der Laptop von unterwegs home.lan auflösen kann)
-      # NetBird-Client "wt0" erstellt Interface "nb-wt0"
-      # bind-dynamic statt bind-interfaces: toleriert fehlende Interfaces beim Start
-      interface = [ "enp1s0" "nb-wt0" ];
+      # Auf LAN-IP und NetBird-IP hören
+      # listen-address hat kein local-service-Problem (antwortet allen Anfragern auf diesen IPs)
+      # bind-dynamic: toleriert dass NetBird-IP beim Boot noch nicht existiert
+      listen-address = [ "192.168.178.10" "100.95.103.67" "127.0.0.1" ];
       bind-dynamic = true;
 
       # Kein DNS-Rebind-Schutz für home.lan (private Domain)
