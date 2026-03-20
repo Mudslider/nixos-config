@@ -23,7 +23,7 @@
       # Sicher, weil nur auf expliziten IPs gebunden + NetBird hat nur auth. Peers.
       listen-address = [ "192.168.178.10" "100.95.103.67" "127.0.0.1" ];
       bind-dynamic = true;
-      local-service = false;
+      no-local-service = true;
 
       # Kein DNS-Rebind-Schutz für home.lan (private Domain)
       rebind-domain-ok = "home.lan";
