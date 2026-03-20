@@ -17,13 +17,9 @@
       address = "/home.lan/192.168.178.10";
 
       # Auf LAN-IP und NetBird-IP hören
-      # bind-dynamic: toleriert dass NetBird-IP beim Boot noch nicht existiert
-      # local-service=false: NetBird-Clients haben andere Subnetz-IPs als die
-      # Interface-IP — ohne diesen Flag verweigert dnsmasq die Antwort (REFUSED).
-      # Sicher, weil nur auf expliziten IPs gebunden + NetBird hat nur auth. Peers.
+      # listen-address + bind-interfaces (nicht bind-dynamic, das erzwingt local-service)
       listen-address = [ "192.168.178.10" "100.95.103.67" "127.0.0.1" ];
-      bind-dynamic = true;
-      no-local-service = true;
+      bind-interfaces = true;
 
       # Kein DNS-Rebind-Schutz für home.lan (private Domain)
       rebind-domain-ok = "home.lan";
@@ -31,6 +27,12 @@
       # Cache
       cache-size = 1000;
     };
+  };
+
+  # dnsmasq muss nach NetBird starten (sonst existiert 100.95.103.67 noch nicht)
+  systemd.services.dnsmasq = {
+    after = [ "netbird-wt0.service" ];
+    wants = [ "netbird-wt0.service" ];
   };
 
   # Port 53 im LAN öffnen
