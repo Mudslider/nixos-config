@@ -16,10 +16,10 @@
       # Alle *.home.lan Adressen auf den Homeserver
       address = "/home.lan/192.168.178.10";
 
-      # Auf LAN-IP und NetBird-IP hören
-      # listen-address + bind-interfaces (nicht bind-dynamic, das erzwingt local-service)
-      listen-address = [ "192.168.178.10" "100.95.103.67" "127.0.0.1" ];
-      bind-interfaces = true;
+      # Auf allen Interfaces lauschen, Sicherheit über Firewall
+      # (bind-interfaces/bind-dynamic verweigern Antworten an NetBird-Clients
+      # weil deren Source-IP in einem anderen Subnetz liegt)
+      except-interface = [ "lo" ];
 
       # Kein DNS-Rebind-Schutz für home.lan (private Domain)
       rebind-domain-ok = "home.lan";
