@@ -17,10 +17,13 @@
       address = "/home.lan/192.168.178.10";
 
       # Auf LAN-IP und NetBird-IP hören
-      # listen-address hat kein local-service-Problem (antwortet allen Anfragern auf diesen IPs)
       # bind-dynamic: toleriert dass NetBird-IP beim Boot noch nicht existiert
+      # local-service=false: NetBird-Clients haben andere Subnetz-IPs als die
+      # Interface-IP — ohne diesen Flag verweigert dnsmasq die Antwort (REFUSED).
+      # Sicher, weil nur auf expliziten IPs gebunden + NetBird hat nur auth. Peers.
       listen-address = [ "192.168.178.10" "100.95.103.67" "127.0.0.1" ];
       bind-dynamic = true;
+      local-service = false;
 
       # Kein DNS-Rebind-Schutz für home.lan (private Domain)
       rebind-domain-ok = "home.lan";
