@@ -90,9 +90,12 @@
   #
   # Siehe Anleitung 01-zfs-setup.md
   #
-  systemd.services.zfs-load-key = {
-    description = "Load ZFS encryption key from keyfile";
-    after = [ "zfs-import.target" ];
+  # NixOS maskt "zfs-load-key" wenn requestEncryptionCredentials = false,
+  # daher eigener Name "zfs-load-key-tank"
+  systemd.services.zfs-load-key-tank = {
+    description = "Load ZFS encryption key for tank pool";
+    requires = [ "zfs-import-tank.service" ];
+    after = [ "zfs-import-tank.service" ];
     before = [ "zfs-mount.service" ];
     wantedBy = [ "zfs-mount.service" ];
     serviceConfig = {

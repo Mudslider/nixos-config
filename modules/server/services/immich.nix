@@ -64,11 +64,15 @@
   };
 
   # Systemd-Abhängigkeiten: Netzwerk + ZFS-Mount müssen vor Containern existieren
-  # zfs-mount.service stellt sicher dass /tank/photos verfügbar ist bevor Immich startet
+  # requires = harter Dependency — Container starten NICHT wenn ZFS nicht gemountet ist
   systemd.services.podman-immich-redis.after = [ "podman-network-immich.service" "zfs-mount.service" ];
+  systemd.services.podman-immich-redis.requires = [ "zfs-mount.service" ];
   systemd.services.podman-immich-postgres.after = [ "podman-network-immich.service" "zfs-mount.service" ];
+  systemd.services.podman-immich-postgres.requires = [ "zfs-mount.service" ];
   systemd.services.podman-immich-server.after = [ "podman-network-immich.service" "zfs-mount.service" ];
+  systemd.services.podman-immich-server.requires = [ "zfs-mount.service" ];
   systemd.services.podman-immich-ml.after = [ "podman-network-immich.service" "zfs-mount.service" ];
+  systemd.services.podman-immich-ml.requires = [ "zfs-mount.service" ];
 
   # ── SOPS-Templates für DB-Passwort ───────────────────────
   # Passwort wird aus secrets.yaml entschlüsselt und als Env-Datei bereitgestellt
