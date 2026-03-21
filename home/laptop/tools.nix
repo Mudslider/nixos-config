@@ -19,6 +19,10 @@
     usbutils
     nodejs
 
+    # Claude
+    claude-code
+    claude-monitor
+
     # Dateien
     rsync
     unzip
