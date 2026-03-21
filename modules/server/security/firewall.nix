@@ -7,7 +7,7 @@
     allowedTCPPorts = [
       80         # Caddy HTTP — für NetBird-Clients (WireGuard-Tunnel)
       443        # Caddy HTTPS — für LAN-Clients
-      # 8100 — Restic REST-Server lauscht nur auf NetBird-Interface (100.95.103.67), kein globales Öffnen nötig
+      8100       # Restic REST-Server (htpasswd-geschützt, append-only)
     ];
 
     allowedUDPPorts = [

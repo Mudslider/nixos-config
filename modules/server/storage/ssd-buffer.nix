@@ -9,8 +9,10 @@
     # Hauptverzeichnis
     "d /srv/ssd-buffer          0755 root  root -"
 
-    # Backup: Restic-Repository vom Arbeitsrechner
-    "d /srv/ssd-buffer/backup   0770 restic restic -"
+    # Backup: Restic REST-Server Repos (eines pro Client)
+    "d /srv/ssd-buffer/backup        0770 restic restic -"
+    "d /srv/ssd-buffer/backup/nora   0770 restic restic -"
+    "d /srv/ssd-buffer/backup/polly  0770 restic restic -"
     # Fotos: Eingang von Handys (Immich/Syncthing)
     "d /srv/ssd-buffer/photos   0750 philip philip -"
 

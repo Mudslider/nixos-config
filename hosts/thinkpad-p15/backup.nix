@@ -9,7 +9,7 @@
   #   Server:
   #     sudo htpasswd -B /srv/ssd-buffer/backup/.htpasswd polly
   #   Laptop (nach nrs):
-  #     sudo bash -c 'echo "rest:http://polly:DEIN_HTTP_PASS@192.168.178.10:8100/polly" > /etc/restic/repository && chmod 600 /etc/restic/repository'
+  #     sudo bash -c 'echo "rest:http://USER:DEIN_HTTP_PASS@100.95.103.67:8100/polly" > /etc/restic/repository && chmod 600 /etc/restic/repository'
   #     sudo bash -c 'read -rsp "Repo-Passwort: " p && echo "$p" > /etc/restic/password && chmod 600 /etc/restic/password'
   #     sudo restic -r /etc/restic/repository --password-file /etc/restic/password init
 
@@ -18,6 +18,7 @@
     passwordFile   = "/etc/restic/password";    # Restic-Verschlüsselungspasswort
 
     paths = [ "/home/polly" ];
+    # Enthält u.a.: ~/.knowledge-base/kb.db, ~/obsidian-vaults/claude-kb/
 
     exclude = [
       "/home/polly/.cache"

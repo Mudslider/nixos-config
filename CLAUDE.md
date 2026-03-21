@@ -153,6 +153,23 @@ Falls Passwort-Reset nötig (getestet auf ThinkPad mit LUKS):
 - Vaultwarden-Daten liegen auf Root-Partition `/var/lib/vaultwarden` (unabhängig von ZFS)
 - ZFS-Passphrase nach Reboot: `sudo systemd-tty-ask-password-agent`
 
+## Self-Learning (Knowledge Base)
+
+Der KB-Server (`~/knowledge-base-server`) läuft als MCP-Tool und gibt Claude persistentes, durchsuchbares Wissen über Sessions hinweg.
+
+**Am Ende jeder produktiven Session:**
+- `kb_capture_session` nutzen — Ziel, was funktioniert hat, was nicht, Lessons Learned
+- Bei Bug-Fixes: `kb_capture_fix` mit Symptom, Ursache und Lösung
+
+**Vor komplexen Aufgaben:**
+- `kb_search` oder `kb_search_smart` nutzen um frühere Sessions zu ähnlichen Themen zu finden
+- `kb_context` für ein token-effizientes Briefing zu einem Thema
+
+**Wissens-Tiers:**
+- **Hot:** Aktive Projekte, letzte Sessions (wird zuerst durchsucht)
+- **Warm:** Validierte Workflows, Lessons Learned
+- **Cold:** Rohe Session-Captures, Archiv
+
 ## Geplante nächste Schritte
 
 - Weitere inaktive Dienste bei Bedarf aktivieren

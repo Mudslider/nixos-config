@@ -1,11 +1,14 @@
 { config, pkgs, ... }:
 
 {
+  # htpasswd für REST-Server User-Verwaltung
+  environment.systemPackages = [ pkgs.apacheHttpd ];
+
   # ── Restic REST-Server ────────────────────────────────────
   # Performanter als SFTP, unterstützt Append-Only-Modus
   services.restic.server = {
     enable = true;
-    listenAddress = "100.95.103.67:8100"; # NetBird-Interface — nur über VPN erreichbar
+    listenAddress = "0.0.0.0:8100"; # LAN + NetBird (htpasswd schützt Zugriff)
     dataDir = "/srv/ssd-buffer/backup";
     appendOnly = true; # Ransomware-Schutz: nur Anhängen, kein Löschen
   };
