@@ -66,7 +66,7 @@ nixos-config/
 | Vaultwarden | NixOS-Modul | 8222 | `vaultwarden.philipjonasch.de` |
 | Caddy (Reverse Proxy) | NixOS-Modul | 443 | intern + VPS-Weiterleitung |
 | NetBird (Mesh-VPN) | NixOS-Modul | 51820 | P2P zu VPS + Clients |
-| Restic REST-Server | NixOS-Modul | 8100 (NetBird only) | — |
+| Restic REST-Server | NixOS-Modul | 8100 (LAN + NetBird) | htpasswd + append-only |
 | Samba | NixOS-Modul | 445 | — |
 | ZFS Pool `tank` | Kernel | — | 2× 12TB HDD Mirror |
 | Paperless-NGX | Podman | 8000 | `paperless.philipjonasch.de` |
@@ -74,9 +74,20 @@ nixos-config/
 | Immich | Podman | 2283 | `immich.philipjonasch.de` |
 | Backrest (Restic UI) | systemd | 9898 | `backrest.home.lan` |
 | Uptime Kuma | Podman | 3001 | `uptime-kuma.home.lan` |
-| Grafana | NixOS-Modul | 3000 | `grafana.home.lan` |
+| Grafana | NixOS-Modul | 3100 | `grafana.home.lan` |
+| ntfy | NixOS-Modul | 8084 | `ntfy.home.lan` |
 
 Weitere Dienste (Jellyfin, Home Assistant, ...) vorbereitet aber inaktiv in `modules/server/services/default.nix`.
+
+## Backup-Infrastruktur
+
+| Client | Verbindung | Intervall | Ziel |
+|--------|------------|-----------|------|
+| Polly (ThinkPad) | NetBird | taeglich 0:00 | `/srv/ssd-buffer/backup/polly/` |
+| Nora (Linux Mint) | LAN | taeglich | `/srv/ssd-buffer/backup/nora/` |
+| Praxis_NUC (Windows) | NetBird | alle 30 Min | `/srv/ssd-buffer/backup/` |
+
+Nightly-Sync (3 Uhr): SSD-Repos werden auf HDD (`/tank/backup/`) getiert. SSD behaelt max. 1 Tag.
 
 ## VPS (Hetzner CX23, 157.90.239.236)
 

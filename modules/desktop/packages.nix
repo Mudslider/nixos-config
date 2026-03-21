@@ -12,6 +12,7 @@
     hunspellDicts.de_DE
     hyphenDicts.de-de
     darktable
+    bitwarden-desktop
     nextcloud-client
   ];
 }

@@ -11,7 +11,7 @@
 |---|---|---|---|
 | **Hostname** | `homeserver` | `playground` | `vps` |
 | **Flake-Config** | `nixosConfigurations.homeserver` | `nixosConfigurations.thinkpad-p15` | `nixosConfigurations.vps` |
-| **User** | `philip` | `polly` | `philip` |
+| **User** | `philip` | `polly` | `root` |
 | **Hardware** | ASRock N100DC-ITX, 32 GB RAM | Intel i9, 32 GB RAM, RTX A4000 | Hetzner CX23 |
 | **IP** | 192.168.178.10 (LAN) · 100.95.103.67 (NetBird) | DHCP | 157.90.239.236 (public) |
 | **Wiring** | `parts/homeserver.nix` | `parts/thinkpad-p15.nix` | `parts/vps.nix` |
@@ -61,12 +61,13 @@ flake.nix
 | `hosts/homeserver/default.nix` | Homeserver | hostId `687e79ce` ⚠️, philip, GRUB, ZFS-Boot |
 | `hosts/homeserver/disko-config.nix` | Homeserver | ZFS-Datasets, SSD-Partitionen |
 | `hosts/thinkpad-p15/default.nix` | Laptop | polly, NVIDIA Offload, NetworkManager |
-| `hosts/thinkpad-p15/backup.nix` | Laptop | Restic-Job für Windows-Arbeitsrechner |
+| `hosts/thinkpad-p15/backup.nix` | Laptop | Restic-Backup → Homeserver (taeglich) |
 | `hosts/vps/default.nix` | VPS | philip, GRUB, Key-Auth, SOPS age-Key |
 | `hosts/vps/disk.nix` | VPS | GPT + EF02-Partition + ext4 |
 | `hosts/vps/caddy.nix` | VPS | Let's Encrypt, `*.philipjonasch.de` |
 | `hosts/vps/netbird.nix` | VPS | Setup-Key aus SOPS, Port 51820 |
-| `hosts/vps/firewall.nix` | VPS | Port 22, 80, 443 |
+| `hosts/vps/firewall.nix` | VPS | Port 2222, 80, 443 |
+| `hosts/vps/fail2ban.nix` | VPS | SSH-Brute-Force-Schutz |
 
 ---
 
@@ -112,7 +113,8 @@ flake.nix
 | Datei | Zweck |
 |-------|-------|
 | `storage/ssd-buffer.nix` | Verzeichnisse anlegen: `/srv/ssd-buffer/`, `/tank/media/` |
-| `storage/backup.nix` | Restic REST-Server, Port 8100, `appendOnly` |
+| `storage/backup.nix` | Restic REST-Server, Port 8100 (0.0.0.0), htpasswd, `appendOnly` |
+| `storage/nightly-sync.nix` | Tiering SSD→HDD (3 Uhr), Fotos, Paperless, Backup-Repos |
 
 ---
 
@@ -161,9 +163,12 @@ flake.nix
 | `vaultwarden-env` | Homeserver: Vaultwarden |
 | `nextcloud-admin-pass` | Homeserver: Nextcloud |
 | `netbird-setup-key` | Homeserver + VPS: NetBird |
-| `restic-repo-password` | Backup |
-| `offsite-backup-password` | Offsite-Backup |
-| *(vorbereitet)* | forgejo-secret, paperless-secret-key, authentik-secret-key |
+| `immich-db-password` | Homeserver: Immich PostgreSQL |
+| `restic-password-windows` | Backup: Praxis_NUC |
+| `restic-password-polly` | Backup: ThinkPad P15 |
+| `restic-password-nora` | Backup: Noras Laptop |
+| `restic-password-berlin` | Backup: Bruder (inaktiv) |
+| *(deaktiviert)* | offsite-backup-password, restic-repo-password |
 
 ---
 
@@ -191,7 +196,10 @@ Heimnetz
               ├── immich.home.lan       → localhost:2283
               ├── paperless.home.lan    → localhost:8000
               ├── nextcloud.home.lan    → localhost:8080 (nginx)
-              └── ntfy.home.lan         → localhost:8084
+              ├── ntfy.home.lan         → localhost:8084
+              ├── status.home.lan      → localhost:3001 (Uptime Kuma)
+              ├── backrest.home.lan    → localhost:9898
+              └── grafana.home.lan     → localhost:3100
 ```
 
 ---

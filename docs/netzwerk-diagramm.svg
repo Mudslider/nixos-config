@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 780" font-family="Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 1050" font-family="Segoe UI, Arial, sans-serif">
   <defs>
-    <!-- Gradient backgrounds -->
     <linearGradient id="lanGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#e8f5e9" stop-opacity="0.6"/>
       <stop offset="100%" stop-color="#c8e6c9" stop-opacity="0.4"/>
@@ -12,6 +11,10 @@
     <linearGradient id="internetGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#fce4ec" stop-opacity="0.4"/>
       <stop offset="100%" stop-color="#f8bbd0" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="storageGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff3e0" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ffe0b2" stop-opacity="0.3"/>
     </linearGradient>
     <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
       <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
@@ -31,181 +34,289 @@
     <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
       <polygon points="0 0, 8 3, 0 6" fill="#c62828"/>
     </marker>
+    <marker id="arrowAmber" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#ff8f00"/>
+    </marker>
   </defs>
 
   <!-- Background -->
-  <rect width="1100" height="780" fill="#fafafa" rx="12"/>
+  <rect width="1300" height="1050" fill="#fafafa" rx="12"/>
 
   <!-- Title -->
-  <text x="550" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="#263238">Netzwerk &amp; DNS — NixOS Infrastructure</text>
+  <text x="650" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="#263238">NixOS Infrastructure — Systemuebersicht mit Sicherheitsvorkehrungen</text>
+  <text x="650" y="55" text-anchor="middle" font-size="12" fill="#888">Stand: 2026-03-21</text>
 
   <!-- ═══ ZONES ═══ -->
 
   <!-- LAN Zone -->
-  <rect x="30" y="55" width="520" height="440" rx="16" fill="url(#lanGrad)" stroke="#66bb6a" stroke-width="2" stroke-dasharray="8,4"/>
-  <text x="50" y="82" font-size="14" font-weight="bold" fill="#2e7d32">🏠 LAN — 192.168.178.0/24</text>
-
-  <!-- NetBird Zone -->
-  <rect x="30" y="510" width="1040" height="120" rx="16" fill="url(#netbirdGrad)" stroke="#42a5f5" stroke-width="2" stroke-dasharray="8,4"/>
-  <text x="50" y="537" font-size="14" font-weight="bold" fill="#1565c0">🔒 NetBird WireGuard Mesh (P2P-VPN)</text>
+  <rect x="30" y="70" width="600" height="530" rx="16" fill="url(#lanGrad)" stroke="#66bb6a" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="50" y="95" font-size="14" font-weight="bold" fill="#2e7d32">LAN — 192.168.178.0/24 (FritzBox NAT)</text>
 
   <!-- Internet Zone -->
-  <rect x="580" y="55" width="490" height="440" rx="16" fill="url(#internetGrad)" stroke="#ef5350" stroke-width="2" stroke-dasharray="8,4"/>
-  <text x="600" y="82" font-size="14" font-weight="bold" fill="#c62828">🌐 Internet</text>
+  <rect x="660" y="70" width="610" height="350" rx="16" fill="url(#internetGrad)" stroke="#ef5350" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="680" y="95" font-size="14" font-weight="bold" fill="#c62828">Internet (oeffentlich)</text>
+
+  <!-- NetBird Zone -->
+  <rect x="30" y="620" width="1240" height="120" rx="16" fill="url(#netbirdGrad)" stroke="#42a5f5" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="50" y="647" font-size="14" font-weight="bold" fill="#1565c0">NetBird WireGuard Mesh (P2P-VPN, verschluesselt)</text>
+
+  <!-- Storage Zone -->
+  <rect x="30" y="760" width="600" height="130" rx="16" fill="url(#storageGrad)" stroke="#ff8f00" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="50" y="787" font-size="14" font-weight="bold" fill="#e65100">Storage &amp; Backup (Homeserver)</text>
 
   <!-- ═══ DEVICES ═══ -->
 
   <!-- FritzBox -->
-  <rect x="60" y="100" width="200" height="90" rx="12" fill="#fff9c4" stroke="#f9a825" stroke-width="2" filter="url(#shadow)"/>
-  <text x="160" y="125" text-anchor="middle" font-size="15" font-weight="bold" fill="#f57f17">📡 FritzBox</text>
-  <text x="160" y="145" text-anchor="middle" font-size="11" fill="#555">Gateway: 192.168.178.1</text>
-  <text x="160" y="162" text-anchor="middle" font-size="11" fill="#555">DHCP → DNS: 192.168.178.10</text>
-  <text x="160" y="179" text-anchor="middle" font-size="10" fill="#888">Internet-Uplink</text>
+  <rect x="60" y="110" width="200" height="80" rx="12" fill="#fff9c4" stroke="#f9a825" stroke-width="2" filter="url(#shadow)"/>
+  <text x="160" y="135" text-anchor="middle" font-size="14" font-weight="bold" fill="#f57f17">FritzBox (Router)</text>
+  <text x="160" y="153" text-anchor="middle" font-size="10" fill="#555">Gateway: 192.168.178.1</text>
+  <text x="160" y="168" text-anchor="middle" font-size="10" fill="#555">DHCP DNS: 192.168.178.10</text>
+  <text x="160" y="183" text-anchor="middle" font-size="9" fill="#2e7d32">NAT + kein Port-Forwarding</text>
 
-  <!-- Homeserver -->
-  <rect x="60" y="240" width="240" height="230" rx="12" fill="#ffffff" stroke="#43a047" stroke-width="2.5" filter="url(#shadow)"/>
-  <text x="180" y="268" text-anchor="middle" font-size="16" font-weight="bold" fill="#2e7d32">🖥️ Homeserver</text>
-  <text x="180" y="288" text-anchor="middle" font-size="11" fill="#555">192.168.178.10 (LAN)</text>
-  <text x="180" y="305" text-anchor="middle" font-size="11" fill="#1565c0">100.95.103.67 (NetBird)</text>
-  <line x1="80" y1="318" x2="280" y2="318" stroke="#e0e0e0" stroke-width="1"/>
-  <text x="85" y="336" font-size="11" font-weight="bold" fill="#333">Dienste:</text>
-  <text x="85" y="352" font-size="10" fill="#555">Caddy :443 (TLS internal)</text>
-  <text x="85" y="366" font-size="10" fill="#555">Immich :2283 | Nextcloud :8080</text>
-  <text x="85" y="380" font-size="10" fill="#555">Paperless :8000 | Grafana :3000</text>
-  <text x="85" y="394" font-size="10" fill="#555">Vaultwarden :8222 | Samba :445</text>
-  <text x="85" y="408" font-size="10" fill="#555">Restic REST :8100 (NetBird)</text>
-  <line x1="80" y1="416" x2="280" y2="416" stroke="#e0e0e0" stroke-width="1"/>
-  <text x="85" y="432" font-size="11" font-weight="bold" fill="#7b1fa2">DNS (dnsmasq):</text>
-  <text x="85" y="448" font-size="10" fill="#7b1fa2">*.home.lan → 192.168.178.10</text>
-  <text x="85" y="462" font-size="10" fill="#7b1fa2">Interfaces: enp1s0, nb-wt0</text>
+  <!-- ═══ HOMESERVER ═══ -->
+  <rect x="60" y="220" width="280" height="360" rx="12" fill="#ffffff" stroke="#43a047" stroke-width="2.5" filter="url(#shadow)"/>
+  <text x="200" y="248" text-anchor="middle" font-size="16" font-weight="bold" fill="#2e7d32">Homeserver (N100)</text>
+  <text x="200" y="266" text-anchor="middle" font-size="10" fill="#555">192.168.178.10 (LAN)</text>
+  <text x="200" y="281" text-anchor="middle" font-size="10" fill="#1565c0">100.95.103.67 (NetBird)</text>
 
-  <!-- Laptop -->
-  <rect x="340" y="240" width="200" height="200" rx="12" fill="#ffffff" stroke="#1565c0" stroke-width="2.5" filter="url(#shadow)"/>
-  <text x="440" y="268" text-anchor="middle" font-size="16" font-weight="bold" fill="#1565c0">💻 ThinkPad P15</text>
-  <text x="440" y="288" text-anchor="middle" font-size="11" fill="#555">DHCP (192.168.178.x)</text>
-  <text x="440" y="305" text-anchor="middle" font-size="11" fill="#1565c0">NetBird (nb-wt0)</text>
-  <line x1="355" y1="318" x2="525" y2="318" stroke="#e0e0e0" stroke-width="1"/>
-  <text x="355" y="336" font-size="11" font-weight="bold" fill="#333">Hardware:</text>
-  <text x="355" y="352" font-size="10" fill="#555">RTX A4000 8GB, i9, 32GB</text>
-  <text x="355" y="366" font-size="10" fill="#555">Podman + nvidia-toolkit</text>
-  <line x1="355" y1="380" x2="525" y2="380" stroke="#e0e0e0" stroke-width="1"/>
-  <text x="355" y="398" font-size="11" font-weight="bold" fill="#7b1fa2">DNS (systemd-resolved):</text>
-  <text x="355" y="414" font-size="10" fill="#7b1fa2">~home.lan → 100.95.103.67</text>
-  <text x="355" y="430" font-size="10" fill="#7b1fa2">Rest → DHCP (FritzBox)</text>
+  <!-- Homeserver Services -->
+  <line x1="75" y1="292" x2="325" y2="292" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="80" y="310" font-size="11" font-weight="bold" fill="#333">Web-Dienste (via Caddy):</text>
+  <text x="80" y="326" font-size="10" fill="#555">Immich :2283 | Nextcloud :8080</text>
+  <text x="80" y="340" font-size="10" fill="#555">Paperless :8000 | Vaultwarden :8222</text>
+  <text x="80" y="354" font-size="10" fill="#555">Grafana :3100 | Backrest :9898</text>
+  <text x="80" y="368" font-size="10" fill="#555">Uptime Kuma :3001 | ntfy :8084</text>
 
-  <!-- VPS -->
-  <rect x="640" y="100" width="220" height="210" rx="12" fill="#ffffff" stroke="#c62828" stroke-width="2.5" filter="url(#shadow)"/>
-  <text x="750" y="128" text-anchor="middle" font-size="16" font-weight="bold" fill="#c62828">☁️ VPS Hetzner</text>
-  <text x="750" y="148" text-anchor="middle" font-size="11" fill="#555">157.90.239.236 (Nürnberg)</text>
-  <text x="750" y="165" text-anchor="middle" font-size="11" fill="#1565c0">NetBird (nb-wt0)</text>
-  <line x1="655" y1="178" x2="845" y2="178" stroke="#e0e0e0" stroke-width="1"/>
-  <text x="655" y="196" font-size="11" font-weight="bold" fill="#333">Dienste:</text>
-  <text x="655" y="212" font-size="10" fill="#555">Caddy (Let's Encrypt)</text>
-  <text x="655" y="226" font-size="10" fill="#555">Fail2ban (SSH :2222)</text>
-  <text x="655" y="240" font-size="10" fill="#555">Auto-Upgrade (04:30)</text>
-  <line x1="655" y1="252" x2="845" y2="252" stroke="#e0e0e0" stroke-width="1"/>
-  <text x="655" y="270" font-size="11" font-weight="bold" fill="#e65100">Reverse Proxy:</text>
-  <text x="655" y="286" font-size="10" fill="#e65100">*.philipjonasch.de</text>
-  <text x="655" y="300" font-size="10" fill="#e65100">→ NetBird → Homeserver</text>
+  <line x1="75" y1="378" x2="325" y2="378" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="80" y="395" font-size="11" font-weight="bold" fill="#2e7d32">Sicherheit:</text>
+  <text x="80" y="410" font-size="9" fill="#2e7d32">Caddy TLS (interne CA) fuer *.home.lan</text>
+  <text x="80" y="424" font-size="9" fill="#2e7d32">SSH: nur Key-Auth, LAN + NetBird</text>
+  <text x="80" y="438" font-size="9" fill="#2e7d32">Firewall: 22,53,80,443,445,8100</text>
+  <text x="80" y="452" font-size="9" fill="#2e7d32">SOPS-Secrets (age-verschluesselt)</text>
+  <text x="80" y="466" font-size="9" fill="#2e7d32">Samba: nur LAN (enp1s0), SMB3</text>
+
+  <line x1="75" y1="476" x2="325" y2="476" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="80" y="493" font-size="11" font-weight="bold" fill="#7b1fa2">DNS (dnsmasq):</text>
+  <text x="80" y="508" font-size="10" fill="#7b1fa2">*.home.lan = 192.168.178.10</text>
+  <text x="80" y="522" font-size="10" fill="#7b1fa2">bind-dynamic, LAN + NetBird</text>
+
+  <!-- Restic REST-Server (separate box) -->
+  <rect x="80" y="535" width="240" height="50" rx="8" fill="#fff3e0" stroke="#ff8f00" stroke-width="1.5"/>
+  <text x="200" y="555" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">Restic REST :8100 (0.0.0.0)</text>
+  <text x="200" y="570" text-anchor="middle" font-size="9" fill="#e65100">htpasswd (bcrypt) + append-only</text>
+
+  <!-- ═══ LAPTOP ═══ -->
+  <rect x="380" y="220" width="230" height="240" rx="12" fill="#ffffff" stroke="#1565c0" stroke-width="2.5" filter="url(#shadow)"/>
+  <text x="495" y="248" text-anchor="middle" font-size="16" font-weight="bold" fill="#1565c0">ThinkPad P15 (polly)</text>
+  <text x="495" y="266" text-anchor="middle" font-size="10" fill="#555">DHCP (192.168.178.x)</text>
+  <text x="495" y="281" text-anchor="middle" font-size="10" fill="#1565c0">NetBird (wt0)</text>
+
+  <line x1="395" y1="292" x2="595" y2="292" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="395" y="310" font-size="11" font-weight="bold" fill="#333">Backup:</text>
+  <text x="395" y="326" font-size="10" fill="#555">Restic taeglich → Server (NetBird)</text>
+  <text x="395" y="340" font-size="10" fill="#555">Ziel: /home/polly (11 GB)</text>
+
+  <line x1="395" y1="354" x2="595" y2="354" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="395" y="372" font-size="11" font-weight="bold" fill="#7b1fa2">Split-DNS:</text>
+  <text x="395" y="388" font-size="10" fill="#7b1fa2">~home.lan → 100.95.103.67 (wt0)</text>
+  <text x="395" y="404" font-size="10" fill="#7b1fa2">Rest → DHCP (FritzBox)</text>
+
+  <line x1="395" y1="416" x2="595" y2="416" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="395" y="434" font-size="11" font-weight="bold" fill="#2e7d32">Sicherheit:</text>
+  <text x="395" y="450" font-size="9" fill="#2e7d32">LUKS Full-Disk-Encryption</text>
+
+  <!-- ═══ NORA ═══ -->
+  <rect x="380" y="490" width="230" height="100" rx="12" fill="#ffffff" stroke="#78909c" stroke-width="2" filter="url(#shadow)"/>
+  <text x="495" y="515" text-anchor="middle" font-size="14" font-weight="bold" fill="#546e7a">Nora (Fuellerinchen)</text>
+  <text x="495" y="532" text-anchor="middle" font-size="10" fill="#555">Linux Mint, LAN only</text>
+  <text x="495" y="548" text-anchor="middle" font-size="10" fill="#555">Restic taeglich → Server (LAN)</text>
+  <text x="495" y="564" text-anchor="middle" font-size="10" fill="#555">Ziel: /home/nora</text>
+  <text x="495" y="580" text-anchor="middle" font-size="9" fill="#ff8f00">Kein NetBird, kein VPN</text>
+
+  <!-- ═══ VPS ═══ -->
+  <rect x="700" y="110" width="260" height="280" rx="12" fill="#ffffff" stroke="#c62828" stroke-width="2.5" filter="url(#shadow)"/>
+  <text x="830" y="138" text-anchor="middle" font-size="16" font-weight="bold" fill="#c62828">VPS Hetzner (Nuernberg)</text>
+  <text x="830" y="156" text-anchor="middle" font-size="10" fill="#555">157.90.239.236 (oeffentlich)</text>
+  <text x="830" y="171" text-anchor="middle" font-size="10" fill="#1565c0">NetBird (nb-wt0)</text>
+
+  <line x1="715" y1="182" x2="945" y2="182" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="715" y="200" font-size="11" font-weight="bold" fill="#e65100">Reverse Proxy (Caddy):</text>
+  <text x="715" y="216" font-size="10" fill="#e65100">*.philipjonasch.de (Let's Encrypt)</text>
+  <text x="715" y="232" font-size="10" fill="#e65100">→ NetBird Tunnel → Homeserver :80</text>
+
+  <line x1="715" y1="245" x2="945" y2="245" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="715" y="263" font-size="11" font-weight="bold" fill="#2e7d32">Sicherheit:</text>
+  <text x="715" y="279" font-size="9" fill="#2e7d32">SSH Port 2222 (kein Standard-22)</text>
+  <text x="715" y="293" font-size="9" fill="#2e7d32">Fail2ban: 5 Versuche, eskalierende Sperren</text>
+  <text x="715" y="307" font-size="9" fill="#2e7d32">Key-only Auth, MaxAuthTries=3</text>
+  <text x="715" y="321" font-size="9" fill="#2e7d32">Security-Headers (HSTS, X-Frame-Options)</text>
+  <text x="715" y="335" font-size="9" fill="#2e7d32">Vaultwarden /admin* blockiert</text>
+  <text x="715" y="349" font-size="9" fill="#2e7d32">Auto-Upgrade taeglich 04:30</text>
+
+  <line x1="715" y1="358" x2="945" y2="358" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="715" y="376" font-size="11" font-weight="bold" fill="#555">Firewall: 80, 443, 2222</text>
+
+  <!-- ═══ WINDOWS PRAXIS ═══ -->
+  <rect x="1000" y="110" width="230" height="120" rx="12" fill="#ffffff" stroke="#ff8f00" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1115" y="138" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">Praxis_NUC (Windows)</text>
+  <text x="1115" y="156" text-anchor="middle" font-size="10" fill="#555">NetBird VPN</text>
+  <text x="1115" y="172" text-anchor="middle" font-size="10" fill="#555">Restic alle 30 Min → Server</text>
+  <text x="1115" y="188" font-size="10" fill="#555" text-anchor="middle">C:\Documents + E:\</text>
+  <text x="1115" y="222" text-anchor="middle" font-size="9" fill="#c62828">htpasswd-Update noetig!</text>
+
+  <!-- Browser Users -->
+  <rect x="1000" y="270" width="230" height="70" rx="12" fill="#ffffff" stroke="#e65100" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1115" y="298" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">Browser / Apps</text>
+  <text x="1115" y="316" text-anchor="middle" font-size="10" fill="#555">*.philipjonasch.de</text>
+  <text x="1115" y="330" text-anchor="middle" font-size="10" fill="#2e7d32">HTTPS (Let's Encrypt)</text>
 
   <!-- Phones -->
-  <rect x="640" y="350" width="220" height="120" rx="12" fill="#ffffff" stroke="#78909c" stroke-width="2" stroke-dasharray="5,3" filter="url(#shadow)"/>
-  <text x="750" y="378" text-anchor="middle" font-size="15" font-weight="bold" fill="#78909c">📱 Phones (geplant)</text>
-  <text x="750" y="398" text-anchor="middle" font-size="11" fill="#999">GrapheneOS + Samsung</text>
-  <text x="750" y="418" text-anchor="middle" font-size="11" fill="#999">NetBird einrichten</text>
-  <text x="750" y="438" text-anchor="middle" font-size="11" fill="#999">Caddy CA installieren</text>
-  <text x="750" y="458" text-anchor="middle" font-size="10" fill="#bbb">(noch nicht konfiguriert)</text>
+  <rect x="700" y="400" width="260" height="70" rx="12" fill="#ffffff" stroke="#78909c" stroke-width="2" stroke-dasharray="5,3" filter="url(#shadow)"/>
+  <text x="830" y="425" text-anchor="middle" font-size="13" font-weight="bold" fill="#78909c">Phones (geplant)</text>
+  <text x="830" y="443" text-anchor="middle" font-size="10" fill="#999">GrapheneOS + Samsung</text>
+  <text x="830" y="460" text-anchor="middle" font-size="9" fill="#ff8f00">NetBird + Caddy CA fehlt noch</text>
 
-  <!-- Users (Internet) -->
-  <rect x="900" y="100" width="140" height="70" rx="12" fill="#ffffff" stroke="#e65100" stroke-width="2" filter="url(#shadow)"/>
-  <text x="970" y="128" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">🌍 Browser</text>
-  <text x="970" y="148" text-anchor="middle" font-size="10" fill="#555">*.philipjonasch.de</text>
-  <text x="970" y="163" text-anchor="middle" font-size="10" fill="#555">HTTPS (Let's Encrypt)</text>
+  <!-- ═══ NetBird Mesh Nodes ═══ -->
+  <circle cx="200" cy="680" r="28" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="200" y="684" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">Server</text>
+  <text x="200" y="718" text-anchor="middle" font-size="9" fill="#1565c0">100.95.103.67</text>
 
-  <!-- NetBird nodes in mesh zone -->
-  <circle cx="180" cy="570" r="28" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
-  <text x="180" y="574" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">Server</text>
-  <text x="180" y="608" text-anchor="middle" font-size="9" fill="#1565c0">100.95.103.67</text>
+  <circle cx="550" cy="680" r="28" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="550" y="684" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">Laptop</text>
+  <text x="550" y="718" text-anchor="middle" font-size="9" fill="#1565c0">100.95.112.175</text>
 
-  <circle cx="550" cy="570" r="28" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
-  <text x="550" y="574" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">Laptop</text>
+  <circle cx="900" cy="680" r="28" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="900" y="684" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">VPS</text>
 
-  <circle cx="920" cy="570" r="28" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
-  <text x="920" y="574" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">VPS</text>
+  <circle cx="1100" cy="680" r="28" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="1100" y="684" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">Praxis</text>
+
+  <!-- ═══ STORAGE ═══ -->
+
+  <!-- SSD -->
+  <rect x="50" y="800" width="250" height="75" rx="10" fill="#fff" stroke="#ff8f00" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="175" y="822" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">NVMe SSD (Boot + Buffer)</text>
+  <text x="175" y="840" text-anchor="middle" font-size="10" fill="#555">/srv/ssd-buffer/backup/ (Restic)</text>
+  <text x="175" y="855" text-anchor="middle" font-size="10" fill="#555">/srv/ssd-buffer/services/ (DBs, Apps)</text>
+  <text x="175" y="870" text-anchor="middle" font-size="9" fill="#2e7d32">Puffer: max. 1 Tag, dann Tiering</text>
+
+  <!-- HDD -->
+  <rect x="340" y="800" width="270" height="75" rx="10" fill="#fff" stroke="#ff8f00" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="475" y="822" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">ZFS Pool "tank" (2x 12TB Mirror)</text>
+  <text x="475" y="840" text-anchor="middle" font-size="10" fill="#555">/tank/backup/ (Langzeitarchiv)</text>
+  <text x="475" y="855" text-anchor="middle" font-size="10" fill="#555">/tank/photos/ (Immich), /tank/media/</text>
+  <text x="475" y="870" text-anchor="middle" font-size="9" fill="#2e7d32">Verschluesselt (Keyfile), Standby 22-3h</text>
+
+  <!-- Tiering Arrow SSD→HDD -->
+  <line x1="300" y1="838" x2="340" y2="838" stroke="#ff8f00" stroke-width="2.5" marker-end="url(#arrowAmber)"/>
+  <text x="305" y="830" font-size="8" fill="#e65100">3 Uhr</text>
 
   <!-- ═══ CONNECTIONS ═══ -->
 
-  <!-- FritzBox → Homeserver (DHCP DNS) -->
-  <line x1="160" y1="190" x2="160" y2="240" stroke="#f9a825" stroke-width="2.5" marker-end="url(#arrowOrange)"/>
-  <text x="100" y="220" font-size="9" fill="#f57f17" font-weight="bold">DHCP DNS</text>
+  <!-- FritzBox → Homeserver (DNS) -->
+  <line x1="160" y1="190" x2="160" y2="220" stroke="#f9a825" stroke-width="2" marker-end="url(#arrowOrange)"/>
+  <text x="105" y="210" font-size="9" fill="#f57f17">DNS-Delegation</text>
 
   <!-- FritzBox → Laptop (DHCP) -->
-  <line x1="260" y1="155" x2="340" y2="260" stroke="#f9a825" stroke-width="1.5" stroke-dasharray="4,3"/>
-  <text x="285" y="195" font-size="9" fill="#f57f17">DHCP</text>
+  <line x1="260" y1="145" x2="380" y2="240" stroke="#f9a825" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="310" y="175" font-size="9" fill="#f57f17">DHCP</text>
 
   <!-- Homeserver ↔ Laptop (LAN) -->
-  <line x1="300" y1="340" x2="340" y2="340" stroke="#43a047" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
-  <text x="305" y="330" font-size="9" fill="#2e7d32" font-weight="bold">LAN</text>
+  <line x1="340" y1="340" x2="380" y2="340" stroke="#43a047" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+  <text x="348" y="332" font-size="8" fill="#2e7d32">LAN</text>
 
-  <!-- Laptop DNS → Homeserver (Split-DNS home.lan) -->
-  <path d="M 370 420 Q 320 490 240 460" fill="none" stroke="#7b1fa2" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowPurple)"/>
-  <text x="270" y="495" font-size="9" fill="#7b1fa2" font-weight="bold">*.home.lan (Split-DNS)</text>
+  <!-- Homeserver ↔ Nora (LAN) -->
+  <line x1="340" y1="480" x2="380" y2="510" stroke="#43a047" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="340" y="504" font-size="8" fill="#2e7d32">LAN</text>
+
+  <!-- Nora → Restic (Backup) -->
+  <path d="M 380 560 Q 330 570 320 565" fill="none" stroke="#ff8f00" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowAmber)"/>
+  <text x="330" y="583" font-size="8" fill="#e65100">Backup</text>
+
+  <!-- Laptop DNS → Homeserver (Split-DNS) -->
+  <path d="M 400 400 Q 340 430 280 480" fill="none" stroke="#7b1fa2" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrowPurple)"/>
+  <text x="300" y="450" font-size="9" fill="#7b1fa2">*.home.lan</text>
 
   <!-- NetBird mesh connections -->
-  <line x1="208" y1="570" x2="522" y2="570" stroke="#1565c0" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
-  <line x1="578" y1="570" x2="892" y2="570" stroke="#1565c0" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
-  <text x="365" y="560" text-anchor="middle" font-size="10" fill="#1565c0" font-weight="bold">WireGuard P2P</text>
-  <text x="735" y="560" text-anchor="middle" font-size="10" fill="#1565c0" font-weight="bold">WireGuard P2P</text>
+  <line x1="228" y1="680" x2="522" y2="680" stroke="#1565c0" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+  <line x1="578" y1="680" x2="872" y2="680" stroke="#1565c0" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+  <line x1="928" y1="680" x2="1072" y2="680" stroke="#1565c0" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+  <text x="375" y="670" text-anchor="middle" font-size="9" fill="#1565c0">WireGuard P2P</text>
+  <text x="725" y="670" text-anchor="middle" font-size="9" fill="#1565c0">WireGuard P2P</text>
 
-  <!-- Homeserver → NetBird node -->
-  <line x1="180" y1="470" x2="180" y2="542" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="4,3"/>
-
-  <!-- Laptop → NetBird node -->
-  <line x1="440" y1="440" x2="550" y2="542" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="4,3"/>
-
-  <!-- VPS → NetBird node -->
-  <line x1="750" y1="310" x2="920" y2="542" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <!-- Device → NetBird node links -->
+  <line x1="200" y1="585" x2="200" y2="652" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="495" y1="460" x2="550" y2="652" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="830" y1="390" x2="900" y2="652" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="1115" y1="230" x2="1100" y2="652" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="4,3"/>
 
   <!-- Internet → VPS -->
-  <line x1="900" y1="140" x2="860" y2="140" stroke="#e65100" stroke-width="2.5" marker-end="url(#arrowOrange)"/>
-  <text x="870" y="130" font-size="9" fill="#e65100" font-weight="bold">HTTPS</text>
+  <line x1="1000" y1="305" x2="960" y2="305" stroke="#e65100" stroke-width="2.5" marker-end="url(#arrowOrange)"/>
+  <text x="968" y="296" font-size="9" fill="#e65100">HTTPS</text>
 
-  <!-- VPS → Homeserver (NetBird Tunnel) -->
-  <path d="M 640 280 Q 500 320 300 350" fill="none" stroke="#e65100" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowOrange)"/>
-  <text x="460" y="290" font-size="9" fill="#e65100" font-weight="bold">Reverse Proxy via NetBird</text>
+  <!-- VPS → Homeserver (Reverse Proxy via NetBird) -->
+  <path d="M 700 300 Q 550 350 340 360" fill="none" stroke="#e65100" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowOrange)"/>
+  <text x="510" y="340" font-size="9" fill="#e65100" font-weight="bold">Reverse Proxy via NetBird</text>
+
+  <!-- Laptop → Restic (Backup) -->
+  <path d="M 410 340 Q 350 380 320 540" fill="none" stroke="#ff8f00" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowAmber)"/>
+  <text x="340" y="410" font-size="8" fill="#e65100">Backup (NetBird)</text>
+
+  <!-- Praxis → Restic (Backup) -->
+  <path d="M 1000 200 Q 600 400 320 555" fill="none" stroke="#ff8f00" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowAmber)"/>
+  <text x="680" y="360" font-size="8" fill="#e65100">Backup (NetBird)</text>
+
+  <!-- ═══ SECURITY WARNINGS ═══ -->
+  <rect x="660" y="485" width="610" height="115" rx="12" fill="#fff8e1" stroke="#ff8f00" stroke-width="2" filter="url(#shadow)"/>
+  <text x="680" y="510" font-size="13" font-weight="bold" fill="#e65100">Offene Punkte / Potenzielle Luecken</text>
+  <text x="690" y="530" font-size="10" fill="#c62828">1. Praxis_NUC: htpasswd fehlt nach Auth-Umstellung (DRINGEND)</text>
+  <text x="690" y="546" font-size="10" fill="#ff8f00">2. Phones: kein NetBird, kein Caddy-CA → home.lan nicht erreichbar</text>
+  <text x="690" y="562" font-size="10" fill="#ff8f00">3. Nora: Backup nur im LAN (kein NetBird) — unterwegs kein Backup</text>
+  <text x="690" y="578" font-size="10" fill="#ff8f00">4. Restic REST: privateRepos nicht aktiv — jeder User sieht alle Repos</text>
+  <text x="690" y="594" font-size="10" fill="#888">5. Offsite-Backup (Berlin): deaktiviert — kein Schutz bei Hausbrand</text>
 
   <!-- ═══ LEGEND ═══ -->
-  <rect x="30" y="645" width="1040" height="120" rx="12" fill="#fff" stroke="#bdbdbd" stroke-width="1" filter="url(#shadow)"/>
-  <text x="50" y="672" font-size="14" font-weight="bold" fill="#333">Legende</text>
+  <rect x="30" y="910" width="1240" height="125" rx="12" fill="#fff" stroke="#bdbdbd" stroke-width="1" filter="url(#shadow)"/>
+  <text x="50" y="937" font-size="14" font-weight="bold" fill="#333">Legende</text>
 
   <!-- Row 1 -->
-  <line x1="50" y1="692" x2="90" y2="692" stroke="#43a047" stroke-width="2.5"/>
-  <text x="95" y="696" font-size="11" fill="#555">LAN-Verbindung</text>
+  <line x1="50" y1="960" x2="90" y2="960" stroke="#43a047" stroke-width="2.5"/>
+  <text x="95" y="964" font-size="11" fill="#555">LAN</text>
 
-  <line x1="250" y1="692" x2="290" y2="692" stroke="#1565c0" stroke-width="2.5"/>
-  <text x="295" y="696" font-size="11" fill="#555">NetBird WireGuard</text>
+  <line x1="180" y1="960" x2="220" y2="960" stroke="#1565c0" stroke-width="2.5"/>
+  <text x="225" y="964" font-size="11" fill="#555">NetBird VPN (WireGuard)</text>
 
-  <line x1="480" y1="692" x2="520" y2="692" stroke="#e65100" stroke-width="2.5"/>
-  <text x="525" y="696" font-size="11" fill="#555">Internet / Reverse Proxy</text>
+  <line x1="420" y1="960" x2="460" y2="960" stroke="#e65100" stroke-width="2.5"/>
+  <text x="465" y="964" font-size="11" fill="#555">Internet / HTTPS</text>
 
-  <line x1="740" y1="692" x2="780" y2="692" stroke="#7b1fa2" stroke-width="2" stroke-dasharray="6,3"/>
-  <text x="785" y="696" font-size="11" fill="#555">DNS-Auflösung</text>
+  <line x1="620" y1="960" x2="660" y2="960" stroke="#7b1fa2" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="665" y="964" font-size="11" fill="#555">DNS-Aufloesung</text>
+
+  <line x1="820" y1="960" x2="860" y2="960" stroke="#ff8f00" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="865" y="964" font-size="11" fill="#555">Backup (Restic)</text>
 
   <!-- Row 2 -->
-  <rect x="50" y="710" width="14" height="14" rx="3" fill="#e8f5e9" stroke="#66bb6a" stroke-width="1.5"/>
-  <text x="70" y="722" font-size="11" fill="#555">LAN-Zone</text>
+  <rect x="50" y="980" width="14" height="14" rx="3" fill="#e8f5e9" stroke="#66bb6a" stroke-width="1.5"/>
+  <text x="70" y="992" font-size="11" fill="#555">LAN-Zone</text>
 
-  <rect x="250" y="710" width="14" height="14" rx="3" fill="#e3f2fd" stroke="#42a5f5" stroke-width="1.5"/>
-  <text x="270" y="722" font-size="11" fill="#555">VPN-Zone</text>
+  <rect x="180" y="980" width="14" height="14" rx="3" fill="#e3f2fd" stroke="#42a5f5" stroke-width="1.5"/>
+  <text x="200" y="992" font-size="11" fill="#555">VPN-Zone</text>
 
-  <rect x="480" y="710" width="14" height="14" rx="3" fill="#fce4ec" stroke="#ef5350" stroke-width="1.5"/>
-  <text x="500" y="722" font-size="11" fill="#555">Internet-Zone</text>
+  <rect x="310" y="980" width="14" height="14" rx="3" fill="#fce4ec" stroke="#ef5350" stroke-width="1.5"/>
+  <text x="330" y="992" font-size="11" fill="#555">Internet</text>
 
-  <rect x="740" y="710" width="14" height="14" rx="3" fill="#fff" stroke="#78909c" stroke-width="1.5" stroke-dasharray="3,2"/>
-  <text x="760" y="722" font-size="11" fill="#555">Geplant (noch nicht aktiv)</text>
+  <rect x="420" y="980" width="14" height="14" rx="3" fill="#fff3e0" stroke="#ff8f00" stroke-width="1.5"/>
+  <text x="440" y="992" font-size="11" fill="#555">Storage</text>
 
-  <!-- DNS flow detail -->
-  <text x="50" y="752" font-size="11" fill="#333" font-weight="bold">DNS-Kette:</text>
-  <text x="145" y="752" font-size="11" fill="#7b1fa2">Client → dnsmasq (Homeserver) → *.home.lan = 192.168.178.10</text>
-  <text x="700" y="752" font-size="11" fill="#f57f17">| alles andere → FritzBox → Internet</text>
+  <rect x="550" y="980" width="14" height="14" rx="3" fill="#fff8e1" stroke="#ff8f00" stroke-width="1.5"/>
+  <text x="570" y="992" font-size="11" fill="#555">Sicherheitshinweis</text>
+
+  <rect x="740" y="980" width="14" height="14" rx="3" fill="#fff" stroke="#78909c" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="760" y="992" font-size="11" fill="#555">Geplant (noch nicht aktiv)</text>
+
+  <!-- Traffic flow summary -->
+  <text x="50" y="1025" font-size="11" fill="#333" font-weight="bold">Oeffentlicher Zugang:</text>
+  <text x="210" y="1025" font-size="11" fill="#e65100">Browser → VPS (Let's Encrypt) → NetBird → Homeserver Caddy → Dienst</text>
+  <text x="820" y="1025" font-size="11" fill="#333" font-weight="bold">LAN-Zugang:</text>
+  <text x="930" y="1025" font-size="11" fill="#2e7d32">dnsmasq → Caddy (interne CA) → Dienst</text>
 </svg>
